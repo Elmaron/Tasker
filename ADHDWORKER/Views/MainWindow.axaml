@@ -1,0 +1,97 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ADHDWORKER.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ADHDWORKER.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="ADHDWORKER">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	<DockPanel Name="main_dockpanel">
+		<StackPanel DockPanel.Dock="Top"
+					Background="Gray"
+					Orientation="Horizontal">
+			<Button>Files</Button>
+			<Button>Category</Button>
+			<Button>Project</Button>
+			<Button>Task</Button>
+			<Button>Appointment</Button>
+			<Button>Help</Button>
+		</StackPanel>
+		<StackPanel DockPanel.Dock="Left"
+					Background="Gray"
+					Width="200"
+					MaxWidth="300">
+			<StackPanel
+				Name="category_stackpanel_holder">
+				
+			</StackPanel>
+			<TextBox	Name="category_textbox_name"
+						PlaceholderText="New category..."
+						MaxLength="30"
+						></TextBox>
+			<Button		Click="NewCategoryHandler"
+				>Create</Button>
+		</StackPanel>
+	</DockPanel>
+	
+	<!--
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"></ColumnDefinition>
+			<ColumnDefinition Width="8*"></ColumnDefinition>
+			<ColumnDefinition Width="*"></ColumnDefinition>
+		</Grid.ColumnDefinitions>
+
+		<CommandBar Grid.Column="0" Grid.Row="0"
+			Grid.ColumnSpan="3">
+			<CommandBar.PrimaryCommands>
+				<CommandBarButton Label="Add" Icon="{StaticResource AddIcon}" />
+				<CommandBarButton Label="Edit" Icon="{StaticResource EditIcon}" />
+				<CommandBarButton Label="Delete" Icon="{StaticResource DeleteIcon}" />
+			</CommandBar.PrimaryCommands>
+		</CommandBar>
+		<Grid Grid.Column="0" Grid.Row="1">
+			<TextBlock Text="Sidebar left"></TextBlock>
+		</Grid>
+		<TabControl Grid.Column="1" Grid.Row="1"
+					Name="category_tabcontrol">
+			<TabItem Header="Example Tab">
+				<TextBlock Text="Example Tab Content"></TextBlock>
+			</TabItem>
+			<TabItem Header="Next Example Tab">
+				<TextBlock Text="Example Tab Content Numbero 2"></TextBlock>
+			</TabItem>
+			<TabItem Header="+">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="50"></RowDefinition>
+						<RowDefinition Height="50"></RowDefinition>
+					</Grid.RowDefinitions>
+					<TextBox Grid.Column="0" Grid.Row="0" 
+							 Name="category_textbox_name" 
+							 PlaceholderText="Type in your new category..." 
+							 MaxLength="30"></TextBox>
+					<Button Grid.Column="0" Grid.Row="1"
+						Click="NewCategoryHandler">Create</Button>
+				</Grid>
+			</TabItem>
+		</TabControl>
+		<Grid Grid.Column="2" Grid.Row="1">
+			<TextBlock Text="Sidebar right"></TextBlock>
+		</Grid>
+		
+		
+	</Grid>
+	-->
+    <!--<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+
+</Window>
