@@ -21,6 +21,7 @@ During development AI can definitely boost productivity, by writing parts of the
 * To find commands, I'm unaware of
 * To understand the basic usage of something new (command, packages, etc.)
 * To help find the cause of an error, if I'm unable to find it
+
 If I need to learn something new, for example how to use the avalonia package, I concider the documentation first. If I'm unable to understand the concepts, I use AI to help me understand them. It often leads to other commands and/or packages, that I do not know. So I repeat the process, until I understand enough of it to use it.
 If I'm unable to find the problem after getting an error, I may ask AI, to help me identify the problem. But before I post my code to AI, I always try to rewrite the code a little, so AI doesn't as easily know, what I'm doing exactly (for example renaming variables, posting only what I need, aso.). Unfortunately, AI always presents a solution to the problem, without me asking for it. So instead, I mostly ignore them. I never copy and paste the code from an AI. If I use code snippets, I always review them first, understand them and then retype them in my own program. I do not use AI to refine the code.
 I could use AI more, so I would be faster at everything. But I want to understand everything I'm doing. And I also don't want to get dumber. So that's why I'm using AI the way I do. I'll always try to understand the error, before considering to ask an AI for help. I'm also planning to use stackoverflow or similar in the future instead a lot more.
