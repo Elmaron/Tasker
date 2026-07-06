@@ -1,30 +1,30 @@
 INSERT OR IGNORE INTO Difficulties(
-	'leicht',
-	'Diese Aufgaben sollten leicht zu erledigen sein. Dazu gehoeren in erster Linie kurze, kleine und unkomplizierte Aufgaben.',
-	'Diese Aufgaben (besonders an schweren Tagen) am besten an den Anfang einer Arbeitsphase setzen.'
+	'easy',
+	'These Tasks should be simple to do. This means, that they are mostly quick to do, simple or uncomplicated.',
+	'Put these tasks at the beginning of a work phase (especially on work days with hard tasks).'
 );
 
 INSERT OR IGNORE INTO Difficulties(
-	'mittel',
-	'Diese Aufgaben sind noch nicht schwer zu erledigen, allerdings kostet es moeglicherweise trotzdem etwas Ueberwindung, diese anzufangen. Leichte Aufgaben, für die weniger Motivation vorhanden ist, sowie etwas laenger andauernde Aufgaben fallen in diese Kategorie.',
-	'Diese Aufgaben am besten erst nach einer leichten beginnen. Eignet sich auch gut für den Abschluss des Tages, da sie trotzdem schaffbar sein sollten.'
+	'normal',
+	'Even though these tasks are not hard, you still might use a little boost to do them. This Category is for simple tasks, that you are not motivated for, and for tasks, which take a little longer.',
+	'Do these tasks after an easy one. May also be a good final task for the day, because theyre still doable.'
 );
 
 INSERT OR IGNORE INTO Difficulties(
-	'schwer',
-	'Bei diesen Aufgaben handelt es sich vor allem um Aufgaben, bei denen die Motivation nicht da ist, die sehr komplex oder nur sehr langweilig sind oder als repetetiv gelten.',
-	'Diese Aufgaben sollten erst nach einigen kleineren Erfolgserlebnissen begonnen werden. Falls die Motivation zwischendurch wegfaellt, koennte eine leichtere Aufgabe die Motivation moeglicherweise wieder herstellen. Belohnungen nach diesen Aufgaben koennten hilfreich sein.'
+	'hard',
+	'Repetetive, boring, complex tasks and those, that you simply have no motivation for, are hard, because theyre usually hard to do.',
+	'Do these tasks after a few smaller successes. If your motivation fails you, while doing the task, do a simpler one as a motivation booster. Giving yourself a reward after doing a hard task could be a good way to keep your motivatio up in the future for hard tasks.'
 );
 
 
 
 INSERT OR IGNORE INTO Priorities(
-	'sehr niedrig',
+	'very low',
 	'15'
 );
 
 INSERT OR IGNORE INTO Priorities(
-	'niedrig',
+	'low',
 	'23'
 );
 
@@ -34,74 +34,74 @@ INSERT OR IGNORE INTO Priorities(
 );
 
 INSERT OR IGNORE INTO Priorities(
-	'hoch',
+	'high',
 	'39'
 );
 
 INSERT OR IGNORE INTO Priorities(
-	'sehr hoch',
+	'very high',
 	'47'
 );
 
 
 
 INSERT OR IGNORE INTO Types(
-	'Arbeitszeit'
+	'WORKTIME'
 );
 
 INSERT OR IGNORE INTO Types(
-	'Bearbeitungszeit'
+	'PROCESSTIME'
 );
 
 INSERT OR IGNORE INTO Types(
-	'Erinnerung'
+	'REMINDER'
 
 INSERT OR IGNORE INTO Types(
-	'Wiederholung'
+	'REPEATER'
 );
 
 INSERT OR IGNORE INTO Types(
-	'maximale Arbeitszeit pro Woche'
+	'WORKTIME_LIMIT_WEEKLY'
 );
 
 INSERT OR IGNORE INTO Types(
-	'maximale Arbeitszeit pro Monat'
+	'WORKTIME_LIMIT_MONTHLY'
 );
 
 INSERT OR IGNORE INTO Types(
-	'maximale Arbeitszeit Montag'
+	'WORKTIME_LIMIT_MONDAY'
 );
 
 INSERT OR IGNORE INTO Types(
-	'maximale Arbeitszeit Dienstag'
+	'WORKTIME_LIMIT_TUESDAY'
 );
 
 INSERT OR IGNORE INTO Types(
-	'maximale Arbeitszeit Mittwoch'
+	'WORKTIME_LIMIT_WEDNESDAY'
 );
 
 INSERT OR IGNORE INTO Types(
-	'maximale Arbeitszeit Donnerstag'
+	'WORKTIME_LIMIT_THURSDAY'
 );
 
 INSERT OR IGNORE INTO Types(
-	'maximale Arbeitszeit Freitag'
+	'WORKTIME_LIMIT_FRIDAY'
 );
 
 INSERT OR IGNORE INTO Types(
-	'maximale Arbeitszeit Samstag'
+	'WORKTIME_LIMIT_SATURDAY'
 );
 
 INSERT OR IGNORE INTO Types(
-	'maximale Arbeitszeit Sonntag'
+	'WORKTIME_LIMIT_SUNDAY'
 );
 
 
 
 INSERT OR IGNORE INTO Data(Label, Description)
 VALUES (
-	'RESERVED General',
-	'Alle Aufgaben und Projekte, die keiner Kategorie zugeordnert wurden. Wird nur angezeigt, wenn es Inhalt gibt.'
+	'RESERVED_NOCATEGORY',
+	'All tasks, appointments and projects, which have not been added to a category. Only visible if content available.'
 );
 
 INSERT OR IGNORE INTO Categories(DataID, PriorityID)
@@ -112,13 +112,13 @@ VALUES (
 
 INSERT OR IGNORE INTO Data(Label, Description)
 VALUES (
-	'RESERVED Other',
-	'Alle Aufgaben und Termine, die keinem Projekt zugeordnert wurden. Wird nur angezeigt, wenn es Inhalt gibt.'
+	'RESERVED_NOPROJECT',
+	'All tasks and appointments, which have not been added to a project. Only visible if content available.'
 );
 
 INSERT OR IGNORE INTO Projects(DataID, CategoryID, PriorityID)
 VALUES (
 	last_insert_rowid(),
-	(SELECT ID FROM Categories WHERE DataID = (SELECT ID FROM Data WHERE Label = "RESERVED General")),
+	(SELECT ID FROM Categories WHERE DataID = (SELECT ID FROM Data WHERE Label = "RESERVED_NOCATEGORY")),
 	(SELECT ID FROM Priorities WHERE Label = 'normal')
 );
