@@ -1,17 +1,17 @@
 # Tasker
 Ein Aufgaben-Planner und Tracker, der dir hilft, dein Arbeitsverhalten zu verstehen.
 
-**ACHTUNG! Dieses Projekt ist in seinem aktuellem Zustand noch nicht zur Verwendung bereit. Klicke [hier](#aktuell) für mehr Informationen.**
-
 *This is the german translation. You can find the readme in english [here](https://github.com/Elmaron/Tasker).*
 
 # Entwicklungsstatus
 ## Aktuell
-*Das Programm hat aktuell keine verwendbare Version.*
+**ACHTUNG! Dieses Projekt ist in seinem aktuellem Zustand noch nicht zur Verwendung bereit.**
+
 Nachdem ich das grundlegende Design des Programms überarbeitet habe, werde ich mich mit den Grund-Funktionen und der Datenbank beschäftigen, damit ich eine erste Alpha-Version veröffentlichen kann.
 Folgt mir gerne auf Github, um Updates zum Projekt zu bekommen!
 
 Status: **[Alpha](#alpha)** | [Beta](#beta) | [Release](#veröffentlichung-v10)
+
 *abgeschlossen*; **in Bearbeitung**; Nächste Phase
 
 # Funktionen
@@ -32,8 +32,11 @@ Während der Entwicklung kann KI definitiv die Produktivität erhöhen, wenn die
 * Um den Grund für ein Problem zu finden, den ich nicht finden kann
 
 Wenn ich etwas neues lernen muss, um bspw. die Avalonia Bibliothek zu nutzen, schaue ich mir zuerst die Dokumentation an. Wenn ich nach einer Weile nicht in der Lage dazu bin, die Konzepte zu verstehen, benutze ich KI als Hilfe. Oft lerne ich über diesen Weg andere, mir unbekannte Befehle und/oder Bibliotheken kennen. Also wiederhole ich den Prozess, bis ich genug verstehe, um die Konzepte anwenden zu können.
+
 Falls ich bei einem Problem einen Fehler bekomme, bei dem ich den Grund des Fehlers nicht nachvollziehen kann, frage ich ggf. KI, um das Problem identifizieren zu können. Bevor ich den Code jedoch an die KI übergebe, versuche ich den gesamten Code umzuschreiben, damit die KI nicht so einfach nachvollziehen kann, was ich genau mache (bspw. benenne ich Variablen um; schicke der Ki nur, was sie braucht; usw.) Leider schreibt KI in der Antwort immer die Lösung für das Problem mit hinzu, selbst wenn ich nicht danach frage. Darum ignoriere ich sie meistens. Ich kopiere nie einfach den Code der KI. Falls ich Code-Ausschnitte benutze, schaue ich sie mir zuerst genau an, bis ich diese verstanden habe und tippe sie dann in mein eigenes Programm selbst ein. Ich verwende KI nicht, um meinen Code zu verbessern.
+
 Ich könnte KI natürlich mehr benutzen, so wäre ich bei allem deutlich schneller. Ich möchte jedoch alles verstehen, was ich tue. Genauso wenig möchte ich dümmer werden. Deshalb benutze ich KI, wie ich es eben tue. Ich werde immer versuchen, die Fehler selbst zu verstehen, bevor ich darüber nachdenke, eine KI anzufragen. In Zukunft möchte ich mich auch deutlich mehr auf Stackoverflow oder ähnliches verlassen.
+
 Falls du mehr über dieses Thema wissen möchtest, kannst du mir gerne eine [Mail](mailto:info@vindona.de) schreiben (schnellste Antwort).
 
 ### KI Assistent
@@ -62,6 +65,7 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [ ] Verknüpfe das Layout mit den Befehlen und Klassen
 - [ ] Überarbeite den Code
 - [ ] Behebe Fehler
+
 *Phase soll bis zum **17.07.2026** abgeschlossen werden.*
 
 ### Beta
@@ -121,5 +125,5 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [ ] Das Programm hat eingebaute kleine Mini-Spiele, die belohnend sein sollen
 
 *Dieser Text wurde ohne die Verwendung von AI geschrieben.*
-*Letzte Veränderung zu Read Me: 02.07.2026*
+
 **dieses Projekt wird von Elmaron (Vindona) entwickelt**

@@ -1,17 +1,17 @@
 # Tasker
 A Task-Planner and Tracker to help you understand your own work behavior.
 
-**WARNING! This project is not ready to use in it's current state. [Read here](#current) for more information**
-
 *Eine deutsche Übersetzung befindet sich [hier](https://github.com/Elmaron/Tasker/tree/master/more-information/readme-german.md).*
 
 # Development Status
 ## Current
-*The program has no usable version yet.*
+**WARNING! This project is not ready to use in it's current state.**
+
 After rethinking the base-design of the program, I'll be working on providing basic functionality with the database, so that I can publish the first alpha version.
 Follow me on github to stay updated on the project!
 
 State: **[Alpha](#alpha)** | [Beta](#beta) | [Release](#release-v10)
+
 *finished*; **in Progress**; Upcoming Phase
 
 # Features
@@ -32,8 +32,11 @@ During development AI can definitely boost productivity, by writing parts of the
 * To help find the cause of an error, if I'm unable to find it
 
 If I need to learn something new, for example how to use the avalonia package, I concider the documentation first. If I'm unable to understand the concepts, I use AI to help me understand them. It often leads to other commands and/or packages, that I do not know. So I repeat the process, until I understand enough of it to use it.
+
 If I'm unable to find the problem after getting an error, I may ask AI, to help me identify the problem. But before I post my code to AI, I always try to rewrite the code a little, so AI doesn't as easily know, what I'm doing exactly (for example renaming variables, posting only what I need, aso.). Unfortunately, AI always presents a solution to the problem, without me asking for it. So instead, I mostly ignore them. I never copy and paste the code from an AI. If I use code snippets, I always review them first, understand them and then retype them in my own program. I do not use AI to refine the code.
+
 I could use AI more, so I would be faster at everything. But I want to understand everything I'm doing. And I also don't want to get dumber. So that's why I'm using AI the way I do. I'll always try to understand the error, before considering to ask an AI for help. I'm also planning to use stackoverflow or similar in the future instead a lot more.
+
 If you want to know more about this topic, you can write a [mail](mailto:info@vindona.de) (fastest answer).
 
 ### AI Assistant
@@ -62,6 +65,7 @@ But if I do, here is, what you can and cannot expect from it:
     - [ ] Connect layout with commands and classes
 - [ ] Refine code
 - [ ] Fixing bugs
+
 *Phase shall be finished until 17th of July 2026.*
 
 ### Beta
@@ -121,5 +125,5 @@ But if I do, here is, what you can and cannot expect from it:
     - [ ] The Program has built-in Mini-Games, which act as a reward
 
 *This text has been created without the usage of ai.*
-*Last update to Read Me: 02.07.2026*
+
 **this project is developed by Elmaron from Vindona**
