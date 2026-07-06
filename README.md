@@ -62,7 +62,7 @@ But if I do, here is, what you can and cannot expect from it:
     - [ ] Connect layout with commands and classes
 - [ ] Refine code
 - [ ] Fixing bugs
-
+*Phase shall be finished until 17th of July 2026.*
 
 ### Beta
 *More objectives may be added while working on the program*
@@ -71,12 +71,14 @@ But if I do, here is, what you can and cannot expect from it:
 - [ ] New Features
     - [ ] Export Data
     - [ ] Algorithm to help you plan your new tasks and appointments
+    - [ ] Automatically show hidden task-ids, to differentiate between tasks, which have the same title and are in the same category and project
     - [ ] Customizable settings
         - [ ] Shortcuts
         - [ ] Autodelete data
             - [ ] After a certain amount of time
             - [ ] After a certain amount of disk space is used
             - [ ] Deactivate Autodelete
+        - [ ] Always show hidden task ids
 - [ ] Optimisations for different user types
     - [ ] Standard
     - [ ] People with ADHD
@@ -89,6 +91,13 @@ But if I do, here is, what you can and cannot expect from it:
     - [ ] Enable custom designs
 - [ ] New Features
     - [ ] Plugins
+    - [ ] New Languages
+        - [ ] German
+    - [ ] Task Merger
+        - [ ] Function to merge selected tasks
+        - [ ] automatically recommands tasks to merge, which are in the same category, same project and have the same title
+            - [ ] option, to ignore those recommendations
+            - [ ] filter, to show ignored recommendations
 - [ ] Update Features
     - [ ] Refine Algorithm
 - [ ] Create guides

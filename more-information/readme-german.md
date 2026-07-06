@@ -62,7 +62,7 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [ ] Verknüpfe das Layout mit den Befehlen und Klassen
 - [ ] Überarbeite den Code
 - [ ] Behebe Fehler
-
+*Phase soll bis zum **17.07.2026** abgeschlossen werden.*
 
 ### Beta
 *Mehr Punkte könnten hinzugefügt werden, während ich an dem Programm arbeite.*
@@ -70,13 +70,15 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [ ] Erstelle wechselbare Designs
 - [ ] Neue Funktionen
     - [ ] Daten exportieren
-    - [ ] Algorithmus, um beim planen neuer Aufgaben und Termine
+    - [ ] Algorithmus, um beim planen neuer Aufgaben und Termine zu helfen
+    - [ ] Zeige automatisch versteckte Aufgaben-IDs an, falls es zwei unterschiedliche Aufgaben mit dem gleichen Titel in derselben Kategorie und demselben Projekt gibt
     - [ ] Veränderbare Einstellungen
         - [ ] Tastaturbefehle
         - [ ] Automatisches Löschen der lokalen Daten
             - [ ] Nach einer bestimmten Zeit
             - [ ] Nachdem die Daten eine bestimmte Größe auf der Festplatte erreicht haben
             - [ ] Deaktiveren des automatischen Löschens von Daten
+        - [ ] Zeige immer die versteckten Aufgaben-IDs an
 - [ ] Optimierungen für verschiedene Benutzerarten
     - [ ] Standard
     - [ ] Menschen mit ADHS
@@ -89,6 +91,13 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [ ] Ermögliche eigene Designs
 - [ ] Neue Funktionen
     - [ ] Plugins
+    - [ ] Neue Sprachen
+        - [ ] Deutsch
+    - [ ] Aufgaben Vereinfacher
+        - [ ] Funktion, um Aufgaben zu verbinden, die selbst ausgewählt werden
+        - [ ] schlägt Aufgaben vor, die in der selben Kategorie und dem gleichen Projekt sind und den gleichen Titel tragen, sodass diese vereint werden können
+            - [ ] Option, um das Anzeigen dieser Vorschläge zu ignorieren
+            - [ ] Filteroption, um ignorierte Vorschläge anzuzeigen
 - [ ] Funktions-Updates
     - [ ] Verbesserungen am Algorithmus
 - [ ] Erstelle Benutzerhilfen
