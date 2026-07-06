@@ -5,7 +5,16 @@ A Task-Planner and Tracker to help you understand your own work behavior.
 
 *Eine deutsche Übersetzung befindet sich [hier](https://github.com/Elmaron/Tasker/tree/master/more-information/readme-german.md).*
 
-## Features
+# Development Status
+## Current
+*The program has no usable version yet.*
+After rethinking the base-design of the program, I'll be working on providing basic functionality with the database, so that I can publish the first alpha version.
+Follow me on github to stay updated on the project!
+
+State: **[Alpha](#alpha)** | [Beta](#beta) | [Release](#release-v10)
+*finished*; **in Progress**; Upcoming Phase
+
+# Features
 This task planning program uses a local database to track your tasks on your device. The program then uses the collected data, to help you plan new tasks or appointments, if you already did them in the past.
 
 For people who find it difficult to "just do" a task, it gives advice on how to start with something and get productive, if that's a problem. Still, they are only recommendations and shall give you more perspectives to become better at doing the things, that "need to be done".
@@ -40,13 +49,8 @@ But if I do, here is, what you can and cannot expect from it:
     * The Assistant can **not** analyze the content of your tasks, to recommend you new tasks, that may still be needed.
     * You can not interact in a chatlike environment with the AI.
 
-## Development Status
-### Current
-*The program has no usable version yet.*
-After rethinking the base-design of the program, I'll be working on providing basic functionality with the database, so that I can publish the first alpha version.
-Follow me on github to stay updated on the project!
-
-### Planned for the alpha version
+## Planned Features
+### Alpha
 - [x] Create Github Project
 - [ ] Update design
     - [ ] Redefine layout and design
@@ -59,7 +63,7 @@ Follow me on github to stay updated on the project!
 - [ ] Fixing bugs
 
 
-### Planned for the beta version
+### Beta
 *More objectives may be added while working on the program*
 - [ ] Update design
     - [ ] Create switchable designs
@@ -78,7 +82,7 @@ Follow me on github to stay updated on the project!
 - [ ] Refine code
 - [ ] Fixing more bugs
 
-### Planned for release
+### Release (V1.0)
 *More objectives may be added while working on the program*
 - [ ] Update design
     - [ ] Enable custom designs
@@ -97,7 +101,7 @@ Follow me on github to stay updated on the project!
 - [ ] Refine code
 - [ ] Fixing even more bugs
 
-### Planned after release?
+## Planned Features after release
 *These are only ideas for now, nothing promised.*
 - [ ] Selfhostable version for the browser
 - [ ] Server synchronisation for database
@@ -108,4 +112,4 @@ Follow me on github to stay updated on the project!
 
 *This text has been created without the usage of ai.*
 *Last update to Read Me: 02.07.2026*
--# this project is developed by Elmaron from Vindona
+**this project is developed by Elmaron from Vindona**
