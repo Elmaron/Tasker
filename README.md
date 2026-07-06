@@ -1,7 +1,7 @@
 # Tasker
 A Task-Planner and Tracker to help you understand your own work behavior.
 
-*Eine deutsche Übersetzung befindet sich [hier](https://github.com/Elmaron/Tasker/tree/master/more-information/readme-german.md).*
+*Eine deutsche Übersetzung befindet sich [hier](https://github.com/Elmaron/Tasker/tree/master/translations/README-GERMAN.md).*
 
 # Development Status
 ## Current
