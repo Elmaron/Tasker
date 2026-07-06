@@ -15,6 +15,60 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <!--<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+    <DockPanel Name="dockpanel_main">
+        <StackPanel DockPanel.Dock="Top"
+			Background="hsl(231, 20%, 50%)"
+			Orientation="Horizontal">
+            <!--<Button>Settings</Button>-->
+            <Button>Category</Button>
+        </StackPanel>
+        <DockPanel Name="dockpanel_projects"
+            DockPanel.Dock="Left"
+            Background="hsl(212, 20%, 50%)">
+            <TextBlock Text="Projects"
+                Background="hsl(212, 20%, 45%)"
+                DockPanel.Dock="Top"></TextBlock>
+            <StackPanel DockPanel.Dock="Bottom"
+                Background="hsl(212, 20%, 45%)"
+                Orientation="Horizontal">
+                <TextBox Name="textbox_project_new_name"
+						PlaceholderText="New Project..."
+						MaxLength="30"></TextBox>
+                <Button>+</Button>
+            </StackPanel>
+		    <StackPanel Orientation="Vertical">
+            </StackPanel>
+        </DockPanel>
+        <DockPanel Name="dockpanel_details"
+            DockPanel.Dock="Right"
+            Background="hsl(171, 20%, 50%)">
+            <TextBlock Text="Details"
+                Background="hsl(171, 20%, 45%)"
+                DockPanel.Dock="Top"></TextBlock>
+            <Button DockPanel.Dock="Bottom"
+                Background="hsl(171, 20%, 45%)">edit</Button>
+		    <StackPanel Orientation="Vertical">
+            </StackPanel>
+        </DockPanel>
+        <DockPanel Name="dockpanel_tasks"
+            Background="hsl(191, 20%, 50%)">
+            <TextBlock Text="Tasks"
+                Background="hsl(191, 20%, 45%)"
+                DockPanel.Dock="Top"></TextBlock>
+            <StackPanel DockPanel.Dock="Bottom"
+                Background="hsl(191, 20%, 45%)"
+                Orientation="Horizontal">
+                <TextBox Name="textbox_task_new_name"
+						PlaceholderText="New Task..."
+						MaxLength="30"></TextBox>
+                <Button>+</Button>
+            </StackPanel>
+		    <StackPanel Orientation="Vertical">
+            </StackPanel>
+        </DockPanel>
+    </DockPanel>
+
+
 
 </Window>
