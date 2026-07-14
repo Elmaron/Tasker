@@ -1,165 +1,176 @@
+-- Create table to store basic data for everything --
 CREATE TABLE IF NOT EXISTS Data (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
 
     Label TEXT NOT NULL CHECK(LENGTH(Label) <= 128),
     Description TEXT CHECK(LENGTH(Description <= 4096)),
     Created DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    Changed DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    Updated DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     Finished DATETIME,
     DeleteOn DATETIME
 );
 
 
 
-CREATE TABLE IF NOT EXISTS Difficulties (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+-- Create table for different difficulty stages --
+CREATE TABLE IF NOT EXISTS Difficulty (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
 
     Label TEXT NOT NULL UNIQUE CHECK(LENGTH(Label) <= 128),
     Description TEXT CHECK(LENGTH(Description <= 4096)),
     Recommendation TEXT CHECK(LENGTH(Description <= 1024))
 );
 
-CREATE TABLE IF NOT EXISTS Priorities (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+-- Create table for the different priority stages --
+CREATE TABLE IF NOT EXISTS Priority (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
 
     Label TEXT NOT NULL UNIQUE CHECK(LENGTH(Label) <= 128),
     Ordering INTEGER NOT NULL UNIQUE CHECK(Ordering BETWEEN 0 AND 63)
 );
 
-CREATE TABLE IF NOT EXISTS Types (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+-- Create table for the different types, that a timing can have. Primary used as a filter --
+CREATE TABLE IF NOT EXISTS Type (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
 
     Label TEXT NOT NULL UNIQUE CHECK(LENGTH(Label) <= 128)
 );
 
 
 
-CREATE TABLE IF NOT EXISTS Timings (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+-- Create every variant of a time, that needs to be stored, like the start and end time for a task or for a worktime, etc. --
+CREATE TABLE IF NOT EXISTS Timing (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    TypeID INTEGER NOT NULL,
+    TypeId INTEGER NOT NULL,
 
     Start DATETIME,
     End DATETIME,
 
-    FOREIGN KEY(TypeID) REFERENCES Types(ID)
+    FOREIGN KEY(TypeId) REFERENCES Type(Id)
 );
 
+-- Create a table for specific things, that repeat (like a task for example) --
 CREATE TABLE IF NOT EXISTS Repeater (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    TypeID INTEGER NOT NULL,
+    TypeId INTEGER NOT NULL,
 
     MonthlyInterval INTEGER CHECK(MonthlyInterval BETWEEN 0 AND 511),
     DailyInterval INTEGER NOT NULL CHECK(DailyInterval BETWEEN 0 AND 511),
 
-    FOREIGN KEY(TypeID) REFERENCES Types(ID)
+    FOREIGN KEY(TypeId) REFERENCES Type(Id)
 );
 
 
-            
-CREATE TABLE IF NOT EXISTS Categories (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    DataID INTEGER NOT NULL,
-    PriorityID INTEGER NOT NULL,
+-- Create a table for all categories, that the user can create and switch between for different tasks --
+CREATE TABLE IF NOT EXISTS Category (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    FOREIGN KEY(DataID) REFERENCES Data(ID),
-    FOREIGN KEY(PriorityID) REFERENCES Priorities(ID)
+    DataId INTEGER NOT NULL,
+    PriorityId INTEGER NOT NULL,
+
+    FOREIGN KEY(DataId) REFERENCES Data(Id),
+    FOREIGN KEY(PriorityId) REFERENCES Priority(Id)
 );
 
-CREATE TABLE IF NOT EXISTS Projects (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+-- Create a table for all projects, which may exist in different categories --
+CREATE TABLE IF NOT EXISTS Project (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    DataID INTEGER NOT NULL,
-    CategoryID INTEGER NOT NULL,
-    PriorityID INTEGER NOT NULL,
+    DataId INTEGER NOT NULL,
+    CategoryId INTEGER NOT NULL,
+    PriorityId INTEGER NOT NULL,
 
     Expiry DATETIME,
 
-    FOREIGN KEY(DataID) REFERENCES Data(ID),
-    FOREIGN KEY(CategoryID) REFERENCES Categories(ID),
-    FOREIGN KEY(PriorityID) REFERENCES Priorities(ID)
-);
-            
-CREATE TABLE IF NOT EXISTS Appointments (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
-
-    DataID INTEGER NOT NULL,
-    ProjectID INTEGER NOT NULL,
-
-    FOREIGN KEY(DataID) REFERENCES Data(ID),
-    FOREIGN KEY(ProjectID) REFERENCES Projects(ID)
+    FOREIGN KEY(DataId) REFERENCES Data(Id),
+    FOREIGN KEY(CategoryId) REFERENCES Category(Id),
+    FOREIGN KEY(PriorityId) REFERENCES Priority(Id)
 );
 
-CREATE TABLE IF NOT EXISTS Tasks (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+-- Create a table for all appointments, which may or may not exist within a project. in the database structure, they always have a project assigned to them. --
+CREATE TABLE IF NOT EXISTS Appointment (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    DataID INTEGER NOT NULL,
-    ProjectID INTEGER NOT NULL,
-    PriorityID INTEGER NOT NULL,
-    DifficultyID INTEGER,
+    DataId INTEGER NOT NULL,
+    ProjectId INTEGER NOT NULL,
+
+    FOREIGN KEY(DataId) REFERENCES Data(Id),
+    FOREIGN KEY(ProjectId) REFERENCES Project(Id)
+);
+
+-- Create a table for all tasks. All tasks are asssigned to a project within the database structure.
+CREATE TABLE IF NOT EXISTS Task (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    DataId INTEGER NOT NULL,
+    ProjectId INTEGER NOT NULL,
+    PriorityId INTEGER NOT NULL,
+    DifficultyId INTEGER,
 
     Expiry DATETIME,
 
-    FOREIGN KEY(DataID) REFERENCES Data(ID),
-    FOREIGN KEY(ProjectID) REFERENCES Projects(ID),
-    FOREIGN KEY(PriorityID) REFERENCES Priorities(ID),
-    FOREIGN KEY(DifficultyID) REFERENCES Difficulties(ID)
+    FOREIGN KEY(DataId) REFERENCES Data(Id),
+    FOREIGN KEY(ProjectId) REFERENCES Project(Id),
+    FOREIGN KEY(PriorityId) REFERENCES Priority(Id),
+    FOREIGN KEY(DifficultyId) REFERENCES Difficulty(Id)
 );
 
 
-
+--  Create a table for all limits, you can set for a specific category. --
 CREATE TABLE IF NOT EXISTS Worktimelimit (
-    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    CategoryID INTEGER NOT NULL,
-    TypeID INTEGER NOT NULL,
+    CategoryId INTEGER NOT NULL,
+    TypeId INTEGER NOT NULL,
 
     LimitInMinutes INTEGER NOT NULL CHECK(LimitInMinutes BETWEEN 5 AND 4096),
 
-    FOREIGN KEY(CategoryID) REFERENCES Categories(ID),
-    FOREIGN KEY(TypeID) REFERENCES Types(ID)
+    FOREIGN KEY(CategoryId) REFERENCES Category(Id),
+    FOREIGN KEY(TypeId) REFERENCES Type(Id)
 );
 
 
 
+-- Connections for different m to n relations --
 CREATE TABLE IF NOT EXISTS TimingInCategory (
-    TimingID INTEGER,
-    CategoryID INTEGER,
+    TimingId INTEGER,
+    CategoryId INTEGER,
 
-    PRIMARY KEY (TimingID, CategoryID),
+    PRIMARY KEY (TimingId, CategoryId),
 
-    FOREIGN KEY (TimingID) REFERENCES Timings(ID),
-    FOREIGN KEY (CategoryID) REFERENCES Category(ID)
+    FOREIGN KEY (TimingId) REFERENCES Timing(Id),
+    FOREIGN KEY (CategoryId) REFERENCES Category(Id)
 );
 
 CREATE TABLE IF NOT EXISTS TimingInProject (
-    TimingID INTEGER,
-    ProjectID INTEGER,
+    TimingId INTEGER,
+    ProjectId INTEGER,
             
-    PRIMARY KEY (TimingID, ProjectID),
+    PRIMARY KEY (TimingId, ProjectId),
             
-    FOREIGN KEY (TimingID) REFERENCES Timings(ID),
-    FOREIGN KEY (ProjectID) REFERENCES Projects(ID)
+    FOREIGN KEY (TimingId) REFERENCES Timing(Id),
+    FOREIGN KEY (ProjectId) REFERENCES Project(Id)
 );
 
 CREATE TABLE IF NOT EXISTS TimingInAppointment (
-    TimingID INTEGER,
-    AppointmentID INTEGER,
+    TimingId INTEGER,
+    AppointmentId INTEGER,
             
-    PRIMARY KEY (TimingID, AppointmentID),
+    PRIMARY KEY (TimingId, AppointmentId),
             
-    FOREIGN KEY (TimingID) REFERENCES Timings(ID),
-    FOREIGN KEY (AppointmentID) REFERENCES Appointments(ID)
+    FOREIGN KEY (TimingId) REFERENCES Timing(Id),
+    FOREIGN KEY (AppointmentId) REFERENCES Appointment(Id)
 );
 
 CREATE TABLE IF NOT EXISTS TimingInTask (
-    TimingID INTEGER,
-    TaskID INTEGER,
+    TimingId INTEGER,
+    TaskId INTEGER,
             
-    PRIMARY KEY (TimingID, TaskID),
+    PRIMARY KEY (TimingId, TaskId),
             
-    FOREIGN KEY (TimingID) REFERENCES Timings(ID),
-    FOREIGN KEY (TaskID) REFERENCES Tasks(ID)
+    FOREIGN KEY (TimingId) REFERENCES Timing(Id),
+    FOREIGN KEY (TaskId) REFERENCES Task(Id)
 );

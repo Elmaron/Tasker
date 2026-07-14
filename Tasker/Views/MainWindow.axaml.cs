@@ -15,6 +15,6 @@ public partial class MainWindow : Window
         base.OnLoaded(e);
 
         //Create or/and Load Database
-        //Tasker.Classes.DataBase.Initialize();
+        Tasker.Classes.DataBase.Initialize();
     }
 }

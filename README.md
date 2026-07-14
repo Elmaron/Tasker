@@ -70,7 +70,8 @@ But if I do, here is, what you can and cannot expect from it:
 - [ ] Update design
     - [x] Redefine layout and design
 - [ ] Create basic functionality
-    - [ ] Read and write to the database (through SQLite-commands)
+    - [x] Read and write to the database (through SQLite-commands)
+    - [ ] Create Logic for m to n connections in database (like delete, create, etc.)
     - [ ] Create classes and commands for interactions with the database
     - [ ] Create layout
     - [ ] Connect layout with commands and classes
