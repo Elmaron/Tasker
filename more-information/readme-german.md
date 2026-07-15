@@ -123,6 +123,7 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 - [ ] Ein paar lustige Belohnungen für das erfüllen deiner Aufgaben!
     - [ ] Du kannst selbst welche erstellen oder das Programm dir welche empfehlen lassen
     - [ ] Das Programm hat eingebaute kleine Mini-Spiele, die belohnend sein sollen
+- [ ] Erinnerungen für die Arbeitszeiten während der Arbeit
 
 *Dieser Text wurde ohne die Verwendung von AI geschrieben.*
 
