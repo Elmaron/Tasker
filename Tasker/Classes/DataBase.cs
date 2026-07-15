@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Platform;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Markup;
 using Tmds.DBus.Protocol;
-using static Tasker.Classes.DataBase.Difficulty;
-using static Tasker.Classes.DataBase.Table;
+using static Tasker.Classes.DataBase;
 
 namespace Tasker.Classes {
     public static class DataBase
@@ -30,10 +30,29 @@ namespace Tasker.Classes {
             connection.Open();
 
             using var command = connection.CreateCommand();
-            command.CommandText = getSQL("Database.Create");
+
+            command.CommandText = getSQL("Database/Create");
             command.ExecuteNonQuery();
-            command.CommandText = getSQL("Database.Initialize");
-            command.ExecuteNonQuery();
+
+            var statements = getSQL("Database/Initialize")
+                .Split(";")
+                .Select((sql, index) => new { Sql = sql.Trim(), Index = index + 1 })
+                .Where(x => !string.IsNullOrWhiteSpace(x.Sql));
+            foreach (var statement in statements)
+            {
+                try
+                {
+                    command.CommandText = statement.Sql + ";";
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Fehler in {statement.Index}: ");
+                    System.Diagnostics.Debug.WriteLine(statement.Sql);
+                    System.Diagnostics.Debug.WriteLine(e.Message);
+                }
+            }
+            
         }
 
         //Use this function to get the content of a Database file (sql-File)
@@ -41,30 +60,48 @@ namespace Tasker.Classes {
         {
             var assembly = Assembly.GetExecutingAssembly();
 
-            String streamBuilder = "ADHDWORKER.SQlite." + file + ".sql";
-            using Stream stream = assembly.GetManifestResourceStream(streamBuilder);
+
+            //String streamBuilder = "Tasker.SQlite." + file + ".sql";
+            //using Stream stream = assembly.GetManifestResourceStream(streamBuilder);
+
+            var uri = new Uri($"avares://Tasker/SQlite/{file}.sql");
+            using var stream = AssetLoader.Open(uri);
+
+            //if (stream == null) System.Diagnostics.Debug.WriteLine("File not found");
             if (stream == null) return "";
             using StreamReader reader = new StreamReader(stream);
+
+            //System.Diagnostics.Debug.WriteLine(reader.ReadToEnd());
 
             return reader.ReadToEnd();
         }
 
-        // Abstract Class Table, which has all implementations ready for the different tables
-        public abstract class Table
+        // For internal usage in the Table Class
+        public interface IData
         {
-            protected string Name { get; set; } = "";
-            public interface IData
+            public int Id { get; set; }
+        };
+
+        // Abstract Class Table, which has all implementations ready for the different tables
+        public abstract class Table<T> where T : IData
+        {
+            public abstract string Name { get; }
+            
+            protected abstract T CreateData(SqliteDataReader reader);
+
+            //The following function returns the Table set under "Name"
+            public List<T> Get()
             {
-                public int Id { get; set; }
-            };
+                List<T> data = new();
 
-            protected abstract IData CreateData(SqliteDataReader reader);
+                using var connection = new SqliteConnection(ConnectionString);
+                connection.Open();
 
-            public List<IData> Get()
-            {
-                List<IData> data = new();
+                var command = connection.CreateCommand();
+                command.CommandText =
+                    "SELECT * FROM " + Name + ";";
 
-                using var reader = getData(this.Name);
+                using var reader = command.ExecuteReader(); ;
                 while (reader.Read())
                 {
                     data.Add(CreateData(reader));
@@ -93,19 +130,7 @@ namespace Tasker.Classes {
             {
                 deleteData(this.Name, id);
             }
-
-            //Use this function in others to read the data of a specific table
-            private static SqliteDataReader getData(string table)
-            {
-                using var connection = new SqliteConnection(ConnectionString);
-                connection.Open();
-
-                var command = connection.CreateCommand();
-                command.CommandText =
-                    "SELECT * FROM " + table + ";";
-
-                return command.ExecuteReader();
-            }
+            
 
             //Use this function to add inputed data to a specific table
             private static void addData(string table, string[] parameters, object?[] data)
@@ -183,9 +208,9 @@ namespace Tasker.Classes {
 
 
         //Handle the Table Data
-        public class Data : Table
+        public class Data : Table<Data.DataOfData>
         {
-            protected new string Name = "Data";
+            public override string Name { get { return "Data"; } }
             public class DataOfData : IData
             {
                 public int Id { get; set; }
@@ -193,11 +218,11 @@ namespace Tasker.Classes {
                 public string Description { get; set; } = "";
                 public DateTime Created { get; set; }
                 public DateTime Updated { get; set; }
-                public DateTime Finished { get; set; }
-                public DateTime DeleteOn { get; set; }
+                public DateTime? Finished { get; set; }
+                public DateTime? DeleteOn { get; set; }
             }
 
-            protected override IData CreateData(SqliteDataReader reader)
+            protected override DataOfData CreateData(SqliteDataReader reader)
             {
                 return new DataOfData
                 {
@@ -206,16 +231,16 @@ namespace Tasker.Classes {
                     Description = reader.GetString(2),
                     Created = reader.GetDateTime(3),
                     Updated = reader.GetDateTime(4),
-                    Finished = reader.GetDateTime(5),
-                    DeleteOn = reader.GetDateTime(6)
+                    Finished = reader.IsDBNull(5) ? null : reader.GetDateTime(5),
+                    DeleteOn = reader.IsDBNull(6) ? null : reader.GetDateTime(6)
                 };
             }
         }
 
         //Handle the Table Difficulties
-        public class Difficulty : Table
+        public class Difficulty : Table<Difficulty.DifficultyData>
         {
-            protected new string Name = "Difficulty";
+            public override string Name { get { return "Difficulty"; } }
             public class DifficultyData : IData
             {
                 public int Id { get; set; }
@@ -224,7 +249,7 @@ namespace Tasker.Classes {
                 public string Recommendation { get; set; } = "";
             }
 
-            protected override IData CreateData(SqliteDataReader reader)
+            protected override DifficultyData CreateData(SqliteDataReader reader)
             {
                 return new DifficultyData
                 {
@@ -237,9 +262,9 @@ namespace Tasker.Classes {
         }
 
         //Handle the Table Priorities
-        public class Priority : Table
+        public class Priority : Table<Priority.PriorityData>
         {
-            protected new string Name = "Priority";
+            public override string Name { get { return "Priority"; } }
             public class PriorityData : IData
             {
                 public int Id { get; set; }
@@ -247,7 +272,7 @@ namespace Tasker.Classes {
                 public int Ordering { get; set; }
             }
 
-            protected override IData CreateData(SqliteDataReader reader)
+            protected override PriorityData CreateData(SqliteDataReader reader)
             {
                 return new PriorityData
                 {
@@ -259,16 +284,16 @@ namespace Tasker.Classes {
         }
 
         //Handle the Table Types
-        public class Type : Table
+        public class Type : Table<Type.TypeData>
         {
-            protected new string Name = "Type";
+            public override string Name { get { return "Type"; } }
             public class TypeData : IData
             {
                 public int Id { get; set; }
                 public string Label { get; set; } = "";
             }
 
-            protected override IData CreateData(SqliteDataReader reader)
+            protected override TypeData CreateData(SqliteDataReader reader)
             {
                 return new TypeData
                 {
@@ -279,9 +304,9 @@ namespace Tasker.Classes {
         }
 
         //Handle the Table Timings
-        public class Timing : Table
+        public class Timing : Table<Timing.TimingData>
         {
-            protected new string Name = "Timing";
+            public override string Name { get { return "Timing"; } }
             public class TimingData : IData
             {
                 public int Id { get; set; }
@@ -290,7 +315,7 @@ namespace Tasker.Classes {
                 public DateTime End { get; set; }
             }
 
-            protected override IData CreateData(SqliteDataReader reader)
+            protected override TimingData CreateData(SqliteDataReader reader)
             {
                 return new TimingData
                 {
@@ -303,9 +328,9 @@ namespace Tasker.Classes {
         }
 
         //Handle the Table Repeater
-        public class Repeater : Table
+        public class Repeater : Table<Repeater.RepeaterData>
         {
-            protected new string Name = "Repeater";
+            public override string Name { get { return "Repeater"; } }
             public class RepeaterData : IData
             {
                 public int Id { get; set; }
@@ -314,7 +339,7 @@ namespace Tasker.Classes {
                 public int DailyInterval { get; set; }
             }
 
-            protected override IData CreateData(SqliteDataReader reader)
+            protected override RepeaterData CreateData(SqliteDataReader reader)
             {
                 return new RepeaterData
                 {
@@ -327,9 +352,9 @@ namespace Tasker.Classes {
         }
 
         //Handle the Table Category
-        public class Category : Table
+        public class Category : Table<Category.CategoryData>
         {
-            protected new string Name = "Category";
+            public override string Name { get { return "Category"; } }
             public class CategoryData : IData
             {
                 public int Id { get; set; }
@@ -337,7 +362,7 @@ namespace Tasker.Classes {
                 public int PriorityId { get; set; }
             }
 
-            protected override IData CreateData(SqliteDataReader reader)
+            protected override CategoryData CreateData(SqliteDataReader reader)
             {
                 return new CategoryData
                 {
@@ -349,19 +374,19 @@ namespace Tasker.Classes {
         }
 
         //Handle the Table Project
-        public class Project : Table
+        public class Project : Table<Project.ProjectData>
         {
-            protected new string Name = "Project";
+            public override string Name { get { return "Project"; } }
             public class ProjectData : IData
             {
                 public int Id { get; set; }
                 public int DataId { get; set; }
                 public int CategoryId { get; set; }
                 public int PriorityId { get; set; }
-                public DateTime Expiry {  get; set; }
+                public DateTime? Expiry {  get; set; }
             }
 
-            protected override IData CreateData(SqliteDataReader reader)
+            protected override ProjectData CreateData(SqliteDataReader reader)
             {
                 return new ProjectData
                 {
@@ -369,15 +394,15 @@ namespace Tasker.Classes {
                     DataId = reader.GetInt32(1),
                     CategoryId = reader.GetInt32(2),
                     PriorityId = reader.GetInt32(3),
-                    Expiry = reader.GetDateTime(4)
+                    Expiry = reader.IsDBNull(4) ? null : reader.GetDateTime(4)
                 };
             }
         }
 
         //Handle the Table Appointments
-        public class Appointment : Table
+        public class Appointment : Table<Appointment.AppointmentData>
         {
-            protected new string Name = "Appointment";
+            public override string Name { get { return "Appointment"; } }
             public class AppointmentData : IData
             {
                 public int Id { get; set; }
@@ -385,7 +410,7 @@ namespace Tasker.Classes {
                 public int ProjectId { get; set; }
             }
 
-            protected override IData CreateData(SqliteDataReader reader)
+            protected override AppointmentData CreateData(SqliteDataReader reader)
             {
                 return new AppointmentData
                 {
@@ -397,9 +422,9 @@ namespace Tasker.Classes {
         }
 
         //Handle the Table Tasks
-        public class Task : Table
+        public class Task : Table<Task.TaskData>
         {
-            protected new string Name = "Task";
+            public override string Name { get { return "Task"; } }
             public class TaskData : IData
             {
                 public int Id { get; set; }
@@ -410,7 +435,7 @@ namespace Tasker.Classes {
                 public DateTime Expiry { get; set; }
             }
 
-            protected override IData CreateData(SqliteDataReader reader)
+            protected override TaskData CreateData(SqliteDataReader reader)
             {
                 return new TaskData
                 {
@@ -425,9 +450,9 @@ namespace Tasker.Classes {
         }
 
         //Handle the Table WorktimeLimit
-        public class WorktimeLimit : Table
+        public class WorktimeLimit : Table<WorktimeLimit.WorktimeLimitData>
         {
-            protected new string Name = "WorktimeLimit";
+            public override string Name { get { return "WorktimeLimit"; } }
             public class WorktimeLimitData : IData
             {
                 public int Id { get; set; }
@@ -436,7 +461,7 @@ namespace Tasker.Classes {
                 public int LimitInMinutes { get; set; }
             }
 
-            protected override IData CreateData(SqliteDataReader reader)
+            protected override WorktimeLimitData CreateData(SqliteDataReader reader)
             {
                 return new WorktimeLimitData
                 {

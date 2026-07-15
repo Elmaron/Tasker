@@ -37,7 +37,8 @@
 						MaxLength="30"></TextBox>
                 <Button>+</Button>
             </StackPanel>
-		    <StackPanel Orientation="Vertical">
+		    <StackPanel Name="stackpanel_projects"
+				Orientation="Vertical">
             </StackPanel>
         </DockPanel>
         <DockPanel Name="dockpanel_details"
