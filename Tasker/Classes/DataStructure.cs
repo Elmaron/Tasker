@@ -140,6 +140,23 @@ namespace Tasker.Classes
                         difficulty = dbDifficulty_data.Length <= 0 ? null : new(dbDifficulty_data[0]);
                         Expiry = pDbTask.Expiry;
                     }
+
+                    /*
+                    public int Add(int pDataId, int pProjectId, int pPriorityId, int? pDifficultyId, DateTime? pExpiry)
+                    {
+                        DataBase.Task dbTask = new();
+                        dbTask.Add(
+                                new DataBase.Task.TaskData
+                                {
+                                    DataId = pDataId,
+                                    ProjectId = pProjectId,
+                                    PriorityId = pPriorityId,
+                                    DifficultyId = pDifficultyId,
+                                    Expiry = pExpiry
+                                }
+                            );
+                    }
+                    */
                 }
             }
         }
@@ -159,7 +176,7 @@ namespace Tasker.Classes
 
             public int Id { get; }
             public string Label { get; set; }
-            public string Description { get; set; }
+            public string? Description { get; set; }
             public DateTime Created { get; set; }
             public DateTime Updated { get; set; }
             public DateTime? Finished { get; set; }

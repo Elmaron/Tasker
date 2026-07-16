@@ -215,7 +215,7 @@ namespace Tasker.Classes {
             {
                 public int Id { get; set; }
                 public string Label { get; set; } = "";
-                public string Description { get; set; } = "";
+                public string? Description { get; set; } = "";
                 public DateTime Created { get; set; }
                 public DateTime Updated { get; set; }
                 public DateTime? Finished { get; set; }
@@ -228,7 +228,7 @@ namespace Tasker.Classes {
                 {
                     Id = reader.GetInt32(0),
                     Label = reader.GetString(1),
-                    Description = reader.GetString(2),
+                    Description = reader.IsDBNull(2) ? null : reader.GetString(2),
                     Created = reader.GetDateTime(3),
                     Updated = reader.GetDateTime(4),
                     Finished = reader.IsDBNull(5) ? null : reader.GetDateTime(5),

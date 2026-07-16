@@ -105,15 +105,18 @@ public partial class MainWindowViewModel : ViewModelBase
     //Handle Button logic
     public void CreateNewTask()
     {
-        int? newPriorityId = new Classes.ViewControl().LoadPriorites(_data).Where(x => x.Label == "normal").ToArray()[0].Id;
-        Tasks.Add(new Classes.DataView.Task(
-                _data, 
-                newPriorityId != null ? newPriorityId.Value : new Classes.ViewControl().LoadPriorites(_data)[0].Id
-            ){ 
-                Id = -1, 
-                Label = _newTaskName }
-            );
-        _newTaskName = "";
+        int? checkPriorityId = new Classes.ViewControl().LoadPriorites(_data).Where(x => x.Label == "normal").ToArray()[0].Id;
+        int newPriorityId = checkPriorityId != null ? checkPriorityId.Value : new Classes.ViewControl().LoadPriorites(_data)[0].Id;
+        DataView.Task dvnewTask = new (
+                _data,
+                newPriorityId
+            )
+            {
+                Id = -1,
+                Label = _newTaskName
+            };
+        Tasks.Add(dvnewTask);
+        NewTaskName = "";
     }
 
     public MainWindowViewModel()
