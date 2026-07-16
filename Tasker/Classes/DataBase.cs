@@ -11,9 +11,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Markup;
 using Tmds.DBus.Protocol;
-using static Tasker.Classes.DataBase;
 
 namespace Tasker.Classes {
+    //Communicates directly with the DataBase to read and write the data accordingly
     public static class DataBase
     {
         public static string DbPath =>
@@ -177,10 +177,10 @@ namespace Tasker.Classes {
                 command.CommandText =
                     "UPDATE " + table +
                     "SET " + string.Join(", ", parameters
-                                                   .Zip(data, (a, b) => new { Name = a, Value = b })
-                                                   .Where(x => !x.Name.Equals("Id"))
-                                                   .Select(x => $"{x.Name} = {x.Value}")
-                                                   ) +
+                                    .Zip(data, (a, b) => new { Name = a, Value = b })
+                                    .Where(x => !x.Name.Equals("Id"))
+                                    .Select(x => $"{x.Name} = {x.Value}")
+                                    ) +
                     "WHERE Id = " + id + ";";
 
                 command.ExecuteNonQuery();
@@ -431,8 +431,8 @@ namespace Tasker.Classes {
                 public int DataId { get; set; }
                 public int ProjectId { get; set; }
                 public int PriorityId { get; set; }
-                public int DifficultyId { get; set; }
-                public DateTime Expiry { get; set; }
+                public int? DifficultyId { get; set; }
+                public DateTime? Expiry { get; set; }
             }
 
             protected override TaskData CreateData(SqliteDataReader reader)
@@ -443,8 +443,8 @@ namespace Tasker.Classes {
                     DataId = reader.GetInt32(1),
                     ProjectId = reader.GetInt32(2),
                     PriorityId = reader.GetInt32(3),
-                    DifficultyId = reader.GetInt32(4),
-                    Expiry = reader.GetDateTime(5)
+                    DifficultyId = reader.IsDBNull(4) ? null : reader.GetInt32(4),
+                    Expiry = reader.IsDBNull(5) ? null : reader.GetDateTime(5)
                 };
             }
         }

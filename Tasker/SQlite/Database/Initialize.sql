@@ -121,6 +121,7 @@ VALUES (
 
 
 -- Initalise structure for categories and projects. --
+-- DEPRECATED: just for testing because of bug, is going to be moved to code in the future --
 INSERT OR IGNORE INTO Data(Label, Description)
 VALUES (
 	'RESERVED_NOCATEGORY',
@@ -143,5 +144,25 @@ INSERT OR IGNORE INTO Project(DataId, CategoryId, PriorityId)
 VALUES (
 	last_insert_rowid(),
 	(SELECT Id FROM Category WHERE DataId = (SELECT Id FROM Data WHERE Label = "RESERVED_NOCATEGORY")),
+	(SELECT Id FROM Priority WHERE Label = 'normal')
+);
+
+INSERT OR IGNORE INTO Data(Label, Description)
+VALUES (
+	'Just a testproject',
+	'just for the purpose of testing the code :)'
+);
+
+INSERT OR IGNORE INTO Project(DataId, CategoryId, PriorityId)
+VALUES (
+	last_insert_rowid(),
+	(SELECT Id FROM Category WHERE DataId = (SELECT Id FROM Data WHERE Label = "RESERVED_NOCATEGORY")),
+	(SELECT Id FROM Priority WHERE Label = 'normal')
+);
+
+INSERT OR IGNORE INTO Task(DataId, ProjectId, PriorityId)
+VALUES (
+	(SELECT Id FROM Data WHERE Label = 'Just a testproject'),
+	last_insert_rowid(),
 	(SELECT Id FROM Priority WHERE Label = 'normal')
 );

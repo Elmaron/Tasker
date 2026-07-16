@@ -1,39 +1,56 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 using System.Linq;
 
 namespace Tasker.Views;
 
 public partial class MainWindow : Window
 {
+    //private Classes.DataStructure data;
+
     public MainWindow()
     {
         InitializeComponent();
+        //data ??= new();
     }
+
+    
 
     protected override void OnLoaded(RoutedEventArgs e)
     {
         base.OnLoaded(e);
 
-        //Create or/and Load Database
+        //Create Database, if not available
         Tasker.Classes.DataBase.Initialize();
 
-        //*
-        Tasker.Classes.DataBase.Data data = new ();
-        Tasker.Classes.DataBase.Priority priority = new ();
-        Tasker.Classes.DataBase.Category category = new();
-        Tasker.Classes.DataBase.Project project = new ();
+        /*
+        //Load Data into a more usable structure
+        data = new();
 
-        foreach (Tasker.Classes.DataBase.Project.ProjectData proj in project.Get())
+        //Load Category Items into ComboBox
+        foreach(Classes.DataStructure.Category category in data.categories)
         {
-            System.Diagnostics.Debug.WriteLine("Project found");
-            Tasker.Classes.DataBase.Data.DataOfData dataOfProject = data.Get().Where(x => x.Id == proj.DataId).ToArray()[0];
-            Button button = new ();
-            button.Content = dataOfProject.Label;
-            System.Diagnostics.Debug.WriteLine(dataOfProject.Label);
+            ComboBoxItem item = new();
+            item.Name = category.Id.ToString();
+            item.Content = category.data.Label.Contains("RESERVED_") ? "Allgemein" : category.data.Label;
 
-            stackpanel_projects.Children.Add(button);
-        }//*/
+            combobox_categories.Items.Add(item);
+        }
 
-    }
+        combobox_categories.SelectedIndex = 0;
+        //*/
+
+        /*
+        foreach (Classes.DataStructure.Category category in data.categories)
+            foreach (Classes.DataStructure.Category.Project project in category.projects)
+            {
+                System.Diagnostics.Debug.WriteLine($"Project {project.data.Label} found");
+                Button button = new();
+                button.Content = project.data.Label.Contains("RESERVED_") ? "Allgemein" : project.data.Label;
+
+                stackpanel_projects.Children.Add(button);
+            }
+        //*/
+    }   
 }

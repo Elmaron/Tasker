@@ -21,7 +21,15 @@
 			Background="hsl(231, 20%, 50%)"
 			Orientation="Horizontal">
             <!--<Button>Settings</Button>-->
-            <Button>Category</Button>
+			<ComboBox ItemsSource="{Binding Categories}"
+					  SelectedItem="{Binding SelectedCategory}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Label}" />
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+            <Button>Start/Stop</Button>
         </StackPanel>
         <DockPanel Name="dockpanel_projects"
             DockPanel.Dock="Left"
@@ -32,14 +40,20 @@
             <StackPanel DockPanel.Dock="Bottom"
                 Background="hsl(212, 20%, 45%)"
                 Orientation="Horizontal">
-                <TextBox Name="textbox_project_new_name"
-						PlaceholderText="New Project..."
-						MaxLength="30"></TextBox>
+                <TextBox PlaceholderText="{Binding NewProjectPlaceholder}"
+						 Text="{Binding NewProjectName}"
+						 MaxLength="30"></TextBox>
                 <Button>+</Button>
             </StackPanel>
-		    <StackPanel Name="stackpanel_projects"
-				Orientation="Vertical">
-            </StackPanel>
+			<ListBox ItemsSource="{Binding Projects}"
+					 SelectedItem="{Binding SelectedProject}"
+					 Background ="hsla(0,0,0%, 0)">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Label}" />
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+            </ListBox>
         </DockPanel>
         <DockPanel Name="dockpanel_details"
             DockPanel.Dock="Right"
@@ -60,13 +74,29 @@
             <StackPanel DockPanel.Dock="Bottom"
                 Background="hsl(191, 20%, 45%)"
                 Orientation="Horizontal">
-                <TextBox Name="textbox_task_new_name"
-						PlaceholderText="New Task..."
+                <TextBox PlaceholderText="{Binding NewTaskPlaceholder}"
+						 Text="{Binding NewTaskName}"
 						MaxLength="30"></TextBox>
-                <Button>+</Button>
+                <Button Command="{Binding CreateNewTask}">+</Button>
             </StackPanel>
-		    <StackPanel Orientation="Vertical">
-            </StackPanel>
+			<ListBox ItemsSource="{Binding Tasks}"
+					  Background ="hsla(0,0,0%, 0)">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="{Binding Label}" />
+							<ComboBox ItemsSource="{Binding Priorities}"
+									  SelectedItem="{Binding SelectedPriority}">
+								<ComboBox.ItemTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding Label}"/>
+									</DataTemplate>
+								</ComboBox.ItemTemplate>
+							</ComboBox>
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
         </DockPanel>
     </DockPanel>
 
