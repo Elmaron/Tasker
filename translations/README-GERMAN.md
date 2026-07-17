@@ -13,7 +13,7 @@ Ein Aufgaben-Planner und Tracker, der dir hilft, dein Arbeitsverhalten zu verste
 Nachdem ich das grundlegende Design des Programms überarbeitet habe, werde ich mich mit den Grund-Funktionen und der Datenbank beschäftigen, damit ich eine erste Alpha-Version veröffentlichen kann.
 Folgt mir gerne auf Github, um Updates zum Projekt zu bekommen!
 
-Status: **[Alpha](#alpha)** | [Beta](#beta) | [Release](#veröffentlichung-v10)
+Status: **[Prealpha](#pre-alpha)**| [Alpha](#alpha-release) | [Beta](#beta-release) | [Release](#veröffentlichung-v10)
 
 *abgeschlossen*; **in Bearbeitung**; Nächste Phase
 
@@ -64,7 +64,7 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 
 ## Geplante Inhalte
 
-### Alpha
+### Pre-Alpha
 
 - [x] Github Projekt erstellen
 - [ ] Design überarbeiten
@@ -78,9 +78,9 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 - [ ] Überarbeite den Code
 - [ ] Behebe Fehler
 
-*Phase soll bis zum **17.07.2026** abgeschlossen werden.*
+*Phase soll bis zum **24.07.2026** abgeschlossen werden.*
 
-### Beta
+### Alpha-Release
 
 *Mehr Punkte könnten hinzugefügt werden, während ich an dem Programm arbeite.*
 
@@ -104,7 +104,9 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 - [ ] Überarbeite den Code
 - [ ] Behebe mehr Fehler
 
-### Veröffentlichung (V1.0)
+*Es wurde noch kein Datum fürs beenden der Phase angesetzt.*
+
+### Beta-Release
 
 *Mehr Punkte könnten hinzugefügt werden, während ich an dem Programm arbeite.*
 
@@ -131,6 +133,12 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [ ] Für Designer
 - [ ] Überarbeite den Code
 - [ ] Behebe noch mehr Fehler
+
+*Es wurde noch kein Datum fürs beenden der Phase angesetzt.*
+
+### Veröffentlichung (V1.0)
+
+*Es wurde noch kein Datum fürs beenden der Phase angesetzt.*
 
 ## Planung für nach der Veröffentlichung
 

@@ -13,7 +13,7 @@ A Task-Planner and Tracker to help you understand your own work behavior.
 After rethinking the base-design of the program, I'll be working on providing basic functionality with the database, so that I can publish the first alpha version.
 Follow me on github to stay updated on the project!
 
-State: **[Alpha](#alpha)** | [Beta](#beta) | [Release](#release-v10)
+State: **[Pre-Alpha](#pre-alpha)** | [Alpha](#alpha-release) | [Beta](#beta-release) | [Release](#release-v10)
 
 *finished*; **in Progress**; Upcoming Phase
 
@@ -64,7 +64,7 @@ But if I do, here is, what you can and cannot expect from it:
 
 ## Planned Features
 
-### Alpha
+### Pre-Alpha
 
 - [x] Create Github Project
 - [ ] Update design
@@ -78,10 +78,9 @@ But if I do, here is, what you can and cannot expect from it:
 - [ ] Refine code
 - [ ] Fixing bugs
 
-*Phase shall be finished until 17th of July 2026.*
+*Phase shall be finished until 24th of July 2026.*
 
-### Beta
-
+### Alpha-Release
 *More objectives may be added while working on the program*
 
 - [ ] Update design
@@ -104,7 +103,9 @@ But if I do, here is, what you can and cannot expect from it:
 - [ ] Refine code
 - [ ] Fixing more bugs
 
-### Release (V1.0)
+*A finishing date has not been set for now.*
+
+### Beta-Release
 
 *More objectives may be added while working on the program*
 
@@ -132,7 +133,13 @@ But if I do, here is, what you can and cannot expect from it:
 - [ ] Refine code
 - [ ] Fixing even more bugs
 
-## Planned Features after release
+*A finishing date has not been set for now.*
+
+### Release (V1.0)
+
+*A finishing date has not been set for now.*
+
+## Ideas for Features after release
 
 *These are only ideas for now, nothing promised.*
 
