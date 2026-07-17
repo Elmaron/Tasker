@@ -136,40 +136,37 @@ CREATE TABLE IF NOT EXISTS Worktimelimit (
 
 -- Connections for different m to n relations --
 CREATE TABLE IF NOT EXISTS TimingInCategory (
+    Id INTEGER PRIMARY KEY,
     TimingId INTEGER,
     CategoryId INTEGER,
 
-    PRIMARY KEY (TimingId, CategoryId),
 
     FOREIGN KEY (TimingId) REFERENCES Timing(Id),
     FOREIGN KEY (CategoryId) REFERENCES Category(Id)
 );
 
 CREATE TABLE IF NOT EXISTS TimingInProject (
+    Id INTEGER PRIMARY KEY,
     TimingId INTEGER,
     ProjectId INTEGER,
-            
-    PRIMARY KEY (TimingId, ProjectId),
             
     FOREIGN KEY (TimingId) REFERENCES Timing(Id),
     FOREIGN KEY (ProjectId) REFERENCES Project(Id)
 );
 
 CREATE TABLE IF NOT EXISTS TimingInAppointment (
+    Id INTEGER PRIMARY KEY,
     TimingId INTEGER,
     AppointmentId INTEGER,
-            
-    PRIMARY KEY (TimingId, AppointmentId),
             
     FOREIGN KEY (TimingId) REFERENCES Timing(Id),
     FOREIGN KEY (AppointmentId) REFERENCES Appointment(Id)
 );
 
 CREATE TABLE IF NOT EXISTS TimingInTask (
+    Id INTEGER PRIMARY KEY,
     TimingId INTEGER,
     TaskId INTEGER,
-            
-    PRIMARY KEY (TimingId, TaskId),
             
     FOREIGN KEY (TimingId) REFERENCES Timing(Id),
     FOREIGN KEY (TaskId) REFERENCES Task(Id)

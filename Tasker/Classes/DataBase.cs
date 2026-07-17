@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Markup;
 using Tmds.DBus.Protocol;
+using static Tasker.Classes.DataBase.TimingInAppointment;
 
 namespace Tasker.Classes {
     //Communicates directly with the DataBase to read and write the data accordingly
@@ -148,7 +149,7 @@ namespace Tasker.Classes {
 
                 return data;
             }
-
+            
             public void Add(IData newData)
             {
                 PropertyInfo[] dataProperties = newData.GetType().GetProperties();
@@ -171,7 +172,6 @@ namespace Tasker.Classes {
             }
             
 
-            //Use this function to add inputed data to a specific table
             private static void addData(string table, string[] parameters, object?[] data)
             {
                 if (parameters.Length != data.Length) return;
@@ -199,7 +199,6 @@ namespace Tasker.Classes {
                 command.ExecuteNonQuery();
             }
 
-            //Use this function to update inputed data of a specific table
             private static void updateData(string table, string[] parameters, object?[] data)
             {
                 if (parameters.Length != data.Length) return;
@@ -229,7 +228,6 @@ namespace Tasker.Classes {
                 command.ExecuteNonQuery();
             }
 
-            //Use this function to delete data from a table
             private static void deleteData(string table, int id)
             {
                 using var connection = new SqliteConnection(ConnectionString);
@@ -244,13 +242,8 @@ namespace Tasker.Classes {
 
         }
 
-        
-        //Logic for m to n connections
-        //MISSING
 
-
-
-        //Handle the Table Data
+        //Tables without relations to other tables
         public class Data : Table<Data.DataOfData>
         {
             public override string Name { get { return "Data"; } }
@@ -280,7 +273,6 @@ namespace Tasker.Classes {
             }
         }
 
-        //Handle the Table Difficulties
         public class Difficulty : Table<Difficulty.DifficultyData>
         {
             public override string Name { get { return "Difficulty"; } }
@@ -304,7 +296,6 @@ namespace Tasker.Classes {
             }
         }
 
-        //Handle the Table Priorities
         public class Priority : Table<Priority.PriorityData>
         {
             public override string Name { get { return "Priority"; } }
@@ -326,7 +317,6 @@ namespace Tasker.Classes {
             }
         }
 
-        //Handle the Table Types
         public class Type : Table<Type.TypeData>
         {
             public override string Name { get { return "Type"; } }
@@ -346,7 +336,7 @@ namespace Tasker.Classes {
             }
         }
 
-        //Handle the Table Timings
+        //Table with 1 to m connections
         public class Timing : Table<Timing.TimingData>
         {
             public override string Name { get { return "Timing"; } }
@@ -370,7 +360,6 @@ namespace Tasker.Classes {
             }
         }
 
-        //Handle the Table Repeater
         public class Repeater : Table<Repeater.RepeaterData>
         {
             public override string Name { get { return "Repeater"; } }
@@ -394,7 +383,6 @@ namespace Tasker.Classes {
             }
         }
 
-        //Handle the Table Category
         public class Category : Table<Category.CategoryData>
         {
             public override string Name { get { return "Category"; } }
@@ -416,7 +404,6 @@ namespace Tasker.Classes {
             }
         }
 
-        //Handle the Table Project
         public class Project : Table<Project.ProjectData>
         {
             public override string Name { get { return "Project"; } }
@@ -442,7 +429,6 @@ namespace Tasker.Classes {
             }
         }
 
-        //Handle the Table Appointments
         public class Appointment : Table<Appointment.AppointmentData>
         {
             public override string Name { get { return "Appointment"; } }
@@ -464,7 +450,6 @@ namespace Tasker.Classes {
             }
         }
 
-        //Handle the Table Tasks
         public class Task : Table<Task.TaskData>
         {
             public override string Name { get { return "Task"; } }
@@ -492,7 +477,6 @@ namespace Tasker.Classes {
             }
         }
 
-        //Handle the Table WorktimeLimit
         public class WorktimeLimit : Table<WorktimeLimit.WorktimeLimitData>
         {
             public override string Name { get { return "WorktimeLimit"; } }
@@ -516,5 +500,89 @@ namespace Tasker.Classes {
             }
         }
 
+        // Tables with m to n relations
+        public class TimingInCategory : Table<TimingInCategory.TimingInCategoryData>
+        {
+            public override string Name { get { return "TimingInCategory"; } }
+            public class TimingInCategoryData : IData
+            {
+                public int Id { get; set; }
+                public int TimingId { get; set; }
+                public int CategoryId { get; set; }
+            }
+
+            protected override TimingInCategoryData CreateData(SqliteDataReader reader)
+            {
+                return new TimingInCategoryData
+                {
+                    Id = reader.GetInt32(0),
+                    TimingId = reader.GetInt32(1),
+                    CategoryId = reader.GetInt32(2)
+                };
+            }
+        }
+
+        public class TimingInProject : Table<TimingInProject.TimingInProjectData>
+        {
+            public override string Name { get { return "TimingInProject"; } }
+            public class TimingInProjectData : IData
+            {
+                public int Id { get; set; }
+                public int TimingId { get; set; }
+                public int ProjectId { get; set; }
+            }
+
+            protected override TimingInProjectData CreateData(SqliteDataReader reader)
+            {
+                return new TimingInProjectData
+                {
+                    Id = reader.GetInt32(0),
+                    TimingId = reader.GetInt32(1),
+                    ProjectId = reader.GetInt32(2)
+                };
+            }
+        }
+
+        public class TimingInAppointment : Table<TimingInAppointment.TimingInAppointmentData>
+        {
+            public override string Name { get { return "TimingInAppointment"; } }
+            public class TimingInAppointmentData : IData
+            {
+                public int Id { get; set; }
+                public int TimingId { get; set; }
+                public int AppointmentId { get; set; }
+            }
+
+            protected override TimingInAppointmentData CreateData(SqliteDataReader reader)
+            {
+                return new TimingInAppointmentData
+                {
+                    Id = reader.GetInt32(0),
+                    TimingId = reader.GetInt32(1),
+                    AppointmentId = reader.GetInt32(2)
+                };
+            }
+        }
+
+        public class TimingInTask : Table<TimingInTask.TimingInTaskData>
+        {
+            public override string Name { get { return "TimingInTask"; } }
+            public class TimingInTaskData : IData
+            {
+                public int Id { get; set; }
+                public int TimingId { get; set; }
+                public int TaskId { get; set; }
+            }
+
+            protected override TimingInTaskData CreateData(SqliteDataReader reader)
+            {
+                return new TimingInTaskData
+                {
+                    Id = reader.GetInt32(0),
+                    TimingId = reader.GetInt32(1),
+                    TaskId = reader.GetInt32(2)
+                };
+            }
+        }
     }
 }

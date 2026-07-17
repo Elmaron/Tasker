@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
 using static Tasker.Classes.DataBase;
@@ -67,6 +68,11 @@ namespace Tasker.Classes
                     if (project.CategoryId != Id) continue;
                     projects.Add(new Project(project));
                 }
+            }
+
+            public void Update(string? label = null, string? description = null)
+            {
+
             }
 
             public class Project
@@ -228,6 +234,25 @@ namespace Tasker.Classes
             return newTaskId;
         }
 
+        public int AddAppointmment(string label, int newProjectId)
+        {
+            int newDataId = generateNewData(label)[0];
+
+            DataBase.Appointment dbAppointment = new();
+            IEnumerable<int> possibleAppointmentIds = dbAppointment.Get().Select(x => x.Id);
+            int newAppointmentId = possibleAppointmentIds.Count() > 0 ? possibleAppointmentIds.Max() + 1 : 1;
+            dbAppointment.Add(new DataBase.Appointment.AppointmentData
+            {
+                Id = newAppointmentId,
+                DataId = newDataId,
+                ProjectId = newProjectId
+            }
+            );
+
+            this.Reload();
+            return newAppointmentId;
+        }
+
         private int[] generateNewData(string label)
         {
             DataBase.Data dbData = new();
@@ -270,6 +295,52 @@ namespace Tasker.Classes
             public DateTime Updated { get; set; }
             public DateTime? Finished { get; set; }
             public DateTime? DeleteOn { get; set; }
+
+            public void Update(string? pLabel = null, string? pDescription = null)
+            {
+                if (pLabel == "") return;
+                if (pLabel != null) Label = pLabel;
+                if (pDescription != null) Description = pDescription;
+                Updated = DateTime.Now;
+
+                DataBase.Data dbData = new();
+                dbData.Update(new DataBase.Data.DataOfData
+                {
+                    Id = Id,
+                    Label = Label,
+                    Description = Description,
+                    Updated = Updated
+                });
+            }
+
+            public void Finish(bool isTrue = true)
+            {
+                Finished = isTrue ? DateTime.Now : null;
+                Updated = DateTime.Now;
+
+                DataBase.Data dbData = new();
+                dbData.Update(new DataBase.Data.DataOfData
+                {
+                    Id = Id,
+                    Finished = Finished,
+                    Updated = Updated
+                });
+            }
+
+            public void setDelete(DateTime? pDeleteOn = null)
+            {
+                if (pDeleteOn != null && pDeleteOn < DateTime.Now) return;
+                DeleteOn = pDeleteOn;
+                Updated = DateTime.Now;
+
+                DataBase.Data dbData = new();
+                dbData.Update(new DataBase.Data.DataOfData
+                {
+                    Id = Id,
+                    DeleteOn = DeleteOn,
+                    Updated = Updated
+                });
+            }
         }
 
         public struct InternalPriority
