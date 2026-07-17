@@ -42,7 +42,6 @@ namespace Tasker.Classes
 
         public class Category
         {
-
             public int Id { get; }
             
             public InternalData data;
@@ -70,9 +69,21 @@ namespace Tasker.Classes
                 }
             }
 
-            public void Update(string? label = null, string? description = null)
+            public void Delete()
             {
+                DataBase.Data dbData = new();
+                DataBase.Category dbCategory = new();
+                dbCategory.Delete(Id);
+                dbData.Delete(data.Id);
+            }
 
+            public void Update(string? label = null, string? description = null, int? newPriorityId = null)
+            {
+                if (!(label == null && description == null)) data.Update(label, description);
+                if (newPriorityId == null) return;
+                DataBase.Priority.PriorityData[] newPriority = new DataBase.Priority().Get().Where(x => x.Id == newPriorityId).ToArray();
+                if (newPriority.Count() != 1) return;
+                priority = new(newPriority[0]);
             }
 
             public class Project
@@ -113,7 +124,30 @@ namespace Tasker.Classes
                         if (task.ProjectId != Id) continue;
                         tasks.Add(new Task(task));
                     }
-            }
+                }
+                public void Update(string? label = null, string? description = null, int? newPriorityId = null, DateTime? expiry = null)
+                {
+                    if (!(label == null && description == null)) data.Update(label, description);
+                    Expiry = expiry;
+                    new DataBase.Project().Update(new DataBase.Project.ProjectData
+                    {
+                        Id = Id,
+                        Expiry = Expiry
+                    });
+                    if (newPriorityId == null) return;
+                    DataBase.Priority.PriorityData[] newPriority = new DataBase.Priority().Get().Where(x => x.Id == newPriorityId).ToArray();
+                    if (newPriority.Count() != 1) return;
+                    priority = new(newPriority[0]);
+                }
+
+                public void Delete()
+                {
+                    DataBase.Data dbData = new();
+                    DataBase.Project dbProject = new();
+                    dbProject.Delete(Id);
+                    dbData.Delete(data.Id);
+                }
+
                 public class Appointment
                 {
                     public int Id { get; }
@@ -128,6 +162,18 @@ namespace Tasker.Classes
                         data = new(dbData.Get().Where(x => x.Id == pDbAppointment.DataId).ToArray()[0]);
 
                         System.Diagnostics.Debug.WriteLine($"Found Appointment: {data.Label}");
+                    }
+
+                    public void Update(string? label = null, string? description = null)
+                    {
+                        if (!(label == null && description == null)) data.Update(label, description);
+                    }
+                    public void Delete()
+                    {
+                        DataBase.Data dbData = new();
+                        DataBase.Appointment dbAppointment = new();
+                        dbAppointment.Delete(Id);
+                        dbData.Delete(data.Id);
                     }
                 }
                 public class Task
@@ -156,6 +202,39 @@ namespace Tasker.Classes
                         DataBase.Difficulty.DifficultyData[] dbDifficulty_data = dbDifficulty.Get().Where(x => x.Id == pDbTask.DifficultyId).ToArray();
                         difficulty = dbDifficulty_data.Length <= 0 ? null : new(dbDifficulty_data[0]);
                         Expiry = pDbTask.Expiry;
+                    }
+
+                    public void Update(string? label = null, string? description = null, int? newPriorityId = null, int? difficultyId = null, DateTime? expiry = null)
+                    {
+                        if (!(label == null && description == null)) data.Update(label, description);
+                        if (difficultyId == null) difficulty = null;
+                        else LoadDifficulty(difficultyId ?? 0);
+                        Expiry = expiry;
+                        new DataBase.Task().Update(new DataBase.Task.TaskData
+                        {
+                            Id = Id,
+                            DifficultyId = difficultyId,
+                            Expiry = Expiry
+                        });
+                        if (newPriorityId == null) return;
+                        DataBase.Priority.PriorityData[] newPriority = new DataBase.Priority().Get().Where(x => x.Id == newPriorityId).ToArray();
+                        if (newPriority.Count() != 1) return;
+                        priority = new(newPriority[0]);
+                    }
+                    public void Delete()
+                    {
+                        DataBase.Data dbData = new();
+                        DataBase.Task dbTask = new();
+                        dbTask.Delete(Id);
+                        dbData.Delete(data.Id);
+                    }
+
+                    private void LoadDifficulty(int pDifficultyId)
+                    {
+                        if (difficulty != null && difficulty.Value.Id == pDifficultyId) return;
+                        DataBase.Difficulty.DifficultyData[] newDifficulty = new DataBase.Difficulty().Get().Where(x => x.Id == pDifficultyId).ToArray();
+                        if (newDifficulty.Count() != 1) return;
+                        difficulty = new InternalDifficulty(newDifficulty[0]);                   
                     }
                 }
             }

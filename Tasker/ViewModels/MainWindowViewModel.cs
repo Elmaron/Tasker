@@ -11,6 +11,14 @@ public partial class MainWindowViewModel : ViewModelBase
 {
     //Simple Data Bindings
 
+    private Classes.DataStructure _data;
+
+    public Classes.DataStructure Data
+    {
+        get => _data;
+        set => SetProperty(ref _data, value);
+    }
+
     private string _newCategoryPlaceholder = "New Categoryname";
     public string NewCategoryPlaceholder
     {
@@ -53,9 +61,6 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     //Collection bindings
-    private Classes.DataStructure _data;
-
-
     private ObservableCollection<Classes.DataView.Category> _categories;
 
     public ObservableCollection<Classes.DataView.Category> Categories
@@ -92,7 +97,7 @@ public partial class MainWindowViewModel : ViewModelBase
             _selectedCategory = value;
 
             if (_selectedCategory == null) return;
-            Projects = new Classes.ViewControl().LoadProjects(_data, value);
+            Projects = new Classes.ViewControl().LoadProjects(Data, value);
 
             if (Projects.Count > 0) SelectedProject = Projects[0];
 
@@ -111,7 +116,7 @@ public partial class MainWindowViewModel : ViewModelBase
             _selectedProject = value;
 
             if (_selectedProject == null) return;
-            Tasks = new Classes.ViewControl().LoadTasks(_data, SelectedCategory, value);
+            Tasks = new Classes.ViewControl().LoadTasks(Data, SelectedCategory, value);
 
             OnPropertyChanged();
 
@@ -122,9 +127,10 @@ public partial class MainWindowViewModel : ViewModelBase
     public void CreateNewCategory()
     {
         if(NewCategoryName == null) return;
-        int newCategoryId = _data.AddCategory(NewCategoryName);
+        int newCategoryId = Data.AddCategory(NewCategoryName);
+        NewCategoryName = "";
 
-        Categories = new Classes.ViewControl().LoadCategories(_data);
+        Categories = new Classes.ViewControl().LoadCategories(Data);
         if (Categories.Count <= 0) return;
         SelectedCategory = Categories.Where(x => x.Id == newCategoryId).ToList()[0] ?? Categories[0];
     }
@@ -132,9 +138,10 @@ public partial class MainWindowViewModel : ViewModelBase
     public void CreateNewProject()
     {
         if(NewProjectName == null) return;
-        int newProjectId = _data.AddProject(NewProjectName, SelectedCategory.Id);
+        int newProjectId = Data.AddProject(NewProjectName, SelectedCategory.Id);
+        NewProjectName = "";
 
-        Projects = new Classes.ViewControl().LoadProjects(_data, SelectedCategory);
+        Projects = new Classes.ViewControl().LoadProjects(Data, SelectedCategory);
         if (Projects.Count <= 0) return;
         SelectedProject = Projects.Where(x => x.Id == newProjectId).ToList()[0] ?? Projects[0];
     }
@@ -142,10 +149,56 @@ public partial class MainWindowViewModel : ViewModelBase
     public void CreateNewTask()
     {
         if (NewTaskName == null) return;
-        int newTaskId = _data.AddTask(NewTaskName, SelectedProject.Id);
+        int newTaskId = Data.AddTask(NewTaskName, SelectedProject.Id);
+        NewTaskName = "";
 
-        Tasks = new Classes.ViewControl().LoadTasks(_data, SelectedCategory, SelectedProject);
+        Tasks = new Classes.ViewControl().LoadTasks(Data, SelectedCategory, SelectedProject);
     }
+
+    public void UpdateCategory(int? pId)
+    {
+        if(pId == null) return;
+        Data.categories.Where(x => x.Id == pId).ToArray()[0].Update();
+    }
+    public void UpdateProject(int? pId)
+    {
+        if (pId == null || SelectedCategory == null) return;
+        Data.categories.Where(x => x.Id == SelectedCategory.Id).ToArray()[0]
+            .projects.Where(x => x.Id == pId).ToArray()[0]
+            .Update();
+    }
+    public void UpdateTask(int? pId)
+    {
+        if (pId == null || SelectedCategory == null || SelectedProject == null) return;
+        Data.categories.Where(x => x.Id == SelectedCategory.Id).ToArray()[0]
+            .projects.Where(x => x.Id == SelectedProject.Id).ToArray()[0]
+            .tasks.Where(x => x.Id == pId).ToArray()[0]
+            .Update();
+    }
+    public void DeleteCategory(int? pId)
+    {
+        if (pId == null) return;
+        Data.categories.Where(x => x.Id == pId).ToArray()[0].Delete();
+    }
+    public void DeleteProject(int? pId)
+    {
+        if (pId == null || SelectedCategory == null) return;
+        Data.categories.Where(x => x.Id == SelectedCategory.Id).ToArray()[0]
+            .projects.Where(x => x.Id == pId).ToArray()[0]
+            .Delete();
+    }
+    public void DeleteTask(object? pId)
+    {
+        if (pId == null || pId is not int k || SelectedCategory == null || SelectedProject == null) return;
+        DataStructure.Category.Project project =
+        Data.categories.Where(x => x.Id == SelectedCategory.Id).ToArray()[0]
+            .projects.Where(x => x.Id == SelectedProject.Id).ToArray()[0];
+        project.tasks.Where(x => x.Id == (int)pId).ToArray()[0].Delete();
+        project.tasks.Remove(project.tasks.Where(x => x.Id == (int)pId).ToArray()[0]);
+
+        Tasks = new Classes.ViewControl().LoadTasks(Data, SelectedCategory, SelectedProject);
+    }
+
 
     public MainWindowViewModel()
     {
@@ -156,7 +209,7 @@ public partial class MainWindowViewModel : ViewModelBase
         _data = new();
 
         //Create Collection of Categories
-        Categories = new Classes.ViewControl().LoadCategories(_data);
+        Categories = new Classes.ViewControl().LoadCategories(Data);
         if(Categories.Count > 0) SelectedCategory = Categories[0];
     }
 }

@@ -97,6 +97,10 @@
 									</DataTemplate>
 								</ComboBox.ItemTemplate>
 							</ComboBox>
+							<Button Content="Delete"
+									Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteTask}"
+									CommandParameter="{Binding Id}"
+									/>
 						</StackPanel>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
