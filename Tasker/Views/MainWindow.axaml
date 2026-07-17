@@ -88,7 +88,7 @@
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="{Binding Label}" />
+							<TextBox Text="{Binding Label}"/>
 							<ComboBox ItemsSource="{Binding Priorities}"
 									  SelectedItem="{Binding SelectedPriority}">
 								<ComboBox.ItemTemplate>
@@ -97,6 +97,10 @@
 									</DataTemplate>
 								</ComboBox.ItemTemplate>
 							</ComboBox>
+							<Button Content="Update"
+									Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).UpdateTask}"
+									CommandParameter="{Binding Data}"
+									/>
 							<Button Content="Delete"
 									Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteTask}"
 									CommandParameter="{Binding Id}"

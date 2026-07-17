@@ -215,16 +215,17 @@ namespace Tasker.Classes {
                     data = data.Where((x, i) => i != Array.IndexOf(data, dataObject)).ToArray();
                 }
 
-                var command = connection.CreateCommand();
-                command.CommandText =
-                    "UPDATE " + table +
-                    "SET " + string.Join(", ", parameters
+                string updated_values = string.Join(", ", parameters
                                     .Zip(data, (a, b) => new { Name = a, Value = b })
                                     .Where(x => !x.Name.Equals("Id"))
-                                    .Select(x => $"{x.Name} = {x.Value}")
-                                    ) +
-                    "WHERE Id = " + id + ";";
-
+                                    .Where(x => !x.Value.Equals("") && !x.Value.Equals(0) && x.Value != null)
+                                    .Select(x => $"{x.Name} = \'{(x.Value is string str ? str : x.Value is DateTime dat ? dat.ToString("O") : x.Value?.ToString())}\'")
+                                    );
+                if (updated_values == "" || updated_values == null) return;
+                var command = connection.CreateCommand();
+                command.CommandText = "UPDATE " + table +
+                    " SET " + updated_values +
+                    " WHERE Id = " + id + ";";
                 command.ExecuteNonQuery();
             }
 

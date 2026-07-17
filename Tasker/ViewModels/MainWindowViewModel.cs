@@ -155,36 +155,39 @@ public partial class MainWindowViewModel : ViewModelBase
         Tasks = new Classes.ViewControl().LoadTasks(Data, SelectedCategory, SelectedProject);
     }
 
-    public void UpdateCategory(int? pId)
+    public void UpdateCategory(object? pId)
     {
-        if(pId == null) return;
-        Data.categories.Where(x => x.Id == pId).ToArray()[0].Update();
+        if(pId == null || pId is not int k) return;
+        Data.categories.Where(x => x.Id == (int)pId).ToArray()[0].Update();
     }
-    public void UpdateProject(int? pId)
+    public void UpdateProject(object? pId)
     {
-        if (pId == null || SelectedCategory == null) return;
+        if (pId == null || pId is not int k || SelectedCategory == null) return;
         Data.categories.Where(x => x.Id == SelectedCategory.Id).ToArray()[0]
-            .projects.Where(x => x.Id == pId).ToArray()[0]
+            .projects.Where(x => x.Id == (int)pId).ToArray()[0]
             .Update();
     }
-    public void UpdateTask(int? pId)
+    public void UpdateTask(object? pData)
     {
-        if (pId == null || SelectedCategory == null || SelectedProject == null) return;
+        if (pData == null || pData is not object[] || SelectedCategory == null || SelectedProject == null) return;
+        if (((object[])pData)[0] is not int || ((object[])pData)[1] is not string) return;
         Data.categories.Where(x => x.Id == SelectedCategory.Id).ToArray()[0]
             .projects.Where(x => x.Id == SelectedProject.Id).ToArray()[0]
-            .tasks.Where(x => x.Id == pId).ToArray()[0]
-            .Update();
+            .tasks.Where(x => x.Id == (int)((object[])pData)[0]).ToArray()[0]
+            .Update((string)((object[])pData)[1]);
     }
-    public void DeleteCategory(int? pId)
+    //Move Projects, Tasks and Appointments somewhere else OR delete them (user decision)
+    public void DeleteCategory(object? pId)
     {
-        if (pId == null) return;
-        Data.categories.Where(x => x.Id == pId).ToArray()[0].Delete();
+        if (pId == null || pId is not int k) return;
+        Data.categories.Where(x => x.Id == (int)pId).ToArray()[0].Delete();
     }
-    public void DeleteProject(int? pId)
+    //Move Tasks and Appointments somewhere else OR delete them (user decision)
+    public void DeleteProject(object? pId)
     {
-        if (pId == null || SelectedCategory == null) return;
+        if (pId == null || pId is not int k || SelectedCategory == null) return;
         Data.categories.Where(x => x.Id == SelectedCategory.Id).ToArray()[0]
-            .projects.Where(x => x.Id == pId).ToArray()[0]
+            .projects.Where(x => x.Id == (int)pId).ToArray()[0]
             .Delete();
     }
     public void DeleteTask(object? pId)

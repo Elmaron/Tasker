@@ -16,17 +16,24 @@ namespace Tasker.Classes
         {
             private int _id;
             private string _label = "";
+            private object[] _data = new object[2];
 
             public int Id
             {
-                get => _id;
-                set => SetProperty(ref _id, value);
+                get => (int)_data[0];
+                set => SetProperty(ref _data[0], value);
             }
 
             public string Label
             {
-                get => _label;
-                set => SetProperty(ref _label, value);
+                get => (string)_data[1];
+                set => SetProperty(ref _data[1], value);
+            }
+
+            public object[] Data
+            {
+                get => _data;
+                set => SetProperty(ref _data, value);
             }
         }
 
