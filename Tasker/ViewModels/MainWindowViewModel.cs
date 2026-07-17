@@ -53,7 +53,7 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     //Collection bindings
-    private Classes.DataStructure _data = new();
+    private Classes.DataStructure _data;
 
 
     private ObservableCollection<Classes.DataView.Category> _categories;
@@ -138,6 +138,10 @@ public partial class MainWindowViewModel : ViewModelBase
         //Create Database, if not available
         Tasker.Classes.DataBase.Initialize();
 
+        //Load Data from database
+        _data = new();
+
+        //Create Collection of Categories
         Categories = new Classes.ViewControl().LoadCategories(_data);
         if(Categories.Count > 0) SelectedCategory = Categories[0];
     }

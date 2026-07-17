@@ -24,6 +24,7 @@ namespace Tasker.Classes {
         //Create a new Database, if none has been created and fill it with the base content
         public static void Initialize()
         {
+            if (File.Exists(DbPath)) return;
             Directory.CreateDirectory(Path.GetDirectoryName(DbPath)!);
 
             using var connection = new SqliteConnection(ConnectionString);
