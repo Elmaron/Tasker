@@ -57,12 +57,17 @@ namespace Tasker.Classes {
                 commandList.Add($"INSERT OR IGNORE INTO {table}({
                     string.Join(", ", value.Keys)
                     }) VALUES ({string.Join(", ", (
-                    value.Values.Select(x => x is Dictionary<string, object> dict ? getConditions(dict) : x?.ToString() ?? "RESERVED_EMPTY")
+                    value.Values.Select(x => 
+                    x is Dictionary<string, object> dict ? getConditions(dict) 
+                    : (x is int val ? val.ToString() :
+                    "\'" + x?.ToString() + "\'" ?? "\'RESERVED_EMPTY\'"))
                     ))});");
             }
 
             foreach (string commandString in commandList)
                 try {
+                    command.CommandText = commandString;
+                    System.Diagnostics.Debug.WriteLine($"Trying \"{commandString}\"");
                     command.ExecuteNonQuery();
                 }
                 catch (Exception e) {
@@ -76,11 +81,11 @@ namespace Tasker.Classes {
             object? table = "";
             conditions.TryGetValue("RESERVED_TABLE", out table);
             List<string> conditionLayout = [];
-            foreach (string key in conditions.Where(x => x.Key != "RESERVERD_TABLE").Select(x => x.Key))
+            foreach (string key in conditions.Where(x => x.Key != "RESERVED_TABLE").Select(x => x.Key))
             {
                 object? value = "";
                 conditions.TryGetValue(key, out value);
-                value = value is Dictionary<string, object> dict ? getConditions(dict) : value?.ToString() ?? "<EMPTY VALUE>";
+                value = value is Dictionary<string, object> dict ? getConditions(dict) : (value is int val ? val.ToString() : "\'" + value?.ToString() + "\'" ?? "<EMPTY VALUE>");
                 conditionLayout.Add($"{key} = {value}");
             }
             return $"(SELECT Id FROM {table?.ToString() ?? "<TABLE NOT FOUND IN KEYS>"} WHERE {

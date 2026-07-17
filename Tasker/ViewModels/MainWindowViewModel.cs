@@ -135,6 +135,9 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
+        //Create Database, if not available
+        Tasker.Classes.DataBase.Initialize();
+
         Categories = new Classes.ViewControl().LoadCategories(_data);
         if(Categories.Count > 0) SelectedCategory = Categories[0];
     }
