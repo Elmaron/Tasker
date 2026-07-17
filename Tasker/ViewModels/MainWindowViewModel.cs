@@ -91,11 +91,12 @@ public partial class MainWindowViewModel : ViewModelBase
             if(_selectedCategory == value) return;
             _selectedCategory = value;
 
-            OnPropertyChanged();
-
+            if (_selectedCategory == null) return;
             Projects = new Classes.ViewControl().LoadProjects(_data, value);
 
             if (Projects.Count > 0) SelectedProject = Projects[0];
+
+            OnPropertyChanged();
         }
     }
 
@@ -109,28 +110,41 @@ public partial class MainWindowViewModel : ViewModelBase
             if (_selectedProject == value) return;
             _selectedProject = value;
 
-            OnPropertyChanged();
+            if (_selectedProject == null) return;
+            Tasks = new Classes.ViewControl().LoadTasks(_data, SelectedCategory, value);
 
-            Tasks = new Classes.ViewControl().LoadTasks(_data, _selectedCategory, value);
+            OnPropertyChanged();
 
         }
     }
 
     //Handle Button logic
+    public void CreateNewCategory()
+    {
+        if(NewCategoryName == null) return;
+        int newCategoryId = _data.AddCategory(NewCategoryName);
+
+        Categories = new Classes.ViewControl().LoadCategories(_data);
+        if (Categories.Count <= 0) return;
+        SelectedCategory = Categories.Where(x => x.Id == newCategoryId).ToList()[0] ?? Categories[0];
+    }
+
+    public void CreateNewProject()
+    {
+        if(NewProjectName == null) return;
+        int newProjectId = _data.AddProject(NewProjectName, SelectedCategory.Id);
+
+        Projects = new Classes.ViewControl().LoadProjects(_data, SelectedCategory);
+        if (Projects.Count <= 0) return;
+        SelectedProject = Projects.Where(x => x.Id == newProjectId).ToList()[0] ?? Projects[0];
+    }
+
     public void CreateNewTask()
     {
-        int? checkPriorityId = new Classes.ViewControl().LoadPriorites(_data).Where(x => x.Label == "normal").ToArray()[0].Id;
-        int newPriorityId = checkPriorityId != null ? checkPriorityId.Value : new Classes.ViewControl().LoadPriorites(_data)[0].Id;
-        DataView.Task dvnewTask = new (
-                _data,
-                newPriorityId
-            )
-            {
-                Id = -1,
-                Label = _newTaskName
-            };
-        Tasks.Add(dvnewTask);
-        NewTaskName = "";
+        if (NewTaskName == null) return;
+        int newTaskId = _data.AddTask(NewTaskName, SelectedProject.Id);
+
+        Tasks = new Classes.ViewControl().LoadTasks(_data, SelectedCategory, SelectedProject);
     }
 
     public MainWindowViewModel()

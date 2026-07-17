@@ -17,7 +17,7 @@ namespace Tasker.Classes
                 categories.Add(new Classes.DataView.Category
                 {
                     Id = category.Id,
-                    Label = category.data.Label.Contains("RESERVED_NOCATEGORY") ? "Allgemein" : category.data.Label
+                    Label = category.data.Label.Contains(DataBaseStandards.R_NOCATEGORY) ? "Uncategorized" : category.data.Label
                 });
             }
             return categories;
@@ -28,13 +28,14 @@ namespace Tasker.Classes
             ObservableCollection<DataView.Project> projects = [];
             foreach (Classes.DataStructure.Category category in data.categories)
             {
+                //System.Diagnostics.Debug.WriteLine($"Selected Id: {pSelectedCategory.Id}");
                 if (category.Id != pSelectedCategory.Id) continue;
                 foreach (Classes.DataStructure.Category.Project project in category.projects)
                 {
                     projects.Add(new Classes.DataView.Project
                     {
                         Id = project.Id,
-                        Label = project.data.Label.Contains("RESERVED_NOPROJECT") ? "Allgemein" : project.data.Label
+                        Label = project.data.Label.Contains(DataBaseStandards.R_NOPROJECT) ? "Unassigned" : project.data.Label
                     });
                 }
                 break;

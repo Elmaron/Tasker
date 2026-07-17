@@ -33,7 +33,7 @@
 			<TextBox PlaceholderText="{Binding NewCategoryPlaceholder}"
 					 Text="{Binding NewCategoryName}"
 					 MaxLength="30"/>
-			<Button>+</Button>
+			<Button Command="{Binding CreateNewCategory}">+</Button>
         </StackPanel>
         <DockPanel Name="dockpanel_projects"
             DockPanel.Dock="Left"
@@ -47,7 +47,7 @@
                 <TextBox PlaceholderText="{Binding NewProjectPlaceholder}"
 						 Text="{Binding NewProjectName}"
 						 MaxLength="30"></TextBox>
-                <Button>+</Button>
+                <Button Command="{Binding CreateNewProject}">+</Button>
             </StackPanel>
 			<ListBox ItemsSource="{Binding Projects}"
 					 SelectedItem="{Binding SelectedProject}"

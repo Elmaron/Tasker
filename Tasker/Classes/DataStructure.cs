@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using static Tasker.Classes.DataBase;
 using static Tasker.Classes.DataStructure;
@@ -11,12 +12,21 @@ namespace Tasker.Classes
     //Handles Communication between DataBase and program
     public class DataStructure
     {
-        public List<Category> categories = new();
-        public List<InternalPriority> priorities = new();
+        public List<Category> categories;
+        public List<InternalPriority> priorities;
 
         public DataStructure() 
         {
             System.Diagnostics.Debug.WriteLine($"Initializing new class Datastructure...");
+            Reload();
+            categories ??= [];
+            priorities ??= [];
+        }
+
+        public void Reload()
+        {
+            categories = [];
+            priorities = [];
             DataBase.Category dbCategory = new();
             foreach (DataBase.Category.CategoryData category in dbCategory.Get())
             {
@@ -58,6 +68,7 @@ namespace Tasker.Classes
                     projects.Add(new Project(project));
                 }
             }
+
             public class Project
             {
                 public int Id { get; }
@@ -140,25 +151,103 @@ namespace Tasker.Classes
                         difficulty = dbDifficulty_data.Length <= 0 ? null : new(dbDifficulty_data[0]);
                         Expiry = pDbTask.Expiry;
                     }
-
-                    /*
-                    public int Add(int pDataId, int pProjectId, int pPriorityId, int? pDifficultyId, DateTime? pExpiry)
-                    {
-                        DataBase.Task dbTask = new();
-                        dbTask.Add(
-                                new DataBase.Task.TaskData
-                                {
-                                    DataId = pDataId,
-                                    ProjectId = pProjectId,
-                                    PriorityId = pPriorityId,
-                                    DifficultyId = pDifficultyId,
-                                    Expiry = pExpiry
-                                }
-                            );
-                    }
-                    */
                 }
             }
+        }
+
+        public int AddCategory(string label)
+        {
+            int[] newDataId = generateNewData(label);
+            int newPriorityId = getStandardPriorityId();
+
+            DataBase.Category dbCategory = new();
+            IEnumerable<int> possibleCategoryIds = dbCategory.Get().Select(x => x.Id);
+            int newCategoryId = possibleCategoryIds.Count() > 0 ? possibleCategoryIds.Max() + 1 : 1;
+            dbCategory.Add(new DataBase.Category.CategoryData
+            {
+                Id = newCategoryId,
+                DataId = newDataId[0],
+                PriorityId = newPriorityId
+            });
+
+            DataBase.Project dbProject = new();
+            IEnumerable<int> possibleProjectIds = dbProject.Get().Select(x => x.Id);
+            int newProjectId = possibleProjectIds.Count() > 0 ? possibleProjectIds.Max() + 1 : 1;
+            dbProject.Add(new DataBase.Project.ProjectData
+            {
+                Id = newProjectId,
+                DataId = newDataId[1],
+                CategoryId = newCategoryId,
+                PriorityId = newPriorityId
+            }
+            );
+
+            this.Reload();
+            return newCategoryId;
+        }
+
+        public int AddProject(string label, int newCategoryId)
+        {
+            int newDataId = generateNewData(label)[0];
+            int newPriorityId = getStandardPriorityId();
+
+            DataBase.Project dbProject = new();
+            IEnumerable<int> possibleProjectIds = dbProject.Get().Select(x => x.Id);
+            int newProjectId = possibleProjectIds.Count() > 0 ? possibleProjectIds.Max() + 1 : 1;
+            dbProject.Add(new DataBase.Project.ProjectData
+            {
+                Id = newProjectId,
+                DataId = newDataId,
+                CategoryId = newCategoryId,
+                PriorityId = newPriorityId
+            }
+            );
+
+            this.Reload();
+            return newProjectId;
+        }
+
+        public int AddTask(string label, int newProjectId)
+        {
+            int newDataId = generateNewData(label)[0];
+            int newPriorityId = getStandardPriorityId();
+
+            DataBase.Task dbTask = new();
+            IEnumerable<int> possibleTaskIds = dbTask.Get().Select(x => x.Id);
+            int newTaskId = possibleTaskIds.Count() > 0 ? possibleTaskIds.Max() + 1 : 1;
+            dbTask.Add(new DataBase.Task.TaskData
+            {
+                Id = newTaskId,
+                DataId = newDataId,
+                ProjectId = newProjectId,
+                PriorityId = newPriorityId
+            }
+            );
+
+            this.Reload();
+            return newTaskId;
+        }
+
+        private int[] generateNewData(string label)
+        {
+            DataBase.Data dbData = new();
+            int newDataId = dbData.Get().Select(x => x.Id).Max() + 1;
+            dbData.Add(new DataBase.Data.DataOfData
+            {
+                Id = newDataId,
+                Label = label,
+                Created = DateTime.Now,
+                Updated = DateTime.Now,
+            });
+            return [newDataId, dbData.Get().Where(x => x.Label == DataBaseStandards.R_NOPROJECT).Select(x => x.Id).ToArray()[0]];
+        }
+
+        private int getStandardPriorityId()
+        {
+            List<DataBase.Priority.PriorityData> dbPriority = new DataBase.Priority().Get();
+            return dbPriority.Where(x => x.Label == "normal").Select(x => x.Id).ToArray().Count() != 1
+                ? dbPriority.Select(x => x.Id).ToArray()[0]
+                : dbPriority.Where(x => x.Label == "normal").Select(x => x.Id).ToArray()[0];
         }
 
         public struct InternalData

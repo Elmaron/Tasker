@@ -61,7 +61,7 @@ namespace Tasker.Classes {
                     value.Values.Select(x => 
                     x is Dictionary<string, object> dict ? getConditions(dict) 
                     : (x is int val ? val.ToString() :
-                    "\'" + x?.ToString() + "\'" ?? "\'RESERVED_EMPTY\'"))
+                    "\'" + x?.ToString() + "\'" ?? $"\'{DataBaseStandards.DBE_EMPTY}\'"))
                     ))});");
             }
 
@@ -80,16 +80,16 @@ namespace Tasker.Classes {
         private static string getConditions(Dictionary<string, object> conditions)
         {
             object? table = "";
-            conditions.TryGetValue("RESERVED_TABLE", out table);
+            conditions.TryGetValue(DataBaseStandards.R_TABLE, out table);
             List<string> conditionLayout = [];
-            foreach (string key in conditions.Where(x => x.Key != "RESERVED_TABLE").Select(x => x.Key))
+            foreach (string key in conditions.Where(x => x.Key != DataBaseStandards.R_TABLE).Select(x => x.Key))
             {
                 object? value = "";
                 conditions.TryGetValue(key, out value);
-                value = value is Dictionary<string, object> dict ? getConditions(dict) : (value is int val ? val.ToString() : "\'" + value?.ToString() + "\'" ?? "<EMPTY VALUE>");
+                value = value is Dictionary<string, object> dict ? getConditions(dict) : (value is int val ? val.ToString() : "\'" + value?.ToString() + "\'" ?? $"<{DataBaseStandards.DBE_EMPTY}: VALUE>");
                 conditionLayout.Add($"{key} = {value}");
             }
-            return $"(SELECT Id FROM {table?.ToString() ?? "<TABLE NOT FOUND IN KEYS>"} WHERE {
+            return $"(SELECT Id FROM {table?.ToString() ?? $"<{DataBaseStandards.DBE_NOT_FOUND}: TABLE NOT FOUND IN KEYS>"} WHERE {
                 string.Join(" AND ", conditionLayout)
                 })";
         }
@@ -189,8 +189,12 @@ namespace Tasker.Classes {
                 var command = connection.CreateCommand();
                 command.CommandText =
                     "INSERT INTO " + table +
-                    "(" + string.Join(", ", parameters) + ") " +
-                    "VALUES(" + string.Join(", ", data) + ")";
+                    "(" + string.Join(", ", 
+                        parameters.Where((x, index) => data[index] != null)) 
+                    + ") " + "VALUES(" + string.Join(", ", 
+                    data.Where(x => x != null).Select(x => 
+                    x is string str ? "\'" + str + "\'" : x is DateTime dat ? "\'" + dat.ToString("O") + "\'" : x?.ToString()
+                    )) + ")";
 
                 command.ExecuteNonQuery();
             }

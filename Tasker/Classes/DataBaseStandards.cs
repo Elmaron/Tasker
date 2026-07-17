@@ -6,6 +6,15 @@ namespace Tasker.Classes
 {
     public static class DataBaseStandards
     {
+        private const string _reserved = "RESERVED_";
+        private const string _databaseError = "DATABASE_ERROR_";
+
+        public const string R_NOCATEGORY = $"{_reserved}NOCATEGORY";
+        public const string R_NOPROJECT = $"{_reserved}NOPROJECT";
+        public const string R_TABLE = $"{_reserved}TABLENAME";
+        public const string DBE_EMPTY = $"{_databaseError}EMPTY";
+        public const string DBE_NOT_FOUND = $"{_databaseError}NOT_FOUND";
+
         private static List<Dictionary<string, object>> _difficulty = new List<Dictionary<string, object>>
         {
             new Dictionary<string, object> {
@@ -109,12 +118,12 @@ namespace Tasker.Classes
         {
             new Dictionary<string, object>
             {
-                {"Label", "RESERVED_NOCATEGORY"},
+                {"Label", R_NOCATEGORY},
                 {"Description", "All tasks, appointments and projects, which have not been added to a category. Only visible if content available."}
             },
             new Dictionary<string, object>
             {
-                {"Label", "RESERVED_NOPROJECT"},
+                {"Label", R_NOPROJECT},
                 {"Description", "All tasks and appointments, which have not been added to a project. Only visible if content available."}
             }
         };
@@ -123,8 +132,8 @@ namespace Tasker.Classes
         {
             new Dictionary<string, object>
             {
-                {"DataId", new Dictionary<string, object> { {"RESERVED_TABLE", "Data"}, { "Label", "RESERVED_NOCATEGORY" } } },
-                {"PriorityId", new Dictionary<string, object> { { "RESERVED_TABLE", "Priority"}, { "Label", "normal" } } }
+                {"DataId", new Dictionary<string, object> { {R_TABLE, "Data"}, { "Label", R_NOCATEGORY } } },
+                {"PriorityId", new Dictionary<string, object> { { R_TABLE, "Priority"}, { "Label", "normal" } } }
             }
         };
 
@@ -132,9 +141,9 @@ namespace Tasker.Classes
         {
             new Dictionary<string, object>
             {
-                {"CategoryId", new Dictionary<string, object> { { "RESERVED_TABLE", "Category" }, { "DataId", new Dictionary<string, object> { { "RESERVED_TABLE", "Data" }, { "Label", "RESERVED_NOCATEGORY" } } } } },
-                {"DataId", new Dictionary<string, object> { { "RESERVED_TABLE", "Data" }, { "Label", "RESERVED_NOPROJECT" } } },
-                {"PriorityId", new Dictionary<string, object> { { "RESERVED_TABLE", "Priority" }, { "Label", "normal" } } }
+                {"CategoryId", new Dictionary<string, object> { { R_TABLE, "Category" }, { "DataId", new Dictionary<string, object> { { R_TABLE, "Data" }, { "Label", R_NOCATEGORY } } } } },
+                {"DataId", new Dictionary<string, object> { { R_TABLE, "Data" }, { "Label", R_NOPROJECT } } },
+                {"PriorityId", new Dictionary<string, object> { { R_TABLE, "Priority" }, { "Label", "normal" } } }
             }
         };
 
