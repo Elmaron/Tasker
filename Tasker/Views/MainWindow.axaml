@@ -21,6 +21,7 @@
 			Background="hsl(231, 20%, 50%)"
 			Orientation="Horizontal">
             <!--<Button>Settings</Button>-->
+			<Button>Start/Stop</Button>
 			<ComboBox ItemsSource="{Binding Categories}"
 					  SelectedItem="{Binding SelectedCategory}">
 				<ComboBox.ItemTemplate>
@@ -29,7 +30,10 @@
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 			</ComboBox>
-            <Button>Start/Stop</Button>
+			<TextBox PlaceholderText="{Binding NewCategoryPlaceholder}"
+					 Text="{Binding NewCategoryName}"
+					 MaxLength="30"/>
+			<Button>+</Button>
         </StackPanel>
         <DockPanel Name="dockpanel_projects"
             DockPanel.Dock="Left"

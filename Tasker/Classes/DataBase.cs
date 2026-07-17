@@ -34,25 +34,58 @@ namespace Tasker.Classes {
             command.CommandText = getSQL("Database/Create");
             command.ExecuteNonQuery();
 
-            var statements = getSQL("Database/Initialize")
-                .Split(";")
-                .Select((sql, index) => new { Sql = sql.Trim(), Index = index + 1 })
-                .Where(x => !string.IsNullOrWhiteSpace(x.Sql));
-            foreach (var statement in statements)
+            addValuesToTable("Difficulty", DataBaseStandards.Difficulty);
+            addValuesToTable("Priority", DataBaseStandards.Priority);
+            addValuesToTable("Type", DataBaseStandards.Type);
+            addValuesToTable("Data", DataBaseStandards.Data);
+            addValuesToTable("Category", DataBaseStandards.Category);
+            addValuesToTable("Project", DataBaseStandards.Project);
+
+        }
+
+        private static void addValuesToTable(string table, List<Dictionary<string, object>> tableValues)
+        {
+            using var connection = new SqliteConnection(ConnectionString);
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+
+            List<string> commandList = [];
+
+            foreach (Dictionary<string, object> value in tableValues)
             {
-                try
-                {
-                    command.CommandText = statement.Sql + ";";
+                commandList.Add($"INSERT OR IGNORE INTO {table}({
+                    string.Join(", ", value.Keys)
+                    }) VALUES ({string.Join(", ", (
+                    value.Values.Select(x => x is Dictionary<string, object> dict ? getConditions(dict) : x?.ToString() ?? "RESERVED_EMPTY")
+                    ))});");
+            }
+
+            foreach (string commandString in commandList)
+                try {
                     command.ExecuteNonQuery();
                 }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Fehler in {statement.Index}: ");
-                    System.Diagnostics.Debug.WriteLine(statement.Sql);
-                    System.Diagnostics.Debug.WriteLine(e.Message);
+                catch (Exception e) {
+                    System.Diagnostics.Debug.WriteLine($"Error in \"{commandString}\": {e.Message}");
                 }
-            }
             
+        }
+
+        private static string getConditions(Dictionary<string, object> conditions)
+        {
+            object? table = "";
+            conditions.TryGetValue("RESERVED_TABLE", out table);
+            List<string> conditionLayout = [];
+            foreach (string key in conditions.Where(x => x.Key != "RESERVERD_TABLE").Select(x => x.Key))
+            {
+                object? value = "";
+                conditions.TryGetValue(key, out value);
+                value = value is Dictionary<string, object> dict ? getConditions(dict) : value?.ToString() ?? "<EMPTY VALUE>";
+                conditionLayout.Add($"{key} = {value}");
+            }
+            return $"(SELECT Id FROM {table?.ToString() ?? "<TABLE NOT FOUND IN KEYS>"} WHERE {
+                string.Join(" AND ", conditionLayout)
+                })";
         }
 
         //Use this function to get the content of a Database file (sql-File)

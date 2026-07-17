@@ -11,6 +11,9 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
+        //Create Database, if not available
+        Tasker.Classes.DataBase.Initialize();
+
         InitializeComponent();
         //data ??= new();
     }
@@ -21,8 +24,8 @@ public partial class MainWindow : Window
     {
         base.OnLoaded(e);
 
-        //Create Database, if not available
-        Tasker.Classes.DataBase.Initialize();
+        
+        
 
         /*
         //Load Data into a more usable structure

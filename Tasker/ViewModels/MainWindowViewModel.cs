@@ -11,6 +11,13 @@ public partial class MainWindowViewModel : ViewModelBase
 {
     //Simple Data Bindings
 
+    private string _newCategoryPlaceholder = "New Categoryname";
+    public string NewCategoryPlaceholder
+    {
+        get => _newCategoryPlaceholder;
+        set => SetProperty(ref _newCategoryPlaceholder, value);
+    }
+
     private string _newProjectPlaceholder = "New Projectname";
     public string NewProjectPlaceholder
     {
@@ -22,6 +29,13 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         get => _newTaskPlaceholder;
         set => SetProperty(ref _newTaskPlaceholder, value);
+    }
+
+    private string _newCategoryName = "";
+    public string NewCategoryName
+    {
+        get => _newCategoryName;
+        set => SetProperty(ref _newCategoryName, value);
     }
 
     private string _newProjectName = "";
