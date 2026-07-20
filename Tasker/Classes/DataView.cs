@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using Tasker.ViewModels;
 
@@ -12,10 +14,10 @@ namespace Tasker.Classes
     //They are only used to store specific data visible to the user and the Ids from the database to load different items
     public class DataView
     {
+        //private DataStructure _data = new();
+
         public abstract class ObservableTemplate : ObservableObject
         {
-            private int _id;
-            private string _label = "";
             private object[] _data = new object[2];
 
             public int Id
@@ -49,12 +51,49 @@ namespace Tasker.Classes
 
         public class Task : ObservableTemplate
         {
+            private bool _isFinished;
+            private bool _isVisible_StartStopButton;
 
-            private ObservableCollection<Priority> _priorites;
-            public ObservableCollection<Priority> Priorities
+            public bool IsFinished
             {
-                get => _priorites;
-                set => SetProperty(ref _priorites, value);
+                get => _isFinished;
+                set { 
+                    SetProperty(ref _isFinished, value); 
+                    IsVisible_StartStopButton = !value; 
+                }
+            }
+
+            public bool IsVisible_StartStopButton
+            {
+                get => _isVisible_StartStopButton;
+                set => SetProperty(ref _isVisible_StartStopButton, value);
+            }
+
+            private static ObservableCollection<Difficulty> _difficulties;
+            public static ObservableCollection<Difficulty> Difficulties
+            {
+                get => _difficulties;
+                set => _difficulties =  value;
+            }
+
+            private static ObservableCollection<Priority> _priorities;
+            public static ObservableCollection<Priority> Priorities
+            {
+                get => _priorities;
+                set => _priorities = value;
+            }
+
+            private Difficulty _selectedDifficulty;
+            public Difficulty SelectedDifficulty
+            {
+                get => _selectedDifficulty;
+                set 
+                {
+                    if (_selectedDifficulty == value) return;
+                    _selectedDifficulty = value;
+
+                    OnPropertyChanged();
+                }
             }
 
             private Priority _selectedPriority;
@@ -69,13 +108,50 @@ namespace Tasker.Classes
                 }
             }
 
-            public Task(DataStructure data, int pSelectedPriorityId) {
-                _priorites = new ViewControl().LoadPriorites(data);
-                foreach (Priority priority in _priorites)
+            public Task(DataStructure data, int pSelectedPriorityId, int? pSelectedDifficultyId) {
+                Priorities ??= new ViewControl().LoadPriorites(data);
+                Difficulties ??= new ViewControl().LoadDifficulties(data);
+                foreach (Priority priority in Priorities)
                 {
                     if (priority.Id != pSelectedPriorityId) continue;
-                    _selectedPriority = priority;
+                    SelectedPriority = priority;
                     break;
+                } 
+                SelectedPriority ??= Priorities[0];
+                SelectedDifficulty = Difficulties.Last();
+                if (pSelectedDifficultyId == null) return;
+                foreach (Difficulty difficulty in Difficulties)
+                {
+                    if (difficulty.Id != pSelectedDifficultyId) continue;
+                    SelectedDifficulty = difficulty;
+                    break;
+                }
+
+            }
+        }
+
+        public class Difficulty : ObservableTemplate
+        {
+            private string _description;
+            private string _recommendation;
+
+            public string Description
+            {
+                get => _description;
+                set => SetProperty(ref _description, value);
+            }
+
+            public string Recommendation
+            {
+                get => _recommendation;
+                set => SetProperty(ref _recommendation, value);
+            }
+
+            public string Tip
+            {
+                get
+                {
+                    return $"{Description}\nRecommendation: {Recommendation}";
                 }
             }
         }

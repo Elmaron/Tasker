@@ -19,25 +19,17 @@ public partial class MainWindowViewModel : ViewModelBase
         set => SetProperty(ref _data, value);
     }
 
-    private string _newCategoryPlaceholder = "New Categoryname";
-    public string NewCategoryPlaceholder
-    {
-        get => _newCategoryPlaceholder;
-        set => SetProperty(ref _newCategoryPlaceholder, value);
-    }
+    private const string _deleteButtonText = "Delete";
+    public string DeleteButtonText { get => _deleteButtonText; }
 
-    private string _newProjectPlaceholder = "New Projectname";
-    public string NewProjectPlaceholder
-    {
-        get => _newProjectPlaceholder;
-        set => SetProperty(ref _newProjectPlaceholder, value);
-    }
-    private string _newTaskPlaceholder = "New Taskname";
-    public string NewTaskPlaceholder
-    {
-        get => _newTaskPlaceholder;
-        set => SetProperty(ref _newTaskPlaceholder, value);
-    }
+    private const string _newCategoryPlaceholder = "New Category...";
+    public string NewCategoryPlaceholder { get => _newCategoryPlaceholder; }
+
+    private const string _newProjectPlaceholder = "New Project...";
+    public string NewProjectPlaceholder { get => _newProjectPlaceholder; }
+
+    private const string _newTaskPlaceholder = "New Task...";
+    public string NewTaskPlaceholder { get => _newTaskPlaceholder; }
 
     private string _newCategoryName = "";
     public string NewCategoryName

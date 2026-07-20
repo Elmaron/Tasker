@@ -56,10 +56,10 @@ namespace Tasker.Classes
                     if (project.Id != pSelectedProject.Id) continue;
                     foreach (Classes.DataStructure.Category.Project.Task task in project.tasks)
                     {
-                        Tasks.Add(new Classes.DataView.Task(data, task.priority.Id)
+                        Tasks.Add(new Classes.DataView.Task(data, task.priority.Id, (task.difficulty != null ? task.difficulty.Value.Id : null))
                         {
                             Id = task.Id,
-                            Label = task.data.Label
+                            Label = task.data.Label,
                         });
                     }
                     break;
@@ -67,6 +67,28 @@ namespace Tasker.Classes
                 break;
             }
             return Tasks;
+        }
+
+        public ObservableCollection<DataView.Difficulty> LoadDifficulties(DataStructure data)
+        {
+            ObservableCollection<DataView.Difficulty> difficulties = [];
+            foreach (Classes.DataStructure.InternalDifficulty difficulty in data.difficulties)
+            {
+                difficulties.Add(new Classes.DataView.Difficulty
+                {
+                    Id = difficulty.Id,
+                    Label = difficulty.Label,
+                    Description = difficulty.Description,
+                    Recommendation = difficulty.Recommendation
+                });
+            }
+            difficulties.Add(new Classes.DataView.Difficulty {
+                Id = 0,
+                Label = "<none selected>",
+                Description = "You have not selected a difficulty for this task.",
+                Recommendation = "There is no recommendation for tasks that have no difficulty set."
+            });
+            return difficulties;
         }
 
         public ObservableCollection<DataView.Priority> LoadPriorites(DataStructure data)
@@ -77,7 +99,8 @@ namespace Tasker.Classes
                 priorities.Add(new Classes.DataView.Priority
                 {
                     Id = priority.Id,
-                    Label = priority.Label
+                    Label = priority.Label,
+                    Ordering = priority.Ordering
                 });
             }
             return priorities;

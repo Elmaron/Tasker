@@ -26,7 +26,13 @@
 					  SelectedItem="{Binding SelectedCategory}">
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
-						<TextBlock Text="{Binding Label}" />
+						<TextBlock Text="{Binding Label}">
+							<TextBlock.ContextMenu>
+								<ContextMenu>
+									<MenuItem Header="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteButtonText}"/>
+								</ContextMenu>
+							</TextBlock.ContextMenu>
+						</TextBlock>
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 			</ComboBox>
@@ -37,24 +43,33 @@
         </StackPanel>
         <DockPanel Name="dockpanel_projects"
             DockPanel.Dock="Left"
-            Background="hsl(212, 20%, 50%)">
+            Background="hsl(212, 20%, 50%)"
+			MinWidth="200">
             <TextBlock Text="Projects"
                 Background="hsl(212, 20%, 45%)"
                 DockPanel.Dock="Top"></TextBlock>
-            <StackPanel DockPanel.Dock="Bottom"
-                Background="hsl(212, 20%, 45%)"
-                Orientation="Horizontal">
-                <TextBox PlaceholderText="{Binding NewProjectPlaceholder}"
+            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto"
+				DockPanel.Dock="Bottom"
+                Background="hsl(212, 20%, 45%)">
+                <TextBox Grid.Column="1" Grid.Row="0"
+						 PlaceholderText="{Binding NewProjectPlaceholder}"
 						 Text="{Binding NewProjectName}"
 						 MaxLength="30"></TextBox>
-                <Button Command="{Binding CreateNewProject}">+</Button>
-            </StackPanel>
+                <Button Grid.Column="0" Grid.Row="0"
+					Command="{Binding CreateNewProject}">+</Button>
+            </Grid>
 			<ListBox ItemsSource="{Binding Projects}"
 					 SelectedItem="{Binding SelectedProject}"
 					 Background ="hsla(0,0,0%, 0)">
 				<ListBox.ItemTemplate>
 					<DataTemplate>
-						<TextBlock Text="{Binding Label}" />
+						<TextBlock Text="{Binding Label}">
+							<TextBlock.ContextMenu>
+								<ContextMenu>
+									<MenuItem Header="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteButtonText}"/>
+								</ContextMenu>
+							</TextBlock.ContextMenu>
+						</TextBlock>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
             </ListBox>
@@ -75,40 +90,105 @@
             <TextBlock Text="Tasks"
                 Background="hsl(191, 20%, 45%)"
                 DockPanel.Dock="Top"></TextBlock>
-            <StackPanel DockPanel.Dock="Bottom"
-                Background="hsl(191, 20%, 45%)"
-                Orientation="Horizontal">
-                <TextBox PlaceholderText="{Binding NewTaskPlaceholder}"
+            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto"
+				DockPanel.Dock="Bottom"
+                Background="hsl(191, 20%, 45%)">
+                <TextBox Grid.Column="1" Grid.Row="0" 
+						 PlaceholderText="{Binding NewTaskPlaceholder}"
 						 Text="{Binding NewTaskName}"
-						MaxLength="30"></TextBox>
-                <Button Command="{Binding CreateNewTask}">+</Button>
-            </StackPanel>
-			<ListBox ItemsSource="{Binding Tasks}"
+						 MaxLength="30"></TextBox>
+                <Button Grid.Column="0" Grid.Row="0"
+					Command="{Binding CreateNewTask}">+</Button>
+            </Grid>
+			<TableView ItemsSource="{Binding Tasks}"
 					  Background ="hsla(0,0,0%, 0)">
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<StackPanel Orientation="Horizontal">
-							<TextBox Text="{Binding Label}"/>
-							<ComboBox ItemsSource="{Binding Priorities}"
-									  SelectedItem="{Binding SelectedPriority}">
-								<ComboBox.ItemTemplate>
-									<DataTemplate>
-										<TextBlock Text="{Binding Label}"/>
-									</DataTemplate>
-								</ComboBox.ItemTemplate>
-							</ComboBox>
-							<Button Content="Update"
+				<TableView.Columns>
+					<TableViewColumn Header="Finished" Width="Auto">
+						<TableViewColumn.CellTemplate>
+							<DataTemplate>
+								<CheckBox IsChecked="{Binding IsFinished}"/>
+							</DataTemplate>
+						</TableViewColumn.CellTemplate>
+					</TableViewColumn>
+					<TableViewColumn Header="Label" Width="*">
+						<TableViewColumn.CellTemplate>
+							<DataTemplate>
+								<Grid ColumnDefinitions="Auto,*">
+									<Button
+										Grid.Column="0"
+										IsVisible="{Binding IsVisible_StartStopButton}"
+										Content="Start/Stop"/>
+									<TextBox
+										Grid.Column="1"
+										Text="{Binding Label}"/>
+								</Grid>
+							</DataTemplate>
+						</TableViewColumn.CellTemplate>
+					</TableViewColumn>
+					<TableViewColumn Header="Difficulty" Width="Auto">
+						<TableViewColumn.CellTemplate>
+							<DataTemplate>
+								<ComboBox
+								Grid.Column="3"
+								ItemsSource="{Binding Difficulties}"
+								SelectedItem="{Binding SelectedDifficulty}">
+									<ComboBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock Text="{Binding Label}"
+													   ToolTip.Tip="{Binding Tip}"/>
+										</DataTemplate>
+									</ComboBox.ItemTemplate>
+								</ComboBox>
+							</DataTemplate>
+						</TableViewColumn.CellTemplate>
+					</TableViewColumn>
+					<TableViewColumn Header="Priority" Width="Auto">
+						<TableViewColumn.CellTemplate>
+							<DataTemplate>
+								<ComboBox
+								Grid.Column="4"
+								ItemsSource="{Binding Priorities}"
+								SelectedItem="{Binding SelectedPriority}">
+									<ComboBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock Text="{Binding Label}"/>
+										</DataTemplate>
+									</ComboBox.ItemTemplate>
+								</ComboBox>
+							</DataTemplate>
+						</TableViewColumn.CellTemplate>
+					</TableViewColumn>
+					<TableViewColumn Header="Update" Width="Auto">
+						<TableViewColumn.CellTemplate>
+							<DataTemplate>
+								<Button
+								Grid.Column="6"
+								Content="Update"
 									Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).UpdateTask}"
 									CommandParameter="{Binding Data}"
 									/>
+							</DataTemplate>
+						</TableViewColumn.CellTemplate>
+					</TableViewColumn>
+							
+							<!--
 							<Button Content="Delete"
 									Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteTask}"
 									CommandParameter="{Binding Id}"
 									/>
-						</StackPanel>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
+									-->
+							<!--
+							<Grid.ContextMenu>
+								<ContextMenu>
+									<MenuItem 
+										Header="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteButtonText}"
+										Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteTask}"
+										CommandParameter="{Binding Id}"/>
+								</ContextMenu>
+							</Grid.ContextMenu>
+							-->
+				</TableView.Columns>
+			</TableView>
         </DockPanel>
     </DockPanel>
 

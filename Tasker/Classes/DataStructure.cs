@@ -15,6 +15,7 @@ namespace Tasker.Classes
     {
         public List<Category> categories;
         public List<InternalPriority> priorities;
+        public List<InternalDifficulty> difficulties;
 
         public DataStructure() 
         {
@@ -22,12 +23,14 @@ namespace Tasker.Classes
             Reload();
             categories ??= [];
             priorities ??= [];
+            difficulties ??= [];
         }
 
         public void Reload()
         {
             categories = [];
             priorities = [];
+            difficulties = [];
             DataBase.Category dbCategory = new();
             foreach (DataBase.Category.CategoryData category in dbCategory.Get())
             {
@@ -37,6 +40,11 @@ namespace Tasker.Classes
             foreach (DataBase.Priority.PriorityData priority in dbPriority.Get())
             {
                 priorities.Add(new InternalPriority(priority));
+            }
+            DataBase.Difficulty dbDifficulty = new();
+            foreach (DataBase.Difficulty.DifficultyData difficulty in dbDifficulty.Get())
+            {
+                difficulties.Add(new InternalDifficulty(difficulty));
             }
         }
 
