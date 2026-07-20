@@ -2,7 +2,7 @@
 
 Ein Aufgaben-Planner und Tracker, der dir hilft, dein Arbeitsverhalten zu verstehen.
 
-*This is the german translation. You can find the readme in english [here](https://github.com/Elmaron/Tasker).*
+*This is the german translation. You can find the readme in english [here](../README.md).*
 
 # Entwicklungsstatus
 
@@ -16,6 +16,30 @@ Folgt mir gerne auf Github, um Updates zum Projekt zu bekommen!
 Status: **[Prealpha](#pre-alpha)**| [Alpha](#alpha-release) | [Beta](#beta-release) | [Release](#veröffentlichung-v10)
 
 *abgeschlossen*; **in Bearbeitung**; Nächste Phase
+
+# Inhaltsverzeichnis
+
+* [Funktionen](#funktionen)
+
+    * [Eine Stellungnahme zum Thema KI](#eine-stellungnahme-zum-thema-ki)
+
+        * [Entwicklung](#entwicklung)
+
+        * [KI-Assistent](#ki-assistent)
+    
+    * [Geplante Inhalte](#geplante-inhalte)
+
+        * [Pre-Alpha](#pre-alpha)
+
+        * [Alpha](#alpha-release)
+
+        * [Beta](#beta-release)
+
+        * [Release](#veröffentlichung-v10)
+
+        * [Nach der Veröffentlichung](#planung-für-nach-der-veröffentlichung)
+
+* [Farben](#farben)
 
 # Funktionen
 
@@ -67,7 +91,7 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 ### Pre-Alpha
 
 - [x] Github Projekt erstellen
-- [ ] Design überarbeiten
+- [x] Design überarbeiten
     - [x] Layout und Design neu entwerfen
 - [ ] Erstelle die Grundfunktionen
     - [x] Lese- und Schreibfunktionen für die Datenbank (durch SQLite-Befehle)
@@ -150,6 +174,14 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 - [ ] Ein paar lustige Belohnungen für das erfüllen deiner Aufgaben!
     - [ ] Du kannst selbst welche erstellen oder das Programm dir welche empfehlen lassen
     - [ ] Das Programm hat eingebaute kleine Mini-Spiele, die belohnend sein sollen
+
+# Farben
+
+Das Programm soll nach Möglichkeit auch Barrierefreiheit werden. Dementsprechend habe ich eine neue Farbpalette mit dem letzten Update hinzugefügt. Ich habe allerdings noch nicht geprüft, ob diese Barrierefrei ist. Falls du selbst an einer Farbfehlsichtigkeit leidest, schick mir doch gerne Feedback an meine [Mail](mailto://info@vindona.de)!
+
+![Farbpalette](../concept-images/Colorpalette%20v1-0.png)
+
+Alle Farben werden von links nach rechts dunkler. Die Sättigung ist an den Rändern höher als in der Mitte. Beim Hintergrund liegt die Sättigung bei 0%. Bei Primär, Sekundär und Hintergrund ist der Farbgrad der gleiche. Bei Schwierigkeit und Priorität verschiebt sich der Farbgrad.
 
 *Dieser Text wurde ohne die Verwendung von AI geschrieben.*
 

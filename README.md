@@ -2,7 +2,7 @@
 
 A Task-Planner and Tracker to help you understand your own work behavior.
 
-*Eine deutsche Übersetzung befindet sich [hier](https://github.com/Elmaron/Tasker/tree/master/translations/README-GERMAN.md).*
+*Eine deutsche Übersetzung befindet sich [hier](./translations/README-GERMAN.md).*
 
 # Development Status
 
@@ -16,6 +16,30 @@ Follow me on github to stay updated on the project!
 State: **[Pre-Alpha](#pre-alpha)** | [Alpha](#alpha-release) | [Beta](#beta-release) | [Release](#release-v10)
 
 *finished*; **in Progress**; Upcoming Phase
+
+# Table of Contents
+
+* [Features](#features)
+
+    * [Statement to AI](#statement-to-ai)
+
+        * [Development](#development)
+
+        * [AI-Assistant](#ai-assistant)
+    
+    * [Planned Features](#planned-features)
+
+        * [Pre-Alpha](#pre-alpha)
+
+        * [Alpha](#alpha-release)
+
+        * [Beta](#beta-release)
+
+        * [Release](#release-v10)
+
+        * [Ideas for features after release](#ideas-for-features-after-release)
+
+* [Colors](#colors)
 
 # Features
 
@@ -67,7 +91,7 @@ But if I do, here is, what you can and cannot expect from it:
 ### Pre-Alpha
 
 - [x] Create Github Project
-- [ ] Update design
+- [x] Update design
     - [x] Redefine layout and design
 - [ ] Create basic functionality
     - [x] Read and write to the database (through SQLite-commands)
@@ -149,6 +173,16 @@ But if I do, here is, what you can and cannot expect from it:
 - [ ] A few funny rewards for doing your tasks!
     - [ ] You can create them yourself or let the program recommend you something
     - [ ] The Program has built-in Mini-Games, which act as a reward
+
+# Colors
+
+This Program is supposed to be accessible to everyone. Considering this, I recreated the colorpalette in the last update, but didn't check for accessibility. If you have a color vision deficiency yourself, feel free to give me feedback via [Mail](mailto://info@vindona.de)!
+
+![Farbpalette](./concept-images/Colorpalette%20v1-0.png)
+
+Description:
+
+ALl Colors get darker from left to right. The Saturation is higher at the edge, than it is in the center. The background has a saturation of 0%. The primary, secondary and background each have the same hue. The colors for difficulty and priority have a different hue moving from left to right.
 
 *This text has been created without the usage of ai.*
 
