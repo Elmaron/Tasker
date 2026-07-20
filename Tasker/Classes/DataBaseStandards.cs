@@ -20,17 +20,20 @@ namespace Tasker.Classes
             new Dictionary<string, object> {
                 {"Label", "easy"},
                 {"Description", "These Tasks should be simple to do. This means, that they are mostly quick to do, simple or uncomplicated."},
-                {"Recommendation", "Put these tasks at the beginning of a work phase (especially on work days with hard tasks)."}
+                {"Recommendation", "Put these tasks at the beginning of a work phase (especially on work days with hard tasks)."},
+                {"Color", "hsl(145,60%,70%)" }
             },
             new Dictionary<string, object> {
                 {"Label", "normal"},
                 {"Description", "Even though these tasks are not hard, you still might use a little boost to do them. This Category is for simple tasks, that you are not motivated for, and for tasks, which take a little longer."},
-                {"Recommendation", "Do these tasks after an easy one. May also be a good final task for the day, because theyre still doable."}
+                {"Recommendation", "Do these tasks after an easy one. May also be a good final task for the day, because theyre still doable."},
+                {"Color", "hsl(185,30%,50%)" }
             },
             new Dictionary<string, object> {
                 {"Label", "hard"},
                 {"Description", "Repetetive, boring, complex tasks and those, that you simply have no motivation for, are hard, because theyre usually hard to do."},
-                {"Recommendation", "Do these tasks after a few smaller successes. If your motivation fails you, while doing the task, do a simpler one as a motivation booster."}
+                {"Recommendation", "Do these tasks after a few smaller successes. If your motivation fails you, while doing the task, do a simpler one as a motivation booster."},
+                {"Color", "hsl(225,50%,30%)" }
             }
         };
 
@@ -38,23 +41,28 @@ namespace Tasker.Classes
         {
             new Dictionary<string, object> {
                 {"Label", "very low"},
-                {"Ordering", 15}
+                {"Ordering", 15},
+                {"Color", "hsl(125,50%,30%)" }
             },
             new Dictionary<string, object> {
                 {"Label", "low"},
-                {"Ordering", 23}
+                {"Ordering", 23},
+                {"Color", "hsl(105,40%,40%)" }
             },
             new Dictionary<string, object> {
                 {"Label", "normal"},
-                {"Ordering", 31}
+                {"Ordering", 31},
+                {"Color", "hsl(85,30%,50%)" }
             },
             new Dictionary<string, object> {
                 {"Label", "high"},
-                {"Ordering", 39}
+                {"Ordering", 39},
+                {"Color", "hsl(65,40%,60%)" }
             },
             new Dictionary<string, object> {
                 {"Label", "very high"},
-                {"Ordering", 47}
+                {"Ordering", 47},
+                {"Color", "hsl(45,60%,70%)" }
             }
         };
 

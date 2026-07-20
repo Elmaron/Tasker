@@ -9,15 +9,78 @@ namespace Tasker.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    //Simple Data Bindings
+    //Colors
+    private const string color_primary_hue = "275";
+    
+    private const string color_secondary_hue = "242";
+    
+    private const string color_background_hue = "0";
 
-    private Classes.DataStructure _data;
+    private const string color_difficulty_hue0 = "145";
+    private const string color_difficulty_hue1 = "165";
+    private const string color_difficulty_hue2 = "185";
+    private const string color_difficulty_hue3 = "205";
+    private const string color_difficulty_hue4 = "225";
 
-    public Classes.DataStructure Data
-    {
-        get => _data;
-        set => SetProperty(ref _data, value);
-    }
+    private const string color_priority_hue0 = "45";
+    private const string color_priority_hue1 = "65";
+    private const string color_priority_hue2 = "85";
+    private const string color_priority_hue3 = "105";
+    private const string color_priority_hue4 = "125";
+
+
+    private const string color_background_saturation = "0";
+
+    private const string color_generic_saturation0 = "60";
+    private const string color_generic_saturation1 = "40";
+    private const string color_generic_saturation2 = "30";
+    private const string color_generic_saturation3 = "40";
+    private const string color_generic_saturation4 = "50";
+
+
+    private const string color_generic_lightness0 = "70";
+    private const string color_generic_lightness1 = "60";
+    private const string color_generic_lightness2 = "50";
+    private const string color_generic_lightness3 = "40";
+    private const string color_generic_lightness4 = "30";
+
+    private const string color_background_lightness0 = "35";
+    private const string color_background_lightness1 = "30";
+    private const string color_background_lightness2 = "25";
+    private const string color_background_lightness3 = "20";
+    private const string color_background_lightness4 = "12";
+
+    public static string ColorPrimary0 => $"hsl({color_primary_hue},{color_generic_saturation0}%,{color_generic_lightness0}%)";
+    public static string ColorPrimary1 => $"hsl({color_primary_hue},{color_generic_saturation1}%,{color_generic_lightness1}%)";
+    public static string ColorPrimary2 => $"hsl({color_primary_hue},{color_generic_saturation2}%,{color_generic_lightness2}%)";
+    public static string ColorPrimary3 => $"hsl({color_primary_hue},{color_generic_saturation3}%,{color_generic_lightness3}%)";
+    public static string ColorPrimary4 => $"hsl({color_primary_hue},{color_generic_saturation4}%,{color_generic_lightness4}%)";
+
+    public static string ColorSecondary0 => $"hsl({color_secondary_hue},{color_generic_saturation0}%,{color_generic_lightness0}%)";
+    public static string ColorSecondary1 => $"hsl({color_secondary_hue},{color_generic_saturation1}%,{color_generic_lightness1}%)";
+    public static string ColorSecondary2 => $"hsl({color_secondary_hue},{color_generic_saturation2}%,{color_generic_lightness2}%)";
+    public static string ColorSecondary3 => $"hsl({color_secondary_hue},{color_generic_saturation3}%,{color_generic_lightness3}%)";
+    public static string ColorSecondary4 => $"hsl({color_secondary_hue},{color_generic_saturation4}%,{color_generic_lightness4}%)";
+
+    public static string ColorBackground0 => $"hsl({color_background_hue},{color_background_saturation}%,{color_background_lightness0}%)";
+    public static string ColorBackground1 => $"hsl({color_background_hue},{color_background_saturation}%,{color_background_lightness1}%)";
+    public static string ColorBackground2 => $"hsl({color_background_hue},{color_background_saturation}%,{color_background_lightness2}%)";
+    public static string ColorBackground3 => $"hsl({color_background_hue},{color_background_saturation}%,{color_background_lightness3}%)";
+    public static string ColorBackground4 => $"hsl({color_background_hue},{color_background_saturation}%,{color_background_lightness4}%)";
+
+    public static string ColorDifficulty0 => $"hsl({color_difficulty_hue0},{color_generic_saturation0}%,{color_generic_lightness0}%)";
+    public static string ColorDifficulty1 => $"hsl({color_difficulty_hue1},{color_generic_saturation1}%,{color_generic_lightness1}%)";
+    public static string ColorDifficulty2 => $"hsl({color_difficulty_hue2},{color_generic_saturation2}%,{color_generic_lightness2}%)";
+    public static string ColorDifficulty3 => $"hsl({color_difficulty_hue3},{color_generic_saturation3}%,{color_generic_lightness3}%)";
+    public static string ColorDifficulty4 => $"hsl({color_difficulty_hue4},{color_generic_saturation4}%,{color_generic_lightness4}%)";
+
+    public static string ColorPriority0 => $"hsl({color_priority_hue0},{color_generic_saturation0}%,{color_generic_lightness0}%)";
+    public static string ColorPriority1 => $"hsl({color_priority_hue1},{color_generic_saturation1}%,{color_generic_lightness1}%)";
+    public static string ColorPriority2 => $"hsl({color_priority_hue2},{color_generic_saturation2}%,{color_generic_lightness2}%)";
+    public static string ColorPriority3 => $"hsl({color_priority_hue3},{color_generic_saturation3}%,{color_generic_lightness3}%)";
+    public static string ColorPriority4 => $"hsl({color_priority_hue4},{color_generic_saturation4}%,{color_generic_lightness4}%)";
+
+    //TextFields and Buttons
 
     private const string _deleteButtonText = "Delete";
     public string DeleteButtonText { get => _deleteButtonText; }
@@ -30,6 +93,8 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private const string _newTaskPlaceholder = "New Task...";
     public string NewTaskPlaceholder { get => _newTaskPlaceholder; }
+
+    //Editable Textfields
 
     private string _newCategoryName = "";
     public string NewCategoryName
@@ -50,6 +115,16 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         get => _newTaskName;
         set => SetProperty(ref _newTaskName, value);
+    }
+
+    //Data
+
+    private Classes.DataStructure _data;
+
+    public Classes.DataStructure Data
+    {
+        get => _data;
+        set => SetProperty(ref _data, value);
     }
 
     //Collection bindings
@@ -173,14 +248,20 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         if (pId == null || pId is not int k) return;
         Data.categories.Where(x => x.Id == (int)pId).ToArray()[0].Delete();
+        Data.categories.Remove(Data.categories.Where(x => x.Id == (int)pId).ToArray()[0]);
+
+        Categories = new Classes.ViewControl().LoadCategories(Data);
     }
     //Move Tasks and Appointments somewhere else OR delete them (user decision)
     public void DeleteProject(object? pId)
     {
         if (pId == null || pId is not int k || SelectedCategory == null) return;
-        Data.categories.Where(x => x.Id == SelectedCategory.Id).ToArray()[0]
-            .projects.Where(x => x.Id == (int)pId).ToArray()[0]
-            .Delete();
+        DataStructure.Category category =
+        Data.categories.Where(x => x.Id == SelectedCategory.Id).ToArray()[0];
+        category.projects.Where(x => x.Id == (int)pId).ToArray()[0].Delete();
+        category.projects.Remove(category.projects.Where(x => x.Id == (int)pId).ToArray()[0]);
+
+        Projects = new Classes.ViewControl().LoadProjects(Data, SelectedCategory);
     }
     public void DeleteTask(object? pId)
     {

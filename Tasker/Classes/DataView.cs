@@ -134,6 +134,7 @@ namespace Tasker.Classes
         {
             private string _description;
             private string _recommendation;
+            private string _color;
 
             public string Description
             {
@@ -147,6 +148,15 @@ namespace Tasker.Classes
                 set => SetProperty(ref _recommendation, value);
             }
 
+            public string? Color
+            {
+                get => _color;
+                set {
+                    if (value != null) SetProperty(ref _color, value);
+                    else SetProperty(ref _color, "hsla(0,0%,0%,0)");
+                }
+            }
+
             public string Tip
             {
                 get
@@ -154,15 +164,38 @@ namespace Tasker.Classes
                     return $"{Description}\nRecommendation: {Recommendation}";
                 }
             }
+
+            public Difficulty()
+            {
+                _description ??= "";
+                _recommendation ??= "";
+                _color ??= "hsla(0,0%,0%,0)";
+            }
         }
 
         public class Priority : ObservableTemplate
         {
             private int _ordering;
+            private string _color;
             public int Ordering
             {
                 get => _ordering;
                 set => SetProperty(ref _ordering, value);
+            }
+
+            public string? Color
+            {
+                get => _color;
+                set
+                {
+                    if (value != null) SetProperty(ref _color, value);
+                    else SetProperty(ref _color, "hsla(0,0%,0%,0)");
+                }
+            }
+
+            public Priority()
+            {
+                _color ??= "hsla(0,0%,0%,0)";
             }
         }
     }

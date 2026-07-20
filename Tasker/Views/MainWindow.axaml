@@ -14,59 +14,86 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-
-    <!--<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
-    <DockPanel Name="dockpanel_main">
+	
+    <DockPanel Name="dockpanel_main"
+			   Background="{Binding ColorBackground4}">
         <StackPanel DockPanel.Dock="Top"
-			Background="hsl(231, 20%, 50%)"
+			Background="{Binding ColorSecondary3}"
 			Orientation="Horizontal">
             <!--<Button>Settings</Button>-->
-			<Button>Start/Stop</Button>
-			<ComboBox ItemsSource="{Binding Categories}"
-					  SelectedItem="{Binding SelectedCategory}">
+			<Button
+				Background="{Binding ColorSecondary2}"
+				>Start/Stop</Button>
+			<ComboBox
+				Background="{Binding ColorSecondary1}"
+				ItemsSource="{Binding Categories}"
+				SelectedItem="{Binding SelectedCategory}">
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
-						<TextBlock Text="{Binding Label}">
+						<TextBlock 
+							Text="{Binding Label}">
 							<TextBlock.ContextMenu>
-								<ContextMenu>
-									<MenuItem Header="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteButtonText}"/>
+								<ContextMenu
+									Background="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ColorSecondary2}">
+									<MenuItem
+										Header="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteButtonText}"/>
 								</ContextMenu>
 							</TextBlock.ContextMenu>
 						</TextBlock>
 					</DataTemplate>
 				</ComboBox.ItemTemplate>
 			</ComboBox>
-			<TextBox PlaceholderText="{Binding NewCategoryPlaceholder}"
-					 Text="{Binding NewCategoryName}"
-					 MaxLength="30"/>
-			<Button Command="{Binding CreateNewCategory}">+</Button>
+			<TextBox 
+				Background="{Binding ColorSecondary2}"
+				PlaceholderText="{Binding NewCategoryPlaceholder}"
+				Text="{Binding NewCategoryName}"
+				MaxLength="30"/>
+			<Button
+				Background="{Binding ColorSecondary2}"
+				Command="{Binding CreateNewCategory}">+</Button>
         </StackPanel>
-        <DockPanel Name="dockpanel_projects"
+        <DockPanel 
+			Name="dockpanel_projects"
             DockPanel.Dock="Left"
-            Background="hsl(212, 20%, 50%)"
+            Background="{Binding ColorPrimary4}"
 			MinWidth="200">
-            <TextBlock Text="Projects"
-                Background="hsl(212, 20%, 45%)"
-                DockPanel.Dock="Top"></TextBlock>
-            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto"
+            <TextBlock 
+				Text="Projects"
+                Background="{Binding ColorPrimary3}"
+                DockPanel.Dock="Top" />
+            <Grid 
+				ColumnDefinitions="Auto, *" RowDefinitions="Auto"
 				DockPanel.Dock="Bottom"
-                Background="hsl(212, 20%, 45%)">
-                <TextBox Grid.Column="1" Grid.Row="0"
-						 PlaceholderText="{Binding NewProjectPlaceholder}"
-						 Text="{Binding NewProjectName}"
-						 MaxLength="30"></TextBox>
-                <Button Grid.Column="0" Grid.Row="0"
+                Background="{Binding ColorPrimary3}">
+                <TextBox 
+					Grid.Column="1" Grid.Row="0"
+					Background="{Binding ColorPrimary2}"
+					PlaceholderText="{Binding NewProjectPlaceholder}"
+					Text="{Binding NewProjectName}"
+					MaxLength="30" />
+                <Button 
+					Grid.Column="0" Grid.Row="0"
+					Background="{Binding ColorPrimary2}"
 					Command="{Binding CreateNewProject}">+</Button>
             </Grid>
-			<ListBox ItemsSource="{Binding Projects}"
-					 SelectedItem="{Binding SelectedProject}"
-					 Background ="hsla(0,0,0%, 0)">
+			<ListBox 
+				Background="{Binding ColorPrimary2}"
+				ItemsSource="{Binding Projects}"
+				SelectedItem="{Binding SelectedProject}">
+				<ListBox.Styles>
+					<Style
+						Selector="ListBoxItem:selected /template/ ContentPresenter">
+						<Setter Property="Background" Value="{Binding ColorPrimary0}"/>						
+					</Style>
+				</ListBox.Styles>
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<TextBlock Text="{Binding Label}">
 							<TextBlock.ContextMenu>
-								<ContextMenu>
-									<MenuItem Header="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteButtonText}"/>
+								<ContextMenu
+									Background="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ColorPrimary2}">
+									<MenuItem 
+										Header="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteButtonText}"/>
 								</ContextMenu>
 							</TextBlock.ContextMenu>
 						</TextBlock>
@@ -74,36 +101,45 @@
 				</ListBox.ItemTemplate>
             </ListBox>
         </DockPanel>
-        <DockPanel Name="dockpanel_details"
+        <DockPanel 
+			Name="dockpanel_details"
             DockPanel.Dock="Right"
-            Background="hsl(171, 20%, 50%)">
-            <TextBlock Text="Details"
-                Background="hsl(171, 20%, 45%)"
+            Background="{Binding ColorPrimary4}"
+			MinWidth="300"
+			IsVisible="False">
+            <TextBlock 
+				Text="Details"
+                Background="{Binding ColorPrimary3}"
                 DockPanel.Dock="Top"></TextBlock>
-            <Button DockPanel.Dock="Bottom"
-                Background="hsl(171, 20%, 45%)">edit</Button>
-		    <StackPanel Orientation="Vertical">
+            <Button
+				DockPanel.Dock="Bottom"
+                Background="{Binding ColorPrimary3}">edit</Button>
+		    <StackPanel
+				Orientation="Vertical"
+				Background="{Binding ColorPrimary3}">
             </StackPanel>
         </DockPanel>
         <DockPanel Name="dockpanel_tasks"
-            Background="hsl(191, 20%, 50%)">
-            <TextBlock Text="Tasks"
-                Background="hsl(191, 20%, 45%)"
-                DockPanel.Dock="Top"></TextBlock>
-            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto"
+            Background="{Binding ColorBackground4}">
+            <Grid 
+				ColumnDefinitions="Auto, *" RowDefinitions="Auto"
 				DockPanel.Dock="Bottom"
-                Background="hsl(191, 20%, 45%)">
-                <TextBox Grid.Column="1" Grid.Row="0" 
-						 PlaceholderText="{Binding NewTaskPlaceholder}"
-						 Text="{Binding NewTaskName}"
-						 MaxLength="30"></TextBox>
-                <Button Grid.Column="0" Grid.Row="0"
+                Background="{Binding ColorBackground3}">
+                <TextBox 
+					Grid.Column="1" Grid.Row="0" 
+					PlaceholderText="{Binding NewTaskPlaceholder}"
+					Text="{Binding NewTaskName}"
+					Background="{Binding ColorBackground2}"
+					MaxLength="30"></TextBox>
+                <Button 
+					Grid.Column="0" Grid.Row="0"
+					Background="{Binding ColorBackground2}"
 					Command="{Binding CreateNewTask}">+</Button>
             </Grid>
 			<TableView ItemsSource="{Binding Tasks}"
 					  Background ="hsla(0,0,0%, 0)">
 				<TableView.Columns>
-					<TableViewColumn Header="Finished" Width="Auto">
+					<TableViewColumn Header="Finished" Width="40">
 						<TableViewColumn.CellTemplate>
 							<DataTemplate>
 								<CheckBox IsChecked="{Binding IsFinished}"/>
@@ -134,8 +170,17 @@
 								SelectedItem="{Binding SelectedDifficulty}">
 									<ComboBox.ItemTemplate>
 										<DataTemplate>
-											<TextBlock Text="{Binding Label}"
-													   ToolTip.Tip="{Binding Tip}"/>
+											<Border
+												Background="{Binding Color}"
+												HorizontalAlignment="Stretch"
+												VerticalAlignment="Stretch"
+												Margin="-12,-4"
+												Padding="12,4">
+												<TextBlock
+													VerticalAlignment="Center"
+													Text="{Binding Label}"
+													ToolTip.Tip="{Binding Tip}"/>
+											</Border>
 										</DataTemplate>
 									</ComboBox.ItemTemplate>
 								</ComboBox>
@@ -151,7 +196,16 @@
 								SelectedItem="{Binding SelectedPriority}">
 									<ComboBox.ItemTemplate>
 										<DataTemplate>
-											<TextBlock Text="{Binding Label}"/>
+											<Border
+												Background="{Binding Color}"
+												HorizontalAlignment="Stretch"
+												VerticalAlignment="Stretch"
+												Margin="-12,-4"
+												Padding="12,4">
+												<TextBlock
+													VerticalAlignment="Center"
+													Text="{Binding Label}"/>
+											</Border>
 										</DataTemplate>
 									</ComboBox.ItemTemplate>
 								</ComboBox>

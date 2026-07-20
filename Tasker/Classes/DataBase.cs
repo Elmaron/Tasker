@@ -283,6 +283,7 @@ namespace Tasker.Classes {
                 public string Label { get; set; } = "";
                 public string Description { get; set; } = "";
                 public string Recommendation { get; set; } = "";
+                public string? Color { get; set; } = "";
             }
 
             protected override DifficultyData CreateData(SqliteDataReader reader)
@@ -292,7 +293,8 @@ namespace Tasker.Classes {
                     Id = reader.GetInt32(0),
                     Label = reader.GetString(1),
                     Description = reader.GetString(2),
-                    Recommendation = reader.GetString(3)
+                    Recommendation = reader.GetString(3),
+                    Color = reader.IsDBNull(4) ? null : reader.GetString(4)
                 };
             }
         }
@@ -305,6 +307,7 @@ namespace Tasker.Classes {
                 public int Id { get; set; }
                 public string Label { get; set; } = "";
                 public int Ordering { get; set; }
+                public string? Color { get; set; }
             }
 
             protected override PriorityData CreateData(SqliteDataReader reader)
@@ -313,7 +316,8 @@ namespace Tasker.Classes {
                 {
                     Id = reader.GetInt32(0),
                     Label = reader.GetString(1),
-                    Ordering = reader.GetInt32(2)
+                    Ordering = reader.GetInt32(2),
+                    Color = reader.IsDBNull(3) ? null : reader.GetString(3)
                 };
             }
         }

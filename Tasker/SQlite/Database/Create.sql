@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS Difficulty (
 
     Label TEXT NOT NULL UNIQUE CHECK(LENGTH(Label) <= 128),
     Description TEXT CHECK(LENGTH(Description <= 4096)),
-    Recommendation TEXT CHECK(LENGTH(Description <= 1024))
+    Recommendation TEXT CHECK(LENGTH(Description <= 1024)),
+    Color TEXT
 );
 
 -- Create table for the different priority stages --
@@ -26,7 +27,8 @@ CREATE TABLE IF NOT EXISTS Priority (
     Id INTEGER PRIMARY KEY,
 
     Label TEXT NOT NULL UNIQUE CHECK(LENGTH(Label) <= 128),
-    Ordering INTEGER NOT NULL UNIQUE CHECK(Ordering BETWEEN 0 AND 63)
+    Ordering INTEGER NOT NULL UNIQUE CHECK(Ordering BETWEEN 0 AND 63),
+    Color TEXT
 );
 
 -- Create table for the different types, that a timing can have. Primary used as a filter --

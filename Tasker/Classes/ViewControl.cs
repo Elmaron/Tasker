@@ -14,6 +14,12 @@ namespace Tasker.Classes
             ObservableCollection<DataView.Category> categories = [];
             foreach (Classes.DataStructure.Category category in data.categories)
             {
+                if (data.categories.Count > 1
+                    && category.data.Label.Contains(DataBaseStandards.R_NOCATEGORY)
+                    && (
+                        category.projects.Count < 1 ||
+                        (category.projects.Count == 1 && category.projects[0].tasks.Count <= 0 && category.projects[0].appointments.Count <= 0)
+                    )) continue;
                 categories.Add(new Classes.DataView.Category
                 {
                     Id = category.Id,
@@ -60,6 +66,7 @@ namespace Tasker.Classes
                         {
                             Id = task.Id,
                             Label = task.data.Label,
+                            IsFinished = task.data.Finished.HasValue
                         });
                     }
                     break;
@@ -79,12 +86,13 @@ namespace Tasker.Classes
                     Id = difficulty.Id,
                     Label = difficulty.Label,
                     Description = difficulty.Description,
-                    Recommendation = difficulty.Recommendation
+                    Recommendation = difficulty.Recommendation,
+                    Color = difficulty.Color
                 });
             }
             difficulties.Add(new Classes.DataView.Difficulty {
                 Id = 0,
-                Label = "<none selected>",
+                Label = "<none>",
                 Description = "You have not selected a difficulty for this task.",
                 Recommendation = "There is no recommendation for tasks that have no difficulty set."
             });
@@ -100,7 +108,8 @@ namespace Tasker.Classes
                 {
                     Id = priority.Id,
                     Label = priority.Label,
-                    Ordering = priority.Ordering
+                    Ordering = priority.Ordering,
+                    Color = priority.Color
                 });
             }
             return priorities;

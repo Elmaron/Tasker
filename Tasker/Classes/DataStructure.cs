@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
@@ -437,10 +438,12 @@ namespace Tasker.Classes
                 Id = dbPriority.Id;
                 Label = dbPriority.Label;
                 Ordering = dbPriority.Ordering;
+                Color = dbPriority.Color;
             }
             public int Id { get; }
             public string Label { get; set; }
             public int Ordering { get; set; }
+            public string? Color { get; set; }
         }
 
         public struct InternalDifficulty
@@ -451,11 +454,13 @@ namespace Tasker.Classes
                 Label = dbDifficulty.Label;
                 Description = dbDifficulty.Description;
                 Recommendation = dbDifficulty.Recommendation;
+                Color = dbDifficulty.Color;
             }
             public int Id { get; }
             public string Label { get; set; }
             public string Description { get; set; }
             public string Recommendation { get; set; }
+            public string? Color { get; set; }
         }
     }
 }
