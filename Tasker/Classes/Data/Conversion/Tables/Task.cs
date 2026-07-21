@@ -12,23 +12,28 @@ namespace Tasker.Classes.Data.Conversion.Tables
     {
         private InternalPriority _selectedPriority;
         private InternalDifficulty? _selectedDifficulty;
+        private DateTime? _expiry;
         public InternalPriority SelectedPriority { get => _selectedPriority; set => Update(ref _selectedPriority, value); }
         public InternalDifficulty? SelectedDifficulty { get => _selectedDifficulty; set => Update(ref _selectedDifficulty, value); }
+        public DateTime? Expiry { get => _expiry; set => Update(ref _expiry, value);  }
 
-        public Task(int pId, InternalData pData, InternalPriority pSelectedPriority) : base(pId, pData)
+        public Task(int pId, InternalData pData, InternalPriority pSelectedPriority, InternalDifficulty? pSelectedDifficulty, DateTime? pExpiry) : base(pId, pData)
         {
             _selectedPriority = pSelectedPriority;
+            _selectedDifficulty = pSelectedDifficulty;
+            _expiry = pExpiry;
             System.Diagnostics.Debug.WriteLine($"Class -Appointment-; Found: {Data.Label}");
         }
 
-        private void Update<T>(ref T field, T value, [CallerMemberName] string fieldName = "")
+        private void Update<T>(ref T field, T value)
         {
             field = value;
             new DataBase.Task().Update(new DataBase.Task.TaskData
             {
                 Id = Id,
                 PriorityId = _selectedPriority.Id,
-                DifficultyId = _selectedDifficulty.Value.Id
+                DifficultyId = _selectedDifficulty.Value.Id,
+                Expiry = _expiry.Value,
             });
         }
     }
