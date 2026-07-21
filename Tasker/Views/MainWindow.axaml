@@ -26,12 +26,12 @@
 				>Start/Stop</Button>
 			<ComboBox
 				Background="{Binding ColorSecondary1}"
-				ItemsSource=""
+				ItemsSource="{Binding Categories}"
 				SelectedItem="">
 				<ComboBox.ItemTemplate>
 					<DataTemplate>
 						<TextBlock 
-							Text="">
+							Text="{Binding Data.Label}">
 							<TextBlock.ContextMenu>
 								<ContextMenu
 									Background="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ColorSecondary2}">

@@ -120,13 +120,15 @@ public partial class MainWindowViewModel : ViewModelBase
 
     //Data
 
-    private DataStructure _data;
+    private DataStructure _data = new();
 
     public DataStructure Data
     {
         get => _data;
         set => SetProperty(ref _data, value);
     }
+
+    public ObservableCollection<Classes.Data.Conversion.Tables.Category> Categories => _data.categories;
 
     //Handle selection logic
     private Classes.Data.Conversion.Tables.Category _selectedCategory;
@@ -136,6 +138,6 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel()
     {
         //Load Data from database
-        _data = new();
+        //_data = new();
     }
 }
