@@ -150,6 +150,11 @@ namespace Tasker.Classes.Data.Retrieval {
 
                 return data;
             }
+
+            public int GenerateId()
+            {
+                return Get().Select(x => x.Id).Max() + 1;
+            }
             
             public void Add(IData newData)
             {

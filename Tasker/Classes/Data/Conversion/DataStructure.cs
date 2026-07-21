@@ -34,20 +34,20 @@ namespace Tasker.Classes.Data.Conversion
             categories = [];
             priorities = [];
             difficulties = [];
-            DataBase.Category dbCategory = new();
-            foreach (DataBase.Category.CategoryData category in dbCategory.Get())
-            {
-                categories.Add(new Category(category));
-            }
             DataBase.Priority dbPriority = new();
             foreach (DataBase.Priority.PriorityData priority in dbPriority.Get())
             {
-                priorities.Add(new InternalPriority(priority));
+                priorities.Add(GetPriority(priority));
             }
             DataBase.Difficulty dbDifficulty = new();
             foreach (DataBase.Difficulty.DifficultyData difficulty in dbDifficulty.Get())
             {
-                difficulties.Add(new InternalDifficulty(difficulty));
+                difficulties.Add(GetDifficulty(difficulty));
+            }
+            DataBase.Category dbCategory = new();
+            foreach (DataBase.Category.CategoryData category in dbCategory.Get())
+            {
+                categories.Add(new Category(category));
             }
         }
 
@@ -64,11 +64,11 @@ namespace Tasker.Classes.Data.Conversion
             public Category(DataBase.Category.CategoryData pDbCategory)
             {
                 DataBase.Data.DataOfData dbData = new DataBase.Data().Get().Where(x => x.Id == pDbCategory.DataId).ToArray()[0];
-                DataBase.Priority dbPriority = new();
+                DataBase.Priority.PriorityData dbPriority = new DataBase.Priority().Get().Where(x => x.Id == pDbCategory.PriorityId).ToArray()[0];
 
                 Id = pDbCategory.Id;
-                data = new(dbData.Id, dbData.Label, dbData.Description, dbData.Created, dbData.Updated, dbData.Finished, dbData.DeleteOn);
-                priority = new(dbPriority.Get().Where(x => x.Id == pDbCategory.PriorityId).ToArray()[0]);
+                data = GetData(dbData);
+                priority = GetPriority(dbPriority);
 
                 System.Diagnostics.Debug.WriteLine($"Found Category: {data.Label}");
 
@@ -95,7 +95,7 @@ namespace Tasker.Classes.Data.Conversion
                 if (newPriorityId == null) return;
                 DataBase.Priority.PriorityData[] newPriority = new DataBase.Priority().Get().Where(x => x.Id == newPriorityId).ToArray();
                 if (newPriority.Count() != 1) return;
-                priority = new(newPriority[0]);
+                priority = GetPriority(newPriority[0]);
             }
 
             public class Project
@@ -114,11 +114,11 @@ namespace Tasker.Classes.Data.Conversion
                 public Project(DataBase.Project.ProjectData pDbProject)
                 {
                     DataBase.Data.DataOfData dbData = new DataBase.Data().Get().Where(x => x.Id == pDbProject.DataId).ToArray()[0];
-                    DataBase.Priority dbPriority = new();
+                    DataBase.Priority.PriorityData dbPriority = new DataBase.Priority().Get().Where(x => x.Id == pDbProject.PriorityId).ToArray()[0];
 
                     Id = pDbProject.Id;
                     data = new(dbData.Id, dbData.Label, dbData.Description, dbData.Created, dbData.Updated, dbData.Finished, dbData.DeleteOn);
-                    priority = new(dbPriority.Get().Where(x => x.Id == pDbProject.PriorityId).ToArray()[0]);
+                    priority = GetPriority(dbPriority);
                     Expiry = pDbProject.Expiry;
 
                     System.Diagnostics.Debug.WriteLine($"Found Project: {data.Label}");
@@ -150,7 +150,7 @@ namespace Tasker.Classes.Data.Conversion
                     if (newPriorityId == null) return;
                     DataBase.Priority.PriorityData[] newPriority = new DataBase.Priority().Get().Where(x => x.Id == newPriorityId).ToArray();
                     if (newPriority.Count() != 1) return;
-                    priority = new(newPriority[0]);
+                    priority = GetPriority(newPriority[0]);
                 }
 
                 public void Delete()
@@ -205,16 +205,16 @@ namespace Tasker.Classes.Data.Conversion
                     public Task (DataBase.Task.TaskData pDbTask)
                     {
                         DataBase.Data.DataOfData dbData = new DataBase.Data().Get().Where(x => x.Id == pDbTask.DataId).ToArray()[0];
-                        DataBase.Priority dbPriority = new();
+                        DataBase.Priority.PriorityData dbPriority = new DataBase.Priority().Get().Where(x => x.Id == pDbTask.PriorityId).ToArray()[0];
                         DataBase.Difficulty dbDifficulty = new();
 
                         Id = pDbTask.Id;
                         data = new(dbData.Id, dbData.Label, dbData.Description, dbData.Created, dbData.Updated, dbData.Finished, dbData.DeleteOn);
-                        priority = new(dbPriority.Get().Where(x => x.Id == pDbTask.PriorityId).ToArray()[0]);
+                        priority = GetPriority(dbPriority);
 
                         //nullable Definition
                         DataBase.Difficulty.DifficultyData[] dbDifficulty_data = dbDifficulty.Get().Where(x => x.Id == pDbTask.DifficultyId).ToArray();
-                        difficulty = dbDifficulty_data.Length <= 0 ? null : new(dbDifficulty_data[0]);
+                        difficulty = dbDifficulty_data.Length <= 0 ? null : GetDifficulty(dbDifficulty_data[0]);
                         Expiry = pDbTask.Expiry;
                     }
 
@@ -234,7 +234,7 @@ namespace Tasker.Classes.Data.Conversion
                         if (newPriorityId == null) return;
                         DataBase.Priority.PriorityData[] newPriority = new DataBase.Priority().Get().Where(x => x.Id == newPriorityId).ToArray();
                         if (newPriority.Count() != 1) return;
-                        priority = new(newPriority[0]);
+                        priority = GetPriority(newPriority[0]);
                     }
                     public void Delete()
                     {
@@ -249,7 +249,7 @@ namespace Tasker.Classes.Data.Conversion
                         if (difficulty != null && difficulty.Value.Id == pDifficultyId) return;
                         DataBase.Difficulty.DifficultyData[] newDifficulty = new DataBase.Difficulty().Get().Where(x => x.Id == pDifficultyId).ToArray();
                         if (newDifficulty.Count() != 1) return;
-                        difficulty = new InternalDifficulty(newDifficulty[0]);                   
+                        difficulty = GetDifficulty(newDifficulty[0]);                   
                     }
                 }
             }
@@ -369,36 +369,51 @@ namespace Tasker.Classes.Data.Conversion
                 : dbPriority.Where(x => x.Label == "normal").Select(x => x.Id).ToArray()[0];
         }
 
-        public struct InternalPriority
+        public static int CreateOrLoadData(string pLabel)
         {
-            public InternalPriority(DataBase.Priority.PriorityData dbPriority)
+            DataBase.Data dbData = new();
+            if (dbData.Get().Where(x => x.Label == pLabel).Count() > 0) return dbData.Get().Where(x => x.Label == pLabel).ToArray()[0].Id;
+            int newDataId = dbData.GenerateId();
+            dbData.Add(new DataBase.Data.DataOfData
             {
-                Id = dbPriority.Id;
-                Label = dbPriority.Label;
-                Ordering = dbPriority.Ordering;
-                Color = dbPriority.Color;
-            }
-            public int Id { get; }
-            public string Label { get; set; }
-            public int Ordering { get; set; }
-            public string? Color { get; set; }
+                Id = newDataId,
+                Label = pLabel
+            });
+            return newDataId;
         }
 
-        public struct InternalDifficulty
+        public static void DeleteData(int pId)
         {
-            public InternalDifficulty(DataBase.Difficulty.DifficultyData dbDifficulty)
-            {
-                Id = dbDifficulty.Id;
-                Label = dbDifficulty.Label;
-                Description = dbDifficulty.Description;
-                Recommendation = dbDifficulty.Recommendation;
-                Color = dbDifficulty.Color;
-            }
-            public int Id { get; }
-            public string Label { get; set; }
-            public string Description { get; set; }
-            public string Recommendation { get; set; }
-            public string? Color { get; set; }
+            try { new DataBase.Data().Delete(pId); } catch (Exception e) { System.Diagnostics.Debug.WriteLine($"DATABASE ERROR WHILE TRYING TO DELETE DATA:\n{e}"); }
+        }
+
+        public static Tables.Task GetTask(DataBase.Task.TaskData pTaskData)
+        {
+            InternalData taskData = GetData(new DataBase.Data().Get().Where(x => x.Id == pTaskData.DataId).ToArray()[0]);
+            InternalPriority taskPriority = GetPriority(new DataBase.Priority().Get().Where(x => x.Id == pTaskData.PriorityId).ToArray()[0]);
+            InternalDifficulty? taskDifficulty = pTaskData.DifficultyId != null ? GetDifficulty(new DataBase.Difficulty().Get().Where(x => x.Id == pTaskData.DifficultyId).ToArray()[0]) : null;
+            return new Tables.Task(pTaskData.Id, taskData, taskPriority, taskDifficulty, pTaskData.Expiry);
+        }
+
+        public static Tables.Appointment GetAppointment(DataBase.Appointment.AppointmentData pAppointmentData)
+        {
+            InternalData appointmentData = GetData(new DataBase.Data().Get().Where(x => x.Id == pAppointmentData.DataId).ToArray()[0]);
+            return new Tables.Appointment(pAppointmentData.Id, appointmentData);
+        }
+
+        public static InternalData GetData(DataBase.Data.DataOfData pData)
+        {
+            return new InternalData(pData.Id, pData.Label, pData.Description, pData.Created, pData.Updated, pData.Finished, pData.DeleteOn);
+        }
+
+        public static InternalPriority GetPriority(DataBase.Priority.PriorityData pPriorityData)
+        {
+            return new InternalPriority(pPriorityData.Id, pPriorityData.Label, pPriorityData.Ordering, pPriorityData.Color);
+        }
+
+        public static InternalDifficulty GetDifficulty(DataBase.Difficulty.DifficultyData pDifficultyData)
+        {
+            return new InternalDifficulty(pDifficultyData.Id, pDifficultyData.Label, pDifficultyData.Description, pDifficultyData.Recommendation, pDifficultyData.Color);
         }
     }
 }
