@@ -15,15 +15,14 @@ namespace Tasker.Classes.Data.Conversion.Tables
         private ObservableCollection<Project> _projects;
         public InternalPriority SelectedPriority { get => _selectedPriority; set => Update(ref _selectedPriority, value); }
 
-        public ObservableCollection<Project> Projects { get => _projects; }
+        public ObservableCollection<Project> Projects { get => _projects; set => _projects = value; }
 
         public Category(int pId, InternalData pData, InternalPriority pSelectedPriority) : base(pId, pData)
         {
             _selectedPriority = pSelectedPriority;
-
             _projects = [];
         }
-        public void Load(DataBase.Project.ProjectData[]? pProject = null, bool pClear = true)
+        public void Load(List<DataBase.Project.ProjectData>? pProject = null, bool pClear = true)
         {
             if (pClear) _projects = [];
             if (pProject != null) LoadProjects(pProject);
@@ -71,7 +70,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
             }
         }
 
-        private void LoadProjects(DataBase.Project.ProjectData[] pProjects)
+        private void LoadProjects(List<DataBase.Project.ProjectData> pProjects)
         {
             foreach (DataBase.Project.ProjectData project in pProjects) _projects.Add(GetProject(project));
         }

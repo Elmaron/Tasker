@@ -20,8 +20,8 @@ namespace Tasker.Classes.Data.Conversion.Tables
         public InternalPriority SelectedPriority { get => _selectedPriority; set => Update(ref _selectedPriority, value); }
         public DateTime? Expiry { get => _expiry; set => Update(ref _expiry, value); }
 
-        public ObservableCollection<Task> Tasks { get => _tasks; }
-        public ObservableCollection<Appointment> appointments { get => _appointments; }
+        public ObservableCollection<Task> Tasks { get => _tasks; set => _tasks = value; }
+        public ObservableCollection<Appointment> Appointments { get => _appointments; set => _appointments = value;  }
 
         public Project(int pId, InternalData pData, InternalPriority pSelectedPriority, DateTime? pExpiry) : base(pId, pData)
         {
@@ -31,7 +31,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
             _tasks = [];
             _appointments = [];
         }
-        public void Load(DataBase.Task.TaskData[]? pTasks = null, DataBase.Appointment.AppointmentData[]? pAppointments = null, bool pClear = true)
+        public void Load(List<DataBase.Task.TaskData>? pTasks = null, List<DataBase.Appointment.AppointmentData>? pAppointments = null, bool pClear = true)
         {
             if (pClear) {
                 _tasks = [];
@@ -122,12 +122,12 @@ namespace Tasker.Classes.Data.Conversion.Tables
             }
         }
 
-        private void LoadTasks(DataBase.Task.TaskData[] pTasks)
+        private void LoadTasks(List<DataBase.Task.TaskData> pTasks)
         {
             foreach (DataBase.Task.TaskData task in pTasks) _tasks.Add(GetTask(task));
         }
 
-        private void LoadAppointments(DataBase.Appointment.AppointmentData[] pAppointments)
+        private void LoadAppointments(List<DataBase.Appointment.AppointmentData> pAppointments)
         {
             foreach (DataBase.Appointment.AppointmentData appointment in pAppointments) _appointments.Add(GetAppointment(appointment));
         }
