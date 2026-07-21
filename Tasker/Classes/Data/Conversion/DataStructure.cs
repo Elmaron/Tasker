@@ -5,11 +5,12 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Tasker.Classes.Data.Retrieval;
 using Tasker.Classes.Data.Conversion.Tables;
-using static Tasker.Classes.Data.Retrieval.DataBase;
+using Tasker.Classes.Data.Retrieval;
 using static Tasker.Classes.Data.Conversion.DataStructure;
 using static Tasker.Classes.Data.Conversion.DataStructure.Category;
+using static Tasker.Classes.Data.Retrieval.DataBase;
+using static Tasker.Classes.Data.Retrieval.DataBase.Task;
 
 namespace Tasker.Classes.Data.Conversion
 {
@@ -385,6 +386,20 @@ namespace Tasker.Classes.Data.Conversion
         public static void DeleteData(int pId)
         {
             try { new DataBase.Data().Delete(pId); } catch (Exception e) { System.Diagnostics.Debug.WriteLine($"DATABASE ERROR WHILE TRYING TO DELETE DATA:\n{e}"); }
+        }
+
+        public static Tables.Category GetCategory(DataBase.Category.CategoryData pCategoryData)
+        {
+            InternalData categoryData = GetData(new DataBase.Data().Get().Where(x => x.Id == pCategoryData.DataId).ToArray()[0]);
+            InternalPriority categoryPriority = GetPriority(new DataBase.Priority().Get().Where(x => x.Id == pCategoryData.PriorityId).ToArray()[0]);
+            return new Tables.Category(pCategoryData.Id, categoryData, categoryPriority);
+        }
+
+        public static Tables.Project GetProject(DataBase.Project.ProjectData pProjectData)
+        {
+            InternalData projectData = GetData(new DataBase.Data().Get().Where(x => x.Id == pProjectData.DataId).ToArray()[0]);
+            InternalPriority projectPriority = GetPriority(new DataBase.Priority().Get().Where(x => x.Id == pProjectData.PriorityId).ToArray()[0]);
+            return new Tables.Project(pProjectData.Id, projectData, projectPriority, pProjectData.Expiry);
         }
 
         public static Tables.Task GetTask(DataBase.Task.TaskData pTaskData)
