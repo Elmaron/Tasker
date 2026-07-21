@@ -11,9 +11,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Markup;
 using Tmds.DBus.Protocol;
-using static Tasker.Classes.DataBase.TimingInAppointment;
+using static Tasker.Classes.Data.Retrieval.DataBase;
+using static Tasker.Classes.Data.Retrieval.DataBase.TimingInAppointment;
 
-namespace Tasker.Classes {
+namespace Tasker.Classes.Data.Retrieval {
     //Communicates directly with the DataBase to read and write the data accordingly
     public static class DataBase
     {
@@ -199,7 +200,7 @@ namespace Tasker.Classes {
                 command.ExecuteNonQuery();
             }
 
-            private static void updateData(string table, string[] parameters, object?[] data)
+            private protected static void updateData(string table, string[] parameters, object?[] data)
             {
                 if (parameters.Length != data.Length) return;
                 using var connection = new SqliteConnection(ConnectionString);
@@ -272,6 +273,13 @@ namespace Tasker.Classes {
                     DeleteOn = reader.IsDBNull(6) ? null : reader.GetDateTime(6)
                 };
             }
+
+            public void Update(int pId, DateTime pUpdate, string pParameter, object? pValue)
+            {
+                string[] parameters = ["Id", "Updated", pParameter];
+                object?[] data = [pId, pUpdate, pValue];
+                updateData(this.Name, parameters, data);
+            }
         }
 
         public class Difficulty : Table<Difficulty.DifficultyData>
@@ -319,6 +327,13 @@ namespace Tasker.Classes {
                     Ordering = reader.GetInt32(2),
                     Color = reader.IsDBNull(3) ? null : reader.GetString(3)
                 };
+            }
+
+            public void Update(int pId, string pParameter, object? pValue)
+            {
+                string[] parameters = ["Id", pParameter];
+                object?[] data = [pId, pValue];
+                updateData(this.Name, parameters, data);
             }
         }
 

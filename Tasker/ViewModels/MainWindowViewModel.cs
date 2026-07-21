@@ -3,7 +3,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Tasker.Classes;
+using Tasker.Classes.Data.Conversion;
+using Tasker.Classes.Data.Retrieval;
 
 namespace Tasker.ViewModels;
 
@@ -119,9 +120,9 @@ public partial class MainWindowViewModel : ViewModelBase
 
     //Data
 
-    private Classes.DataStructure _data;
+    private DataStructure _data;
 
-    public Classes.DataStructure Data
+    public DataStructure Data
     {
         get => _data;
         set => SetProperty(ref _data, value);
@@ -279,7 +280,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel()
     {
         //Create Database, if not available
-        Tasker.Classes.DataBase.Initialize();
+        DataBase.Initialize();
 
         //Load Data from database
         _data = new();

@@ -5,11 +5,13 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
-using static Tasker.Classes.DataBase;
-using static Tasker.Classes.DataStructure;
-using static Tasker.Classes.DataStructure.Category;
+using Tasker.Classes.Data.Retrieval;
+using Tasker.Classes.Data.Conversion.Tables;
+using static Tasker.Classes.Data.Retrieval.DataBase;
+using static Tasker.Classes.Data.Conversion.DataStructure;
+using static Tasker.Classes.Data.Conversion.DataStructure.Category;
 
-namespace Tasker.Classes
+namespace Tasker.Classes.Data.Conversion
 {
     //Handles Communication between DataBase and program
     public class DataStructure
@@ -61,11 +63,11 @@ namespace Tasker.Classes
 
             public Category(DataBase.Category.CategoryData pDbCategory)
             {
-                DataBase.Data dbData = new();
+                DataBase.Data.DataOfData dbData = new DataBase.Data().Get().Where(x => x.Id == pDbCategory.DataId).ToArray()[0];
                 DataBase.Priority dbPriority = new();
 
                 Id = pDbCategory.Id;
-                data = new(dbData.Get().Where(x => x.Id == pDbCategory.DataId).ToArray()[0]);
+                data = new(dbData.Id, dbData.Label, dbData.Description, dbData.Created, dbData.Updated, dbData.Finished, dbData.DeleteOn);
                 priority = new(dbPriority.Get().Where(x => x.Id == pDbCategory.PriorityId).ToArray()[0]);
 
                 System.Diagnostics.Debug.WriteLine($"Found Category: {data.Label}");
@@ -88,7 +90,8 @@ namespace Tasker.Classes
 
             public void Update(string? label = null, string? description = null, int? newPriorityId = null)
             {
-                if (!(label == null && description == null)) data.Update(label, description);
+                if (label != null) data.Label = label;
+                if (description != null) data.Description = description;
                 if (newPriorityId == null) return;
                 DataBase.Priority.PriorityData[] newPriority = new DataBase.Priority().Get().Where(x => x.Id == newPriorityId).ToArray();
                 if (newPriority.Count() != 1) return;
@@ -110,11 +113,11 @@ namespace Tasker.Classes
 
                 public Project(DataBase.Project.ProjectData pDbProject)
                 {
-                    DataBase.Data dbData = new();
+                    DataBase.Data.DataOfData dbData = new DataBase.Data().Get().Where(x => x.Id == pDbProject.DataId).ToArray()[0];
                     DataBase.Priority dbPriority = new();
 
                     Id = pDbProject.Id;
-                    data = new(dbData.Get().Where(x => x.Id == pDbProject.DataId).ToArray()[0]);
+                    data = new(dbData.Id, dbData.Label, dbData.Description, dbData.Created, dbData.Updated, dbData.Finished, dbData.DeleteOn);
                     priority = new(dbPriority.Get().Where(x => x.Id == pDbProject.PriorityId).ToArray()[0]);
                     Expiry = pDbProject.Expiry;
 
@@ -136,7 +139,8 @@ namespace Tasker.Classes
                 }
                 public void Update(string? label = null, string? description = null, int? newPriorityId = null, DateTime? expiry = null)
                 {
-                    if (!(label == null && description == null)) data.Update(label, description);
+                    if (label != null) data.Label = label;
+                    if (description != null) data.Description = description;
                     Expiry = expiry;
                     new DataBase.Project().Update(new DataBase.Project.ProjectData
                     {
@@ -165,17 +169,18 @@ namespace Tasker.Classes
 
                     public Appointment(DataBase.Appointment.AppointmentData pDbAppointment)
                     {
-                        DataBase.Data dbData = new();
+                        DataBase.Data.DataOfData dbData = new DataBase.Data().Get().Where(x => x.Id == pDbAppointment.DataId).ToArray()[0];
 
                         Id = pDbAppointment.Id;
-                        data = new(dbData.Get().Where(x => x.Id == pDbAppointment.DataId).ToArray()[0]);
+                        data = new(dbData.Id, dbData.Label, dbData.Description, dbData.Created, dbData.Updated, dbData.Finished, dbData.DeleteOn);
 
                         System.Diagnostics.Debug.WriteLine($"Found Appointment: {data.Label}");
                     }
 
                     public void Update(string? label = null, string? description = null)
                     {
-                        if (!(label == null && description == null)) data.Update(label, description);
+                        if (label != null) data.Label = label;
+                        if (description != null) data.Description = description;
                     }
                     public void Delete()
                     {
@@ -199,12 +204,12 @@ namespace Tasker.Classes
 
                     public Task (DataBase.Task.TaskData pDbTask)
                     {
-                        DataBase.Data dbData = new();
+                        DataBase.Data.DataOfData dbData = new DataBase.Data().Get().Where(x => x.Id == pDbTask.DataId).ToArray()[0];
                         DataBase.Priority dbPriority = new();
                         DataBase.Difficulty dbDifficulty = new();
 
                         Id = pDbTask.Id;
-                        data = new(dbData.Get().Where(x => x.Id == pDbTask.DataId).ToArray()[0]);
+                        data = new(dbData.Id, dbData.Label, dbData.Description, dbData.Created, dbData.Updated, dbData.Finished, dbData.DeleteOn);
                         priority = new(dbPriority.Get().Where(x => x.Id == pDbTask.PriorityId).ToArray()[0]);
 
                         //nullable Definition
@@ -215,7 +220,8 @@ namespace Tasker.Classes
 
                     public void Update(string? label = null, string? description = null, int? newPriorityId = null, int? difficultyId = null, DateTime? expiry = null)
                     {
-                        if (!(label == null && description == null)) data.Update(label, description);
+                        if (label != null) data.Label = label;
+                        if (description != null) data.Description = description;
                         if (difficultyId == null) difficulty = null;
                         else LoadDifficulty(difficultyId ?? 0);
                         Expiry = expiry;
@@ -363,77 +369,9 @@ namespace Tasker.Classes
                 : dbPriority.Where(x => x.Label == "normal").Select(x => x.Id).ToArray()[0];
         }
 
-        public struct InternalData
-        {
-            public InternalData(Tasker.Classes.DataBase.Data.DataOfData dbData)
-            {
-                Id = dbData.Id;
-                Label = dbData.Label;
-                Description = dbData.Description;
-                Created = dbData.Created;
-                Updated = dbData.Updated;
-                Finished = dbData.Finished;
-                DeleteOn = dbData.DeleteOn;
-            }
-
-            public int Id { get; }
-            public string Label { get; set; }
-            public string? Description { get; set; }
-            public DateTime Created { get; set; }
-            public DateTime Updated { get; set; }
-            public DateTime? Finished { get; set; }
-            public DateTime? DeleteOn { get; set; }
-
-            public void Update(string? pLabel = null, string? pDescription = null)
-            {
-                if (pLabel == "") return;
-                if (pLabel != null) Label = pLabel;
-                if (pDescription != null) Description = pDescription;
-                Updated = DateTime.Now;
-
-                DataBase.Data dbData = new();
-                dbData.Update(new DataBase.Data.DataOfData
-                {
-                    Id = Id,
-                    Label = Label,
-                    Description = Description,
-                    Updated = Updated
-                });
-            }
-
-            public void Finish(bool isTrue = true)
-            {
-                Finished = isTrue ? DateTime.Now : null;
-                Updated = DateTime.Now;
-
-                DataBase.Data dbData = new();
-                dbData.Update(new DataBase.Data.DataOfData
-                {
-                    Id = Id,
-                    Finished = Finished,
-                    Updated = Updated
-                });
-            }
-
-            public void setDelete(DateTime? pDeleteOn = null)
-            {
-                if (pDeleteOn != null && pDeleteOn < DateTime.Now) return;
-                DeleteOn = pDeleteOn;
-                Updated = DateTime.Now;
-
-                DataBase.Data dbData = new();
-                dbData.Update(new DataBase.Data.DataOfData
-                {
-                    Id = Id,
-                    DeleteOn = DeleteOn,
-                    Updated = Updated
-                });
-            }
-        }
-
         public struct InternalPriority
         {
-            public InternalPriority(Tasker.Classes.DataBase.Priority.PriorityData dbPriority)
+            public InternalPriority(DataBase.Priority.PriorityData dbPriority)
             {
                 Id = dbPriority.Id;
                 Label = dbPriority.Label;
@@ -448,7 +386,7 @@ namespace Tasker.Classes
 
         public struct InternalDifficulty
         {
-            public InternalDifficulty(Tasker.Classes.DataBase.Difficulty.DifficultyData dbDifficulty)
+            public InternalDifficulty(DataBase.Difficulty.DifficultyData dbDifficulty)
             {
                 Id = dbDifficulty.Id;
                 Label = dbDifficulty.Label;

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using static Tasker.Classes.DataBase;
+using Tasker.Classes.Data.Conversion;
+using Tasker.Classes.Data.Retrieval;
+using static Tasker.Classes.Data.Retrieval.DataBase;
 
 namespace Tasker.Classes
 {
@@ -12,7 +14,7 @@ namespace Tasker.Classes
         public ObservableCollection<DataView.Category> LoadCategories(DataStructure data)
         {
             ObservableCollection<DataView.Category> categories = [];
-            foreach (Classes.DataStructure.Category category in data.categories)
+            foreach (DataStructure.Category category in data.categories)
             {
                 if (data.categories.Count > 1
                     && category.data.Label.Contains(DataBaseStandards.R_NOCATEGORY)
@@ -32,11 +34,11 @@ namespace Tasker.Classes
         public ObservableCollection<DataView.Project> LoadProjects(DataStructure data, DataView.Category pSelectedCategory)
         {
             ObservableCollection<DataView.Project> projects = [];
-            foreach (Classes.DataStructure.Category category in data.categories)
+            foreach (DataStructure.Category category in data.categories)
             {
                 //System.Diagnostics.Debug.WriteLine($"Selected Id: {pSelectedCategory.Id}");
                 if (category.Id != pSelectedCategory.Id) continue;
-                foreach (Classes.DataStructure.Category.Project project in category.projects)
+                foreach (DataStructure.Category.Project project in category.projects)
                 {
                     projects.Add(new Classes.DataView.Project
                     {
@@ -54,13 +56,13 @@ namespace Tasker.Classes
             ObservableCollection<DataView.Task> Tasks = [];
             List<DataStructure.InternalPriority> Priorites = [];
 
-            foreach (Classes.DataStructure.Category category in data.categories)
+            foreach (DataStructure.Category category in data.categories)
             {
                 if (category.Id != pSelectedCategory.Id) continue;
-                foreach (Classes.DataStructure.Category.Project project in category.projects)
+                foreach (DataStructure.Category.Project project in category.projects)
                 {
                     if (project.Id != pSelectedProject.Id) continue;
-                    foreach (Classes.DataStructure.Category.Project.Task task in project.tasks)
+                    foreach (DataStructure.Category.Project.Task task in project.tasks)
                     {
                         Tasks.Add(new Classes.DataView.Task(data, task.priority.Id, (task.difficulty != null ? task.difficulty.Value.Id : null))
                         {
@@ -79,7 +81,7 @@ namespace Tasker.Classes
         public ObservableCollection<DataView.Difficulty> LoadDifficulties(DataStructure data)
         {
             ObservableCollection<DataView.Difficulty> difficulties = [];
-            foreach (Classes.DataStructure.InternalDifficulty difficulty in data.difficulties)
+            foreach (DataStructure.InternalDifficulty difficulty in data.difficulties)
             {
                 difficulties.Add(new Classes.DataView.Difficulty
                 {
@@ -102,7 +104,7 @@ namespace Tasker.Classes
         public ObservableCollection<DataView.Priority> LoadPriorites(DataStructure data)
         {
             ObservableCollection<DataView.Priority> priorities = [];
-            foreach (Classes.DataStructure.InternalPriority priority in data.priorities)
+            foreach (DataStructure.InternalPriority priority in data.priorities)
             {
                 priorities.Add(new Classes.DataView.Priority
                 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Tasker.Classes
+namespace Tasker.Classes.Data.Retrieval
 {
     public static class DataBaseStandards
     {

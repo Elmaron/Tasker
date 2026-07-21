@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Tasker.Classes.Data.Conversion;
 using Tasker.ViewModels;
 
 namespace Tasker.Classes
