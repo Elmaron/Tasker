@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Classes\Settings\" />
+    <Folder Include="Classes\Templates\Structures\" />
+    <Folder Include="Classes\Templates\Observables\" />
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
 	<AvaloniaResource Include="SQlite\**" />
