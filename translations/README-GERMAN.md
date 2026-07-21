@@ -96,7 +96,7 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 - [ ] Erstelle die Grundfunktionen
     - [x] Lese- und Schreibfunktionen für die Datenbank (durch SQLite-Befehle)
     - [x] Logik für die m zu n Beziehungen in der Datenbank erstellen (fürs erstellen, löschen, usw.)
-    - [ ] Erstelle Klassen und Befehle für die Interaktion mit der Datenbank
+    - [x] Erstelle Klassen und Befehle für die Interaktion mit der Datenbank
     - [ ] Erstelle Layout
     - [ ] Verknüpfe das Layout mit den Befehlen und Klassen
 - [ ] Überarbeite den Code

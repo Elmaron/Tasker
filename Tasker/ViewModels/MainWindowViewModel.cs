@@ -129,8 +129,8 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     //Handle selection logic
-    private Classes.DataView.Category _selectedCategory;
-    private Classes.DataView.Project _selectedProject;
+    private Classes.Data.Conversion.Tables.Category _selectedCategory;
+    private Classes.Data.Conversion.Tables.Project _selectedProject;
 
 
     public MainWindowViewModel()
