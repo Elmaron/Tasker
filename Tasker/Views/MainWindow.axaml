@@ -140,10 +140,10 @@
 			<TableView ItemsSource="{Binding Tasks}"
 					  Background ="hsla(0,0,0%, 0)">
 				<TableView.Columns>
-					<TableViewColumn Header="Finished" Width="40">
+					<TableViewColumn Header="✅" Width="40">
 						<TableViewColumn.CellTemplate>
 							<DataTemplate>
-								<CheckBox IsChecked=""/>
+								<CheckBox IsChecked="{Binding Data.IsFinished}"/>
 							</DataTemplate>
 						</TableViewColumn.CellTemplate>
 					</TableViewColumn>
@@ -153,7 +153,7 @@
 								<Grid ColumnDefinitions="Auto,*">
 									<Button
 										Grid.Column="0"
-										IsVisible=""
+										IsVisible="{Binding Data.IsFinishedInversed}"
 										Content="Start/Stop"/>
 									<TextBox
 										Grid.Column="1"
@@ -193,8 +193,8 @@
 							<DataTemplate>
 								<ComboBox
 								Grid.Column="4"
-								ItemsSource=""
-								SelectedItem="">
+								ItemsSource="{Binding AvailablePriorities}"
+								SelectedItem="{Binding SelectedPriority}">
 									<ComboBox.ItemTemplate>
 										<DataTemplate>
 											<Border
@@ -205,7 +205,7 @@
 												Padding="12,4">
 												<TextBlock
 													VerticalAlignment="Center"
-													Text=""/>
+													Text="{Binding Label}"/>
 											</Border>
 										</DataTemplate>
 									</ComboBox.ItemTemplate>
@@ -213,14 +213,14 @@
 							</DataTemplate>
 						</TableViewColumn.CellTemplate>
 					</TableViewColumn>
-					<TableViewColumn Header="Update" Width="Auto">
+					<TableViewColumn Header="" Width="Auto">
 						<TableViewColumn.CellTemplate>
 							<DataTemplate>
 								<Button
 								Grid.Column="6"
-								Content="Update"
-									Command=""
-									CommandParameter=""
+								Content="Details"
+								Command=""
+								CommandParameter=""
 									/>
 							</DataTemplate>
 						</TableViewColumn.CellTemplate>

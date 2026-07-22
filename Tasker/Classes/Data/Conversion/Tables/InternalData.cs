@@ -26,8 +26,13 @@ namespace Tasker.Classes.Data.Conversion.Tables
         private DateTime? _deleteOn = pDeleteOn;
 
         public readonly int Id { get => _id; }
-        public string Label { 
-            get => _label;
+        public string Label {
+            get
+            {
+                if (_label == DataBaseStandards.R_NOCATEGORY) return "Uncategorized";
+                if (_label == DataBaseStandards.R_NOPROJECT) return "Allgemein";
+                return _label;
+            }
             set => Update(ref _label, value);
         }
         public string? Description { 
@@ -50,10 +55,19 @@ namespace Tasker.Classes.Data.Conversion.Tables
                 Update(ref _deleteOn, value);
             }
         }
+        public bool IsFinishedInversed
+        {
+            get => !IsFinished;
+        }
+        public bool IsFinished
+        {
+            get => Finished.HasValue;
+            set => Finish(!IsFinished);
+        }
+        
         public void Finish(bool isTrue = true)
         {
             Finished = isTrue ? DateTime.Now : null;
-            Update(ref _finished, Finished);
         }
 
         private void Update<T>(ref T? field, T? value, [CallerMemberName] string fieldName = "")

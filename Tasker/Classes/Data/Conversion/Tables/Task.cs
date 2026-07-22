@@ -16,7 +16,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
         private DateTime? _expiry;
         public InternalPriority SelectedPriority { get => _selectedPriority; set => Update(ref _selectedPriority, value); }
         public InternalDifficulty? SelectedDifficulty { get => _selectedDifficulty; set => Update(ref _selectedDifficulty, value); }
-        public static ObservableCollection<InternalPriority> AvailablePriorites { get => DataStructure.Priorities; set => DataStructure.Priorities = value; }
+        public static ObservableCollection<InternalPriority> AvailablePriorities { get => DataStructure.Priorities; set => DataStructure.Priorities = value; }
         public static ObservableCollection<InternalDifficulty> AvailableDifficulties { get => DataStructure.Difficulties; set => DataStructure.Difficulties = value; }
         public DateTime? Expiry { get => _expiry; set => Update(ref _expiry, value);  }
 
