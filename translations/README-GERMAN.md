@@ -1,20 +1,50 @@
 # Tasker
+
 Ein Aufgaben-Planner und Tracker, der dir hilft, dein Arbeitsverhalten zu verstehen.
 
-*This is the german translation. You can find the readme in english [here](https://github.com/Elmaron/Tasker).*
+*This is the german translation. You can find the readme in english [here](../README.md).*
 
 # Entwicklungsstatus
+
 ## Aktuell
+
 **ACHTUNG! Dieses Projekt ist in seinem aktuellem Zustand noch nicht zur Verwendung bereit.**
 
 Nachdem ich das grundlegende Design des Programms überarbeitet habe, werde ich mich mit den Grund-Funktionen und der Datenbank beschäftigen, damit ich eine erste Alpha-Version veröffentlichen kann.
 Folgt mir gerne auf Github, um Updates zum Projekt zu bekommen!
 
-Status: **[Alpha](#alpha)** | [Beta](#beta) | [Release](#veröffentlichung-v10)
+Status: **[Prealpha](#pre-alpha)**| [Alpha](#alpha-release) | [Beta](#beta-release) | [Release](#veröffentlichung-v10)
 
 *abgeschlossen*; **in Bearbeitung**; Nächste Phase
 
+# Inhaltsverzeichnis
+
+* [Funktionen](#funktionen)
+
+    * [Eine Stellungnahme zum Thema KI](#eine-stellungnahme-zum-thema-ki)
+
+        * [Entwicklung](#entwicklung)
+
+        * [KI-Assistent](#ki-assistent)
+    
+    * [Geplante Inhalte](#geplante-inhalte)
+
+        * [Pre-Alpha](#pre-alpha)
+
+        * [Alpha](#alpha-release)
+
+        * [Beta](#beta-release)
+
+        * [Release](#veröffentlichung-v10)
+
+        * [Nach der Veröffentlichung](#planung-für-nach-der-veröffentlichung)
+
+* [Farben](#farben)
+
 # Funktionen
+
+![Ein konzipiertes Beispiel für das Programm](../concept-images/v0-1-0_example.png)
+
 Dieses Aufgaben-Planungs-Programm verwendet eine lokale Datenbank, um deine Aufgaben zu verfolgen. Die Daten, die dabei gesammelt werden, benutzt das Programm, um deine zukünftigen Aufgaben und Termine zu planen, falls du diese schon einmal erledigt hast.
 
 Das Programm soll auch Menschen helfen, die es schwierig finden, eine Aufgabe "einfach zu tun", mit einer Aufgabe anzufangen und produktiv zu werden, falls das ein Problem ist. Trotzdem sind das nur Empfehlungen, die dir mehr Perspektiven geben sollen, um bei Dingen aktiver werden zu können, die "getan werden müssen".
@@ -22,9 +52,11 @@ Das Programm soll auch Menschen helfen, die es schwierig finden, eine Aufgabe "e
 Am Ende soll das Programm dem Benutzer helfen, sich zwischen Aufgaben zu entscheiden, die getan werden müssen und diese zu tun.
 
 ## Eine Stellungnahme zum Thema KI
+
 Grundsätzlich bin ich *nicht* gegen neue Technologien. Das gilt auch für das Thema KI. **Allerdings** finde ich die Verwendung von KI in den meisten Fällen überflüssig und unangemessen. Deshalb möchte ich hier erklären, *wie* und *ob* ich KI während der Entwicklung einsetze und was man in Zukunft erwarten kann, wenn KI in Verbindung mit dem Programm genutzt wird.
 
 ### Entwicklung
+
 Während der Entwicklung kann KI definitiv die Produktivität erhöhen, wenn diese Teile des Codes selbst schreibt. Das ist ein Fakt, den ich **nicht** widerlegen kann. Trotzdem mag ich die Idee nicht, dass *etwas* anderes meinen Code schreibt. Stattdessen benutze ich KI für die folgenden Dinge bei der Entwicklung:
 * Um neue Befehle zu erlernen
 * Um einen Befehl zu finden, von dem ich nicht wusste, dass es ihn gibt
@@ -40,6 +72,7 @@ Ich könnte KI natürlich mehr benutzen, so wäre ich bei allem deutlich schnell
 Falls du mehr über dieses Thema wissen möchtest, kannst du mir gerne eine [Mail](mailto:info@vindona.de) schreiben (schnellste Antwort).
 
 ### KI Assistent
+
 Grundsätzlich ich finde die Idee eines KI Assistenten **nicht** verwerflich. **Aber nicht** als "Ich kann dich alles fragen und du machst das"-Programm. Ich finde die Idee, ein anderes KI-Programm zu benutzen oder einen Server oder irgendetwas außerhalb für anzuschreiben, ebenfalls schlecht. **Aktuell plane ich nicht, einen KI Assistenten in das Programm einzubauen.**
 Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assistenten erwarten und nicht erwarten kannst: 
 
@@ -54,28 +87,34 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     * Du kannst nicht in einem Chat mit der KI interagieren.
 
 ## Geplante Inhalte
-### Alpha
+
+### Pre-Alpha
+
 - [x] Github Projekt erstellen
-- [ ] Design überarbeiten
-    - [ ] Layout und Design neu entwerfen
+- [x] Design überarbeiten
+    - [x] Layout und Design neu entwerfen
 - [ ] Erstelle die Grundfunktionen
-    - [ ] Lese- und Schreibfunktionen für die Datenbank (durch SQLite-Befehle)
-    - [ ] Erstelle Klassen und Befehle für die Interaktion mit der Datenbank
+    - [x] Lese- und Schreibfunktionen für die Datenbank (durch SQLite-Befehle)
+    - [x] Logik für die m zu n Beziehungen in der Datenbank erstellen (fürs erstellen, löschen, usw.)
+    - [x] Erstelle Klassen und Befehle für die Interaktion mit der Datenbank
     - [ ] Erstelle Layout
     - [ ] Verknüpfe das Layout mit den Befehlen und Klassen
 - [ ] Überarbeite den Code
 - [ ] Behebe Fehler
 
-*Phase soll bis zum **17.07.2026** abgeschlossen werden.*
+*Phase soll bis zum **24.07.2026** abgeschlossen werden.*
 
-### Beta
+### Alpha-Release
+
 *Mehr Punkte könnten hinzugefügt werden, während ich an dem Programm arbeite.*
+
 - [ ] Design-Funktionen überarbeiten
     - [ ] Erstelle wechselbare Designs
 - [ ] Neue Funktionen
     - [ ] Daten exportieren
     - [ ] Algorithmus, um beim planen neuer Aufgaben und Termine zu helfen
     - [ ] Zeige automatisch versteckte Aufgaben-IDs an, falls es zwei unterschiedliche Aufgaben mit dem gleichen Titel in derselben Kategorie und demselben Projekt gibt
+    - [ ] Archiviere Projekte, sodass du sie nicht sehen kannst, aber noch Zugriff auf die Daten bekommen kannst
     - [ ] Veränderbare Einstellungen
         - [ ] Tastaturbefehle
         - [ ] Automatisches Löschen der lokalen Daten
@@ -89,8 +128,12 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 - [ ] Überarbeite den Code
 - [ ] Behebe mehr Fehler
 
-### Veröffentlichung (V1.0)
+*Es wurde noch kein Datum fürs beenden der Phase angesetzt.*
+
+### Beta-Release
+
 *Mehr Punkte könnten hinzugefügt werden, während ich an dem Programm arbeite.*
+
 - [ ] Design-Funktionen überarbeiten
     - [ ] Ermögliche eigene Designs
 - [ ] Neue Funktionen
@@ -115,8 +158,16 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 - [ ] Überarbeite den Code
 - [ ] Behebe noch mehr Fehler
 
+*Es wurde noch kein Datum fürs beenden der Phase angesetzt.*
+
+### Veröffentlichung (V1.0)
+
+*Es wurde noch kein Datum fürs beenden der Phase angesetzt.*
+
 ## Planung für nach der Veröffentlichung
+
 *Im Moment sind dies nur Ideen, nichts ist versprochen.*
+
 - [ ] Selbstgehostete Version für den Browser
 - [ ] Server Synchronisation für die Datenbank
 - [ ] KI Assistent für neue Aufgaben (nur auf deinem Gerät)
@@ -124,6 +175,14 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [ ] Du kannst selbst welche erstellen oder das Programm dir welche empfehlen lassen
     - [ ] Das Programm hat eingebaute kleine Mini-Spiele, die belohnend sein sollen
 - [ ] Erinnerungen für die Arbeitszeiten während der Arbeit
+
+# Farben
+
+Das Programm soll nach Möglichkeit auch Barrierefreiheit werden. Dementsprechend habe ich eine neue Farbpalette mit dem letzten Update hinzugefügt. Ich habe allerdings noch nicht geprüft, ob diese Barrierefrei ist. Falls du selbst an einer Farbfehlsichtigkeit leidest, schick mir doch gerne Feedback an meine [Mail](mailto://info@vindona.de)!
+
+![Farbpalette](../concept-images/Colorpalette%20v1-0.png)
+
+Alle Farben werden von links nach rechts dunkler. Die Sättigung ist an den Rändern höher als in der Mitte. Beim Hintergrund liegt die Sättigung bei 0%. Bei Primär, Sekundär und Hintergrund ist der Farbgrad der gleiche. Bei Schwierigkeit und Priorität verschiebt sich der Farbgrad.
 
 *Dieser Text wurde ohne die Verwendung von AI geschrieben.*
 

@@ -1,20 +1,50 @@
 # Tasker
+
 A Task-Planner and Tracker to help you understand your own work behavior.
 
-*Eine deutsche Übersetzung befindet sich [hier](https://github.com/Elmaron/Tasker/tree/master/more-information/readme-german.md).*
+*Eine deutsche Übersetzung befindet sich [hier](./translations/README-GERMAN.md).*
 
 # Development Status
+
 ## Current
+
 **WARNING! This project is not ready to use in it's current state.**
 
 After rethinking the base-design of the program, I'll be working on providing basic functionality with the database, so that I can publish the first alpha version.
 Follow me on github to stay updated on the project!
 
-State: **[Alpha](#alpha)** | [Beta](#beta) | [Release](#release-v10)
+State: **[Pre-Alpha](#pre-alpha)** | [Alpha](#alpha-release) | [Beta](#beta-release) | [Release](#release-v10)
 
 *finished*; **in Progress**; Upcoming Phase
 
+# Table of Contents
+
+* [Features](#features)
+
+    * [Statement to AI](#statement-to-ai)
+
+        * [Development](#development)
+
+        * [AI-Assistant](#ai-assistant)
+    
+    * [Planned Features](#planned-features)
+
+        * [Pre-Alpha](#pre-alpha)
+
+        * [Alpha](#alpha-release)
+
+        * [Beta](#beta-release)
+
+        * [Release](#release-v10)
+
+        * [Ideas for features after release](#ideas-for-features-after-release)
+
+* [Colors](#colors)
+
 # Features
+
+![A concepted example of the program](./concept-images/v0-1-0_example.png)
+
 This task planning program uses a local database to track your tasks on your device. The program then uses the collected data, to help you plan new tasks or appointments, if you already did them in the past.
 
 For people who find it difficult to "just do" a task, it gives advice on how to start with something and get productive, if that's a problem. Still, they are only recommendations and shall give you more perspectives to become better at doing the things, that "need to be done".
@@ -22,9 +52,11 @@ For people who find it difficult to "just do" a task, it gives advice on how to 
 In the end, the program should help the user to decide between tasks, that need to be done and help them to do them.
 
 ## Statement to AI
+
 Generally I'm *not* against new technology and this also relates to the topic of AI. **However** I find most use cases for AI today unneccessary and inappropriate. So here I want to explain, *how* and *if* I use AI during development and what to expect in the future about the usage of AI in this program.
 
 ### Development
+
 During development AI can definitely boost productivity, by writing parts of the code itself. That is a fact, I **cannot** deny. Still, I dislike the idea of letting *something* else write my code. Instead, I use AI for the following things during development:
 * To learn new commands
 * To find commands, I'm unaware of
@@ -40,6 +72,7 @@ I could use AI more, so I would be faster at everything. But I want to understan
 If you want to know more about this topic, you can write a [mail](mailto:info@vindona.de) (fastest answer).
 
 ### AI Assistant
+
 I do **not** find the idea of an "AI Assistant" in the program off-putting. **But not** as a "I can ask you anything and you do anything"-kinda program. I also dislike the idea of using another AI program and asking a server or anything else for help. **Currently, I do not plan to add an AI Assistant to the program.**
 But if I do, here is, what you can and cannot expect from it:
 
@@ -54,28 +87,33 @@ But if I do, here is, what you can and cannot expect from it:
     * You can not interact in a chatlike environment with the AI.
 
 ## Planned Features
-### Alpha
+
+### Pre-Alpha
+
 - [x] Create Github Project
-- [ ] Update design
-    - [ ] Redefine layout and design
+- [x] Update design
+    - [x] Redefine layout and design
 - [ ] Create basic functionality
-    - [ ] Read and write to the database (through SQLite-commands)
-    - [ ] Create classes and commands for interactions with the database
+    - [x] Read and write to the database (through SQLite-commands)
+    - [x] Create Logic for m to n connections in database (like delete, create, etc.)
+    - [x] Create classes and commands for interactions with the database
     - [ ] Create layout
     - [ ] Connect layout with commands and classes
 - [ ] Refine code
 - [ ] Fixing bugs
 
-*Phase shall be finished until 17th of July 2026.*
+*Phase shall be finished until 24th of July 2026.*
 
-### Beta
+### Alpha-Release
 *More objectives may be added while working on the program*
+
 - [ ] Update design
     - [ ] Create switchable designs
 - [ ] New Features
     - [ ] Export Data
     - [ ] Algorithm to help you plan your new tasks and appointments
     - [ ] Automatically show hidden task-ids, to differentiate between tasks, which have the same title and are in the same category and project
+    - [ ] Archive Projects, so you don't see them anymore, but can still get access to the data
     - [ ] Customizable settings
         - [ ] Shortcuts
         - [ ] Autodelete data
@@ -89,8 +127,12 @@ But if I do, here is, what you can and cannot expect from it:
 - [ ] Refine code
 - [ ] Fixing more bugs
 
-### Release (V1.0)
+*A finishing date has not been set for now.*
+
+### Beta-Release
+
 *More objectives may be added while working on the program*
+
 - [ ] Update design
     - [ ] Enable custom designs
 - [ ] New Features
@@ -115,8 +157,16 @@ But if I do, here is, what you can and cannot expect from it:
 - [ ] Refine code
 - [ ] Fixing even more bugs
 
-## Planned Features after release
+*A finishing date has not been set for now.*
+
+### Release (V1.0)
+
+*A finishing date has not been set for now.*
+
+## Ideas for Features after release
+
 *These are only ideas for now, nothing promised.*
+
 - [ ] Selfhostable version for the browser
 - [ ] Server synchronisation for database
 - [ ] AI Assistant for new tasks (only locally on your machine)
@@ -124,6 +174,16 @@ But if I do, here is, what you can and cannot expect from it:
     - [ ] You can create them yourself or let the program recommend you something
     - [ ] The Program has built-in Mini-Games, which act as a reward
 - [ ] Reminders for Worktimes during Work
+
+# Colors
+
+This Program is supposed to be accessible to everyone. Considering this, I recreated the colorpalette in the last update, but didn't check for accessibility. If you have a color vision deficiency yourself, feel free to give me feedback via [Mail](mailto://info@vindona.de)!
+
+![Farbpalette](./concept-images/Colorpalette%20v1-0.png)
+
+Description:
+
+ALl Colors get darker from left to right. The Saturation is higher at the edge, than it is in the center. The background has a saturation of 0%. The primary, secondary and background each have the same hue. The colors for difficulty and priority have a different hue moving from left to right.
 
 *This text has been created without the usage of ai.*
 
