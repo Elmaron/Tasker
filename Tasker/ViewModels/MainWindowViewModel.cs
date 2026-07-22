@@ -85,16 +85,16 @@ public partial class MainWindowViewModel : ViewModelBase
     //TextFields and Buttons
 
     private const string _deleteButtonText = "Delete";
-    public string DeleteButtonText { get => _deleteButtonText; }
+    public static string DeleteButtonText { get => _deleteButtonText; }
 
     private const string _newCategoryPlaceholder = "New Category...";
-    public string NewCategoryPlaceholder { get => _newCategoryPlaceholder; }
+    public static string NewCategoryPlaceholder { get => _newCategoryPlaceholder; }
 
     private const string _newProjectPlaceholder = "New Project...";
-    public string NewProjectPlaceholder { get => _newProjectPlaceholder; }
+    public static string NewProjectPlaceholder { get => _newProjectPlaceholder; }
 
     private const string _newTaskPlaceholder = "New Task...";
-    public string NewTaskPlaceholder { get => _newTaskPlaceholder; }
+    public static string NewTaskPlaceholder { get => _newTaskPlaceholder; }
 
     //Editable Textfields
     private string _newCategoryName = "";

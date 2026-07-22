@@ -17,71 +17,27 @@ namespace Tasker.Classes.Data.Conversion
     //Handles Visuals of the program
     public static class DataStructure
     {
-        private static ObservableCollection<Tables.Category> _categories;
+        private static ObservableCollection<Tables.Category> _categories = [];
 
-        private static Tables.Category _selectedCategory;
-        private static Tables.Project _selectedProject;
-
-        private static ObservableCollection<Tables.Project> _projectsInSelectedCategory;
-        private static ObservableCollection<Tables.Task> _tasksInSelectedProject;
-
-        private static ObservableCollection<InternalPriority> _priorities;
-        private static ObservableCollection<InternalDifficulty> _difficulties;
+        private static ObservableCollection<InternalPriority> _priorities = [];
+        private static ObservableCollection<InternalDifficulty> _difficulties = [];
 
 
         public static ObservableCollection<Tables.Category> Categories
         {
             get => _categories;
-            set
-            {
-                _categories = value;
-                SelectedCategory = _categories[0];
-            }
+            set => _categories = value;
         }
-
-        public static Tables.Category SelectedCategory
+        public static ObservableCollection<InternalPriority> Priorities
         {
-            get => _selectedCategory;
-            set
-            {
-                if (value == _selectedCategory) return;
-                _selectedCategory = value;
-                Projects = _selectedCategory.Projects;
-            }
+            get => _priorities;
+            set => _priorities = value;
         }
-
-        public static Tables.Project SelectedProject
+        public static ObservableCollection<InternalDifficulty> Difficulties
         {
-            get => _selectedProject;
-            set
-            {
-                if (value == _selectedProject) return;
-                _selectedProject = value;
-                Tasks = _selectedProject.Tasks;
-            }
+            get => _difficulties;
+            set => _difficulties = value;
         }
-
-        public static ObservableCollection<Tables.Project> Projects 
-        {
-            get => _projectsInSelectedCategory;
-            set
-            {
-                _projectsInSelectedCategory = value;
-                SelectedProject = _projectsInSelectedCategory[0];
-            }
-        }
-        public static ObservableCollection<Tables.Task> Tasks
-        {
-            get => _tasksInSelectedProject;
-            set
-            {
-                _tasksInSelectedProject = value;
-            }
-        }
-
-
-        public static ObservableCollection<InternalPriority> Priorities => _priorities;
-        public static ObservableCollection<InternalDifficulty> Difficulties => _difficulties;
 
 
         public static void Reload()
@@ -105,12 +61,12 @@ namespace Tasker.Classes.Data.Conversion
                 Tables.Category newCategory = GetCategory(category);
 
                 System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Init Category {newCategory.Id}");
-                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of dbProjects: {dbProjects.Count()}");
+                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of dbProjects: {dbProjects.Count}");
 
                 List<DataBase.Project.ProjectData> projectsInCategory = dbProjects.Where(project => project.CategoryId == newCategory.Id).ToList();
                 dbProjects = dbProjects.Except(projectsInCategory).ToList();
 
-                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of Projects in Category: {projectsInCategory.Count()}");
+                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of Projects in Category: {projectsInCategory.Count}");
 
                 newCategory.Load(projectsInCategory);
                 foreach (Tables.Project project in newCategory.Projects)
@@ -130,7 +86,7 @@ namespace Tasker.Classes.Data.Conversion
         public static int CreateOrLoadData(string pLabel)
         {
             DataBase.Data dbData = new();
-            if (dbData.Get().Where(x => x.Label == pLabel).Count() > 0) return dbData.Get().Where(x => x.Label == pLabel).ToArray()[0].Id;
+            if (dbData.Get().Where(x => x.Label == pLabel).Any()) return dbData.Get().Where(x => x.Label == pLabel).ToArray()[0].Id;
             int newDataId = dbData.GenerateId();
             dbData.Add(new DataBase.Data.DataOfData
             {
@@ -159,14 +115,14 @@ namespace Tasker.Classes.Data.Conversion
             {
                 Id = newCategoryId,
                 DataId = newDataId,
-                PriorityId = getDefaultPriority().Id
+                PriorityId = GetDefaultPriority().Id
             });
 
             Tables.Category newCategory = GetCategory(new DataBase.Category.CategoryData
             {
                 Id = newCategoryId,
                 DataId = newDataId,
-                PriorityId = getDefaultPriority().Id
+                PriorityId = GetDefaultPriority().Id
             });
 
             newCategory.CreateProject(DataBaseStandards.R_NOPROJECT);
@@ -191,10 +147,10 @@ namespace Tasker.Classes.Data.Conversion
             }
         }
 
-        private static DataBase.Priority.PriorityData getDefaultPriority()
+        private static DataBase.Priority.PriorityData GetDefaultPriority()
         {
             List<DataBase.Priority.PriorityData> dbPriority = new DataBase.Priority().Get();
-            return dbPriority.Where(x => x.Label == "normal").ToArray().Count() != 1
+            return dbPriority.Where(x => x.Label == "normal").ToArray().Length != 1
                 ? dbPriority[0]
                 : dbPriority.Where(x => x.Label == "normal").ToArray()[0];
         }

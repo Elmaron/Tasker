@@ -143,7 +143,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
             {
                 Id = Id,
                 PriorityId = _selectedPriority.Id,
-                Expiry = _expiry.Value,
+                Expiry = _expiry,
             });
         }
     }

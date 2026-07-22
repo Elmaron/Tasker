@@ -167,8 +167,8 @@
 							<DataTemplate>
 								<ComboBox
 								Grid.Column="3"
-								ItemsSource=""
-								SelectedItem="">
+								ItemsSource="{Binding AvailableDifficulties}"
+								SelectedItem="{Binding SelectedDifficulty}">
 									<ComboBox.ItemTemplate>
 										<DataTemplate>
 											<Border
@@ -179,8 +179,8 @@
 												Padding="12,4">
 												<TextBlock
 													VerticalAlignment="Center"
-													Text=""
-													ToolTip.Tip=""/>
+													Text="{Binding Label}"
+													ToolTip.Tip="{Binding Hint}"/>
 											</Border>
 										</DataTemplate>
 									</ComboBox.ItemTemplate>
