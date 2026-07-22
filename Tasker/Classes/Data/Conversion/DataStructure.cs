@@ -8,39 +8,94 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Tasker.Classes.Data.Conversion.Tables;
 using Tasker.Classes.Data.Retrieval;
-//using static Tasker.Classes.Data.Retrieval.DataBase;
+using static Tasker.Classes.Data.Conversion.DataBaseDataToTables;
+using static Tasker.Classes.Data.Retrieval.DataBase;
 
 
 namespace Tasker.Classes.Data.Conversion
 {
     //Handles Visuals of the program
-    public class DataStructure
+    public static class DataStructure
     {
-        public ObservableCollection<Tables.Category> categories;
-        public ObservableCollection<InternalPriority> priorities;
-        public ObservableCollection<InternalDifficulty> difficulties;
+        private static ObservableCollection<Tables.Category> _categories;
 
-        public DataStructure() 
+        private static Tables.Category _selectedCategory;
+        private static Tables.Project _selectedProject;
+
+        private static ObservableCollection<Tables.Project> _projectsInSelectedCategory;
+        private static ObservableCollection<Tables.Task> _tasksInSelectedProject;
+
+        private static ObservableCollection<InternalPriority> _priorities;
+        private static ObservableCollection<InternalDifficulty> _difficulties;
+
+
+        public static ObservableCollection<Tables.Category> Categories
         {
-            System.Diagnostics.Debug.WriteLine($"Initializing new class Datastructure...");
-            Reload();
-            categories ??= [];
-            priorities ??= [];
-            difficulties ??= [];
+            get => _categories;
+            set
+            {
+                _categories = value;
+                SelectedCategory = _categories[0];
+            }
         }
 
-        public void Reload()
+        public static Tables.Category SelectedCategory
         {
-            categories = [];
-            priorities = [];
-            difficulties = [];
+            get => _selectedCategory;
+            set
+            {
+                if (value == _selectedCategory) return;
+                _selectedCategory = value;
+                Projects = _selectedCategory.Projects;
+            }
+        }
+
+        public static Tables.Project SelectedProject
+        {
+            get => _selectedProject;
+            set
+            {
+                if (value == _selectedProject) return;
+                _selectedProject = value;
+                Tasks = _selectedProject.Tasks;
+            }
+        }
+
+        public static ObservableCollection<Tables.Project> Projects 
+        {
+            get => _projectsInSelectedCategory;
+            set
+            {
+                _projectsInSelectedCategory = value;
+                SelectedProject = _projectsInSelectedCategory[0];
+            }
+        }
+        public static ObservableCollection<Tables.Task> Tasks
+        {
+            get => _tasksInSelectedProject;
+            set
+            {
+                _tasksInSelectedProject = value;
+            }
+        }
+
+
+        public static ObservableCollection<InternalPriority> Priorities => _priorities;
+        public static ObservableCollection<InternalDifficulty> Difficulties => _difficulties;
+
+
+        public static void Reload()
+        {
+            _categories = [];
+            _priorities = [];
+            _difficulties = [];
             foreach (DataBase.Priority.PriorityData priority in new DataBase.Priority().Get())
             {
-                priorities.Add(GetPriority(priority));
+                _priorities.Add(GetPriority(priority));
             }
             foreach (DataBase.Difficulty.DifficultyData difficulty in new DataBase.Difficulty().Get())
             {
-                difficulties.Add(GetDifficulty(difficulty));
+                _difficulties.Add(GetDifficulty(difficulty));
             }
             List<DataBase.Project.ProjectData> dbProjects = new DataBase.Project().Get();
             List<DataBase.Task.TaskData> dbTasks = new DataBase.Task().Get();
@@ -49,8 +104,13 @@ namespace Tasker.Classes.Data.Conversion
             {
                 Tables.Category newCategory = GetCategory(category);
 
+                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Init Category {newCategory.Id}");
+                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of dbProjects: {dbProjects.Count()}");
+
                 List<DataBase.Project.ProjectData> projectsInCategory = dbProjects.Where(project => project.CategoryId == newCategory.Id).ToList();
                 dbProjects = dbProjects.Except(projectsInCategory).ToList();
+
+                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of Projects in Category: {projectsInCategory.Count()}");
 
                 newCategory.Load(projectsInCategory);
                 foreach (Tables.Project project in newCategory.Projects)
@@ -63,19 +123,9 @@ namespace Tasker.Classes.Data.Conversion
 
                     project.Load(dbTasks, dbAppointments);
                 }
-                categories.Add(newCategory);
+                _categories.Add(newCategory);
             }
         }
-
-        private int getStandardPriorityId()
-        {
-            List<DataBase.Priority.PriorityData> dbPriority = new DataBase.Priority().Get();
-            return dbPriority.Where(x => x.Label == "normal").Select(x => x.Id).ToArray().Count() != 1
-                ? dbPriority.Select(x => x.Id).ToArray()[0]
-                : dbPriority.Where(x => x.Label == "normal").Select(x => x.Id).ToArray()[0];
-        }
-
-        //NEU
 
         public static int CreateOrLoadData(string pLabel)
         {
@@ -95,47 +145,58 @@ namespace Tasker.Classes.Data.Conversion
             try { new DataBase.Data().Delete(pId); } catch (Exception e) { System.Diagnostics.Debug.WriteLine($"DATABASE ERROR WHILE TRYING TO DELETE DATA:\n{e}"); }
         }
 
-        public static Tables.Category GetCategory(DataBase.Category.CategoryData pCategoryData)
+        public static int CreateCategory(object? pLabel)
         {
-            InternalData categoryData = GetData(new DataBase.Data().Get().Where(x => x.Id == pCategoryData.DataId).ToArray()[0]);
-            InternalPriority categoryPriority = GetPriority(new DataBase.Priority().Get().Where(x => x.Id == pCategoryData.PriorityId).ToArray()[0]);
-            return new Tables.Category(pCategoryData.Id, categoryData, categoryPriority);
+            System.Diagnostics.Debug.WriteLine($"Class -DataStructure-; Trying to Create Category");
+            if (pLabel == null || pLabel is not string newLabel || newLabel == "") return 1;
+            int newDataId = CreateOrLoadData(newLabel);
+
+            DataBase.Category dbCategory = new();
+
+            int newCategoryId = dbCategory.GenerateId();
+
+            dbCategory.Add(new DataBase.Category.CategoryData
+            {
+                Id = newCategoryId,
+                DataId = newDataId,
+                PriorityId = getDefaultPriority().Id
+            });
+
+            Tables.Category newCategory = GetCategory(new DataBase.Category.CategoryData
+            {
+                Id = newCategoryId,
+                DataId = newDataId,
+                PriorityId = getDefaultPriority().Id
+            });
+
+            newCategory.CreateProject(DataBaseStandards.R_NOPROJECT);
+            _categories.Add(newCategory);
+            System.Diagnostics.Debug.WriteLine($"Class -DataStructure-; Category Successfully created.");
+            return newCategoryId;
         }
 
-        public static Tables.Project GetProject(DataBase.Project.ProjectData pProjectData)
+        public static void DeleteCategory(object? pId)
         {
-            InternalData projectData = GetData(new DataBase.Data().Get().Where(x => x.Id == pProjectData.DataId).ToArray()[0]);
-            InternalPriority projectPriority = GetPriority(new DataBase.Priority().Get().Where(x => x.Id == pProjectData.PriorityId).ToArray()[0]);
-            return new Tables.Project(pProjectData.Id, projectData, projectPriority, pProjectData.Expiry);
+            if (pId == null || pId is not int categoryId || categoryId <= 0) return;
+            try
+            {
+                Tables.Category category = _categories.Where(x => x.Id == categoryId).ToArray()[0];
+                if (_categories.Where(x => x.Data.Id == category.Data.Id).Count() == 1) DeleteData(category.Data.Id);
+                new DataBase.Category().Delete(categoryId);
+                _categories.Remove(category);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine($"Class -DataStructure-; Critical Error while trying to delete category.\nMessage:{e}");
+            }
         }
 
-        public static Tables.Task GetTask(DataBase.Task.TaskData pTaskData)
+        private static DataBase.Priority.PriorityData getDefaultPriority()
         {
-            InternalData taskData = GetData(new DataBase.Data().Get().Where(x => x.Id == pTaskData.DataId).ToArray()[0]);
-            InternalPriority taskPriority = GetPriority(new DataBase.Priority().Get().Where(x => x.Id == pTaskData.PriorityId).ToArray()[0]);
-            InternalDifficulty? taskDifficulty = pTaskData.DifficultyId != null ? GetDifficulty(new DataBase.Difficulty().Get().Where(x => x.Id == pTaskData.DifficultyId).ToArray()[0]) : null;
-            return new Tables.Task(pTaskData.Id, taskData, taskPriority, taskDifficulty, pTaskData.Expiry);
-        }
-
-        public static Tables.Appointment GetAppointment(DataBase.Appointment.AppointmentData pAppointmentData)
-        {
-            InternalData appointmentData = GetData(new DataBase.Data().Get().Where(x => x.Id == pAppointmentData.DataId).ToArray()[0]);
-            return new Tables.Appointment(pAppointmentData.Id, appointmentData);
-        }
-
-        public static InternalData GetData(DataBase.Data.DataOfData pData)
-        {
-            return new InternalData(pData.Id, pData.Label, pData.Description, pData.Created, pData.Updated, pData.Finished, pData.DeleteOn);
-        }
-
-        public static InternalPriority GetPriority(DataBase.Priority.PriorityData pPriorityData)
-        {
-            return new InternalPriority(pPriorityData.Id, pPriorityData.Label, pPriorityData.Ordering, pPriorityData.Color);
-        }
-
-        public static InternalDifficulty GetDifficulty(DataBase.Difficulty.DifficultyData pDifficultyData)
-        {
-            return new InternalDifficulty(pDifficultyData.Id, pDifficultyData.Label, pDifficultyData.Description, pDifficultyData.Recommendation, pDifficultyData.Color);
+            List<DataBase.Priority.PriorityData> dbPriority = new DataBase.Priority().Get();
+            return dbPriority.Where(x => x.Label == "normal").ToArray().Count() != 1
+                ? dbPriority[0]
+                : dbPriority.Where(x => x.Label == "normal").ToArray()[0];
         }
     }
 }

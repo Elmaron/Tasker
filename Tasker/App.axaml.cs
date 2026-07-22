@@ -4,6 +4,7 @@ using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using System.Linq;
+using Tasker.Classes.Data.Conversion;
 using Tasker.Classes.Data.Retrieval;
 using Tasker.ViewModels;
 using Tasker.Views;
@@ -21,6 +22,9 @@ public partial class App : Application
     {
         //Create Database for User data, if not available
         DataBase.Initialize();
+
+        //Load Data from database
+        DataStructure.Reload();
 
         //Window Initialization
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

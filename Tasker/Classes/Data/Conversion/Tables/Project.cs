@@ -8,6 +8,7 @@ using Tasker.Classes.Data.Retrieval;
 using Tasker.Classes.Templates;
 using static Tasker.Classes.Data.Retrieval.DataBase.Task;
 using static Tasker.Classes.Data.Conversion.DataStructure;
+using static Tasker.Classes.Data.Conversion.DataBaseDataToTables;
 
 namespace Tasker.Classes.Data.Conversion.Tables
 {
@@ -30,6 +31,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
 
             _tasks = [];
             _appointments = [];
+            System.Diagnostics.Debug.WriteLine($"Class -Project-; Found: {Data.Label}");
         }
         public void Load(List<DataBase.Task.TaskData>? pTasks = null, List<DataBase.Appointment.AppointmentData>? pAppointments = null, bool pClear = true)
         {
@@ -41,9 +43,9 @@ namespace Tasker.Classes.Data.Conversion.Tables
             if (pAppointments != null) LoadAppointments(pAppointments);
         }
 
-        public void CreateTask(object? pLabel)
+        public int CreateTask(object? pLabel)
         {
-            if (pLabel == null || pLabel is not string newLabel || newLabel == "") return;
+            if (pLabel == null || pLabel is not string newLabel || newLabel == "") return 1;
             int newDataId = CreateOrLoadData(newLabel);
 
             DataBase.Task dbTask = new();
@@ -65,11 +67,12 @@ namespace Tasker.Classes.Data.Conversion.Tables
                 ProjectId = Id,
                 PriorityId = _selectedPriority.Id
             }));
+            return newTaskId;
         }
 
-        public void CreateAppointment(object? pLabel)
+        public int CreateAppointment(object? pLabel)
         {
-            if (pLabel == null || pLabel is not string newLabel || newLabel == "") return;
+            if (pLabel == null || pLabel is not string newLabel || newLabel == "") return 1;
             int newDataId = CreateOrLoadData(newLabel);
 
             DataBase.Appointment dbAppointment = new();
@@ -89,6 +92,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
                 DataId = newDataId,
                 ProjectId = Id,
             }));
+            return newAppointmentId;
         }
 
         public void DeleteTask(object? pId)

@@ -22,7 +22,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
             _selectedPriority = pSelectedPriority;
             _selectedDifficulty = pSelectedDifficulty;
             _expiry = pExpiry;
-            System.Diagnostics.Debug.WriteLine($"Class -Appointment-; Found: {Data.Label}");
+            System.Diagnostics.Debug.WriteLine($"Class -Task-; Found: {Data.Label}");
         }
 
         private void Update<T>(ref T field, T value)

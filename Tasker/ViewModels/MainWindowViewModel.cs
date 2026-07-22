@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Tasker.Classes.Data.Conversion;
 using Tasker.Classes.Data.Retrieval;
+using static Tasker.Classes.Data.Retrieval.DataBase;
 
 namespace Tasker.ViewModels;
 
@@ -96,7 +97,6 @@ public partial class MainWindowViewModel : ViewModelBase
     public string NewTaskPlaceholder { get => _newTaskPlaceholder; }
 
     //Editable Textfields
-
     private string _newCategoryName = "";
     public string NewCategoryName
     {
@@ -118,26 +118,131 @@ public partial class MainWindowViewModel : ViewModelBase
         set => SetProperty(ref _newTaskName, value);
     }
 
-    //Data
-
-    private DataStructure _data = new();
-
-    public DataStructure Data
+    private string _newAppointmentName = "";
+    public string NewAppointmentName
     {
-        get => _data;
-        set => SetProperty(ref _data, value);
+        get => _newAppointmentName;
+        set => SetProperty(ref _newAppointmentName, value);
     }
 
-    public ObservableCollection<Classes.Data.Conversion.Tables.Category> Categories => _data.categories;
 
     //Handle selection logic
+    private ObservableCollection<Classes.Data.Conversion.Tables.Category> _categories;
+
     private Classes.Data.Conversion.Tables.Category _selectedCategory;
     private Classes.Data.Conversion.Tables.Project _selectedProject;
+    private Classes.Data.Conversion.Tables.Task? _selectedTask;
 
+    private bool _isItemSelected;
+
+    private ObservableCollection<Classes.Data.Conversion.Tables.Project> _projectsInSelectedCategory;
+    private ObservableCollection<Classes.Data.Conversion.Tables.Task> _tasksInSelectedProject;
+
+    public ObservableCollection<Classes.Data.Conversion.Tables.Category> Categories
+    {
+        get => _categories;
+        set
+        {
+            _categories = value;
+            OnPropertyChanged();
+            if (value == null) return;
+            SelectedCategory = value[0];
+        }
+    }
+
+    public Classes.Data.Conversion.Tables.Category SelectedCategory
+    {
+        get => _selectedCategory;
+        set
+        {
+            if (value == _selectedCategory) return;
+            _selectedCategory = value;
+            OnPropertyChanged();
+            if (value == null) return;
+            Projects = value.Projects;
+        }
+    }
+
+    public Classes.Data.Conversion.Tables.Project SelectedProject
+    {
+        get => _selectedProject;
+        set
+        {
+            if (value == _selectedProject) return;
+            _selectedProject = value;
+            OnPropertyChanged();
+            if (value == null) return;
+            Tasks = value.Tasks;
+            SelectedTask = null;
+        }
+    }
+    public Classes.Data.Conversion.Tables.Task? SelectedTask
+    {
+        get => _selectedTask;
+        set
+        {
+            if (value == _selectedTask) return;
+            _selectedTask = value;
+            OnPropertyChanged();
+            IsItemSelected = value != null;
+        }
+    }
+
+    public ObservableCollection<Classes.Data.Conversion.Tables.Project> Projects
+    {
+        get => _projectsInSelectedCategory;
+        set
+        {
+            _projectsInSelectedCategory = value;
+            OnPropertyChanged();
+            if (value == null) return;
+            SelectedProject = value[0];
+        }
+    }
+    public ObservableCollection<Classes.Data.Conversion.Tables.Task> Tasks
+    {
+        get => _tasksInSelectedProject;
+        set
+        {
+            _tasksInSelectedProject = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsItemSelected
+    {
+        get => _isItemSelected;
+        set => SetProperty(ref _isItemSelected, value);
+    }
+
+    public void CreateCategory() {
+        if (NewCategoryName == null || NewCategoryName == "") return;
+        int newCategoryId = DataStructure.CreateCategory(NewCategoryName);
+        Categories = DataStructure.Categories;
+        SelectedCategory = Categories.Where(category => category.Id == newCategoryId).ToArray()[0];
+        NewCategoryName = "";
+    }
+
+    public void CreateProject()
+    {
+        if(NewProjectName == null || NewProjectName == "") return;
+        int newProjectId = SelectedCategory.CreateProject(NewProjectName);
+        Projects = SelectedCategory.Projects;
+        SelectedProject = Projects.Where(project => project.Id == newProjectId).ToArray()[0];
+        NewProjectName = "";
+    }
+
+    public void CreateTask()
+    {
+        if (NewTaskName == null || NewTaskName == "") return;
+        int newTaskId = SelectedProject.CreateTask(NewTaskName);
+        Tasks = SelectedProject.Tasks;
+        SelectedTask = Tasks.Where(task => task.Id == newTaskId).ToArray()[0];
+        NewTaskName = "";
+    }
 
     public MainWindowViewModel()
     {
-        //Load Data from database
-        //_data = new();
+        Categories = DataStructure.Categories;
     }
 }

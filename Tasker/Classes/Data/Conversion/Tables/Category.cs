@@ -6,6 +6,7 @@ using System.Text;
 using Tasker.Classes.Data.Retrieval;
 using Tasker.Classes.Templates;
 using static Tasker.Classes.Data.Conversion.DataStructure;
+using static Tasker.Classes.Data.Conversion.DataBaseDataToTables;
 
 namespace Tasker.Classes.Data.Conversion.Tables
 {
@@ -21,6 +22,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
         {
             _selectedPriority = pSelectedPriority;
             _projects = [];
+            System.Diagnostics.Debug.WriteLine($"Class -Category-; Found: {Data.Label}");
         }
         public void Load(List<DataBase.Project.ProjectData>? pProject = null, bool pClear = true)
         {
@@ -28,9 +30,9 @@ namespace Tasker.Classes.Data.Conversion.Tables
             if (pProject != null) LoadProjects(pProject);
         }
 
-        public void CreateProject(object? pLabel)
+        public int CreateProject(object? pLabel)
         {
-            if (pLabel == null || pLabel is not string newLabel || newLabel == "") return;
+            if (pLabel == null || pLabel is not string newLabel || newLabel == "") return 1;
             int newDataId = CreateOrLoadData(newLabel);
 
             DataBase.Project dbProject = new();
@@ -52,6 +54,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
                 CategoryId = Id,
                 PriorityId = _selectedPriority.Id
             }));
+            return newProjectId;
         }
 
         public void DeleteProject(object? pId)
@@ -69,6 +72,9 @@ namespace Tasker.Classes.Data.Conversion.Tables
                 System.Diagnostics.Debug.WriteLine($"Class -Category-; Critical Error while trying to delete project.\nMessage:{e}");
             }
         }
+
+        public static void CreateCategory(object? label) { System.Diagnostics.Debug.WriteLine($"Class -Category-; Trying to Create new category"); DataStructure.CreateCategory(label); }
+        public void DeleteCategory() { DataStructure.DeleteCategory(Id); }
 
         private void LoadProjects(List<DataBase.Project.ProjectData> pProjects)
         {
