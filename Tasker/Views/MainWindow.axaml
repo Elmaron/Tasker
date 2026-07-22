@@ -172,7 +172,7 @@
 									<ComboBox.ItemTemplate>
 										<DataTemplate>
 											<Border
-												Background=""
+												Background="{Binding Color}"
 												HorizontalAlignment="Stretch"
 												VerticalAlignment="Stretch"
 												Margin="-12,-4"
@@ -198,7 +198,7 @@
 									<ComboBox.ItemTemplate>
 										<DataTemplate>
 											<Border
-												Background=""
+												Background="{Binding Color}"
 												HorizontalAlignment="Stretch"
 												VerticalAlignment="Stretch"
 												Margin="-12,-4"
