@@ -173,6 +173,7 @@ But if I do, here is, what you can and cannot expect from it:
 - [ ] A few funny rewards for doing your tasks!
     - [ ] You can create them yourself or let the program recommend you something
     - [ ] The Program has built-in Mini-Games, which act as a reward
+- [ ] Reminders for Worktimes during Work
 
 # Colors
 
