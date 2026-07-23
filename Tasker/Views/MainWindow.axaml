@@ -36,7 +36,8 @@
 								<ContextMenu
 									Background="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ColorSecondary2}">
 									<MenuItem
-										Header="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteButtonText}"/>
+										Header="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteButtonText}"
+										Command="{Binding DeleteCategory}"/>
 								</ContextMenu>
 							</TextBlock.ContextMenu>
 						</TextBlock>
@@ -225,14 +226,14 @@
 							</DataTemplate>
 						</TableViewColumn.CellTemplate>
 					</TableViewColumn>
-							
-							<!--
+
+					<!--
 							<Button Content="Delete"
 									Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteTask}"
 									CommandParameter="{Binding Id}"
 									/>
 									-->
-							<!--
+					<!--
 							<Grid.ContextMenu>
 								<ContextMenu>
 									<MenuItem 

@@ -18,6 +18,7 @@ namespace Tasker.Classes.Data.Conversion
     public static class DataStructure
     {
         private static ObservableCollection<Tables.Category> _categories = [];
+        private static Tables.Category? _hiddenReserved;
 
         private static ObservableCollection<InternalPriority> _priorities = [];
         private static ObservableCollection<InternalDifficulty> _difficulties = [];
@@ -84,7 +85,9 @@ namespace Tasker.Classes.Data.Conversion
 
                     project.Load(tasksInProject, appointmentsInProject);
                 }
-                _categories.Add(newCategory);
+                if (_hiddenReserved != null || !newCategory.Data.IsReserved || newCategory.ContainsObjects) { _categories.Add(newCategory); continue; }
+                if (new DataBase.Category().Get().Count == 1 ) { _categories.Add(newCategory); continue; }
+                _hiddenReserved = newCategory;
             }
         }
 
@@ -133,6 +136,10 @@ namespace Tasker.Classes.Data.Conversion
             newCategory.CreateProject(DataBaseStandards.R_NOPROJECT);
             _categories.Add(newCategory);
             System.Diagnostics.Debug.WriteLine($"Class -DataStructure-; Category Successfully created.");
+            if (_hiddenReserved != null) return newCategoryId;
+
+            _hiddenReserved = _categories.FirstOrDefault(x => x.Data.IsReserved && !x.ContainsObjects);
+            if (_hiddenReserved != null) _categories.Remove(_hiddenReserved);
             return newCategoryId;
         }
 
@@ -142,9 +149,13 @@ namespace Tasker.Classes.Data.Conversion
             try
             {
                 Tables.Category category = _categories.Where(x => x.Id == categoryId).ToArray()[0];
-                if (_categories.Where(x => x.Data.Id == category.Data.Id).Count() == 1) DeleteData(category.Data.Id);
+                foreach (Tables.Project project in category.Projects) category.DeleteProject(project.Id);
                 new DataBase.Category().Delete(categoryId);
+                if (new DataBase.Data().Get().Where(x => x.Id == category.Data.Id).Count() == 1) DeleteData(category.Data.Id);
                 _categories.Remove(category);
+                if (_categories.Count != 0 || _hiddenReserved == null) return;
+                _categories.Add(_hiddenReserved);
+                _hiddenReserved = null;
             }
             catch (Exception e)
             {

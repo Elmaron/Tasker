@@ -34,6 +34,10 @@ namespace Tasker.Classes.Data.Conversion.Tables
             }
             set => Update(ref _label, value);
         }
+        public bool IsReserved
+        {
+            get => _label == DataBaseStandards.R_NOCATEGORY || _label == DataBaseStandards.R_NOPROJECT;
+        }
         public string? Description { 
             get => _description; 
             set => Update(ref _description, value); 

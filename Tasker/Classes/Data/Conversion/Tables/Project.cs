@@ -24,6 +24,21 @@ namespace Tasker.Classes.Data.Conversion.Tables
         public ObservableCollection<Task> Tasks { get => _tasks; set => _tasks = value; }
         public ObservableCollection<Appointment> Appointments { get => _appointments; set => _appointments = value;  }
 
+        public bool ContainsObjects
+        {
+            get => HasTasks || HasAppointments;
+        }
+
+        public bool HasTasks
+        {
+            get => _tasks.Any();
+        }
+
+        public bool HasAppointments
+        {
+            get => _appointments.Any();
+        }
+
         public Project(int pId, InternalData pData, InternalPriority pSelectedPriority, DateTime? pExpiry) : base(pId, pData)
         {
             _selectedPriority = pSelectedPriority;
@@ -102,8 +117,8 @@ namespace Tasker.Classes.Data.Conversion.Tables
             try
             {
                 Task task = _tasks.Where(x => x.Id == taskId).ToArray()[0];
-                if (_tasks.Where(x => x.Data.Id == task.Data.Id).Count() == 1) DeleteData(task.Data.Id);
                 new DataBase.Task().Delete(taskId);
+                if (new DataBase.Data().Get().Where(x => x.Id == task.Data.Id).Count() == 1) DeleteData(task.Data.Id);
                 _tasks.Remove(task);
             } catch(Exception e)
             {
@@ -117,8 +132,8 @@ namespace Tasker.Classes.Data.Conversion.Tables
             try
             {
                 Appointment appointment = _appointments.Where(x => x.Id == appointmentId).ToArray()[0];
-                if (_tasks.Where(x => x.Data.Id == appointment.Data.Id).Count() == 1) DeleteData(appointment.Data.Id);
                 new DataBase.Appointment().Delete(appointment.Id);
+                if (new DataBase.Data().Get().Where(x => x.Id == appointment.Data.Id).Count() == 1) DeleteData(appointment.Data.Id);
                 _appointments.Remove(appointment);
             }
             catch (Exception e)

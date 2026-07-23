@@ -193,6 +193,7 @@ public partial class MainWindowViewModel : ViewModelBase
         get => _projectsInSelectedCategory;
         set
         {
+            if (value.Count == 0) return;
             _projectsInSelectedCategory = value;
             OnPropertyChanged();
             if (value == null) return;

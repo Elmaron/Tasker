@@ -14,9 +14,21 @@ namespace Tasker.Classes.Data.Conversion.Tables
     {
         private InternalPriority _selectedPriority;
         private ObservableCollection<Project> _projects;
+        private Project? _hiddenReserved;
         public InternalPriority SelectedPriority { get => _selectedPriority; set => Update(ref _selectedPriority, value); }
 
         public ObservableCollection<Project> Projects { get => _projects; set => _projects = value; }
+
+        public bool ContainsObjects
+        {
+            get
+            {
+                foreach (Project project in _projects) {
+                    if(project.ContainsObjects) return true;
+                }
+                return false;
+            }
+        }
 
         public Category(int pId, InternalData pData, InternalPriority pSelectedPriority) : base(pId, pData)
         {
@@ -27,7 +39,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
         public void Load(List<DataBase.Project.ProjectData>? pProject = null, bool pClear = true)
         {
             if (pClear) _projects = [];
-            if (pProject != null) LoadProjects(pProject);
+            if (pProject != null && pProject.Count >= 1) LoadProjects(pProject);
         }
 
         public int CreateProject(object? pLabel)
@@ -54,6 +66,11 @@ namespace Tasker.Classes.Data.Conversion.Tables
                 CategoryId = Id,
                 PriorityId = _selectedPriority.Id
             }));
+
+            if (_hiddenReserved != null) return newProjectId;
+
+            _hiddenReserved = _projects.FirstOrDefault(x => x.Data.IsReserved && !x.ContainsObjects);
+            if (_hiddenReserved != null) _projects.Remove(_hiddenReserved);
             return newProjectId;
         }
 
@@ -63,9 +80,14 @@ namespace Tasker.Classes.Data.Conversion.Tables
             try
             {
                 Project project = _projects.Where(x => x.Id == projectId).ToArray()[0];
-                if (_projects.Where(x => x.Data.Id == project.Data.Id).Count() == 1) DeleteData(project.Data.Id);
+                foreach (Task task in project.Tasks) project.DeleteTask(task.Id);
+                foreach (Appointment appointment in project.Appointments) project.DeleteAppointment(appointment.Id);
                 new DataBase.Project().Delete(projectId);
+                if (new DataBase.Data().Get().Where(x => x.Id == project.Data.Id).Count() == 1) DeleteData(project.Data.Id);
                 _projects.Remove(project);
+                if (_projects.Count != 0 || _hiddenReserved == null) return;
+                _projects.Add(_hiddenReserved);
+                _hiddenReserved = null;
             }
             catch (Exception e)
             {
@@ -78,7 +100,14 @@ namespace Tasker.Classes.Data.Conversion.Tables
 
         private void LoadProjects(List<DataBase.Project.ProjectData> pProjects)
         {
-            foreach (DataBase.Project.ProjectData project in pProjects) _projects.Add(GetProject(project));
+            if (pProjects.Count != 1)
+            foreach (DataBase.Project.ProjectData projectData in pProjects)
+            {
+                Project project = GetProject(projectData);
+                if (_hiddenReserved != null || !project.Data.IsReserved || project.ContainsObjects) { _projects.Add(project); continue; }
+                _hiddenReserved = project;
+            }
+            else _projects.Add(GetProject(pProjects.First()));
         }
 
         private void Update<T>(ref T field, T value)
