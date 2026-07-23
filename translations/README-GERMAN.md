@@ -97,8 +97,11 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [x] Lese- und Schreibfunktionen für die Datenbank (durch SQLite-Befehle)
     - [x] Logik für die m zu n Beziehungen in der Datenbank erstellen (fürs erstellen, löschen, usw.)
     - [x] Erstelle Klassen und Befehle für die Interaktion mit der Datenbank
-    - [ ] Erstelle Layout
-    - [ ] Verknüpfe das Layout mit den Befehlen und Klassen
+    - [x] Erstelle Layout
+    - [x] Verknüpfe das Layout mit den Befehlen und Klassen
+    - [ ] Starten bzw. Stoppen der Arbeiten an einer Aufgabe
+    - [ ] Detailansicht für eine Aufgabe bzw. einen Termin
+    - [ ] Anzeige für die Bearbeitungszeit einer Aufgabe
 - [ ] Überarbeite den Code
 - [ ] Behebe Fehler
 
@@ -112,9 +115,15 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [ ] Erstelle wechselbare Designs
 - [ ] Neue Funktionen
     - [ ] Daten exportieren
+    - [ ] Starten und Stoppen der Arbeit (pro Kategorie)
+    - [ ] Arbeitszeitlimiterungen
+    - [ ] ReStrukturierung der Datenbank Klasse
+    - [ ] Detailansicht für Projekte und Kategorien
+    - [ ] Anzeige für die aktuelle Arbeitszeit in einer Kategorie
     - [ ] Algorithmus, um beim planen neuer Aufgaben und Termine zu helfen
     - [ ] Zeige automatisch versteckte Aufgaben-IDs an, falls es zwei unterschiedliche Aufgaben mit dem gleichen Titel in derselben Kategorie und demselben Projekt gibt
     - [ ] Archiviere Projekte, sodass du sie nicht sehen kannst, aber noch Zugriff auf die Daten bekommen kannst
+    - [ ] Übersichtseite
     - [ ] Veränderbare Einstellungen
         - [ ] Tastaturbefehle
         - [ ] Automatisches Löschen der lokalen Daten
@@ -150,7 +159,7 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 - [ ] Erstelle Benutzerhilfen
     - [ ] Online Benutzerhilfe (detailiert)
     - [ ] Eingebaute Hilfe für Anfänger
-- [ ] ERstelle Dokumentationen
+- [ ] Erstelle Dokumentationen
     - [ ] Für Entwickler
         - [ ] Programm-/Appentwicklung
         - [ ] Pluginentwicklung

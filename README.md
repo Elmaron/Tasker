@@ -97,8 +97,10 @@ But if I do, here is, what you can and cannot expect from it:
     - [x] Read and write to the database (through SQLite-commands)
     - [x] Create Logic for m to n connections in database (like delete, create, etc.)
     - [x] Create classes and commands for interactions with the database
-    - [ ] Create layout
-    - [ ] Connect layout with commands and classes
+    - [x] Create layout
+    - [x] Connect layout with commands and classes
+    - [ ] Start and stop function for the tasks
+    - [ ] Detailed view for tasks and appointments 
 - [ ] Refine code
 - [ ] Fixing bugs
 
@@ -111,9 +113,15 @@ But if I do, here is, what you can and cannot expect from it:
     - [ ] Create switchable designs
 - [ ] New Features
     - [ ] Export Data
+    - [ ] Start and stop of worktime (for each category)
+    - [ ] Worktimelimits
+    - [ ] Restructuring of DataBase Class
+    - [ ] Detailed View for Projects and Categories
+    - [ ] Show current worktime in category
     - [ ] Algorithm to help you plan your new tasks and appointments
     - [ ] Automatically show hidden task-ids, to differentiate between tasks, which have the same title and are in the same category and project
     - [ ] Archive Projects, so you don't see them anymore, but can still get access to the data
+    - [ ] Overviewpage
     - [ ] Customizable settings
         - [ ] Shortcuts
         - [ ] Autodelete data
