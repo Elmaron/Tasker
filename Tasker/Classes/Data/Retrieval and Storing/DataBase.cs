@@ -187,12 +187,16 @@ namespace Tasker.Classes.Data.Retrieval {
                 using var connection = new SqliteConnection(ConnectionString);
                 connection.Open();
 
+                System.Diagnostics.Debug.WriteLine($"Collecting Parameters {string.Join(", ", parameters)} and Data {string.Join(", ", data)}");
+
                 foreach (object? dataObject in data)
                 {
                     if (dataObject != null) continue;
                     parameters = parameters.Where((x, i) => i != Array.IndexOf(data, dataObject)).ToArray();
                     data = data.Where((x, i) => i != Array.IndexOf(data, dataObject)).ToArray();
                 }
+
+                System.Diagnostics.Debug.WriteLine($"Collected Parameters {string.Join(", ", parameters)} and Data {string.Join(", ", data)}");
 
                 var command = connection.CreateCommand();
                 command.CommandText =

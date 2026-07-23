@@ -46,6 +46,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
         public int CreateTask(object? pLabel)
         {
             if (pLabel == null || pLabel is not string newLabel || newLabel == "") return 1;
+            System.Diagnostics.Debug.WriteLine($"Creating new Task {pLabel}");
             int newDataId = CreateOrLoadData(newLabel);
 
             DataBase.Task dbTask = new();

@@ -60,24 +60,29 @@ namespace Tasker.Classes.Data.Conversion
             {
                 Tables.Category newCategory = GetCategory(category);
 
-                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Init Category {newCategory.Id}");
-                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of dbProjects: {dbProjects.Count}");
+                //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Init Category {newCategory.Id}");
+                //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of dbProjects: {dbProjects.Count}");
 
                 List<DataBase.Project.ProjectData> projectsInCategory = dbProjects.Where(project => project.CategoryId == newCategory.Id).ToList();
                 dbProjects = dbProjects.Except(projectsInCategory).ToList();
 
-                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of Projects in Category: {projectsInCategory.Count}");
+                //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of Projects in Category: {projectsInCategory.Count}");
 
                 newCategory.Load(projectsInCategory);
                 foreach (Tables.Project project in newCategory.Projects)
                 {
+                    //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Init Project {project.Id}");
+                    //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of dbTasks: {dbTasks.Count}");
+
                     List<DataBase.Task.TaskData> tasksInProject = dbTasks.Where(task => task.ProjectId == project.Id).ToList();
                     dbTasks = dbTasks.Except(tasksInProject).ToList();
 
-                    List<DataBase.Appointment.AppointmentData> appointmentsInTask = dbAppointments.Where(appointment => appointment.ProjectId == project.Id).ToList();
-                    dbAppointments = dbAppointments.Except(appointmentsInTask).ToList();
+                    //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of Tasks in Project: {tasksInProject.Count}");
 
-                    project.Load(dbTasks, dbAppointments);
+                    List<DataBase.Appointment.AppointmentData> appointmentsInProject = dbAppointments.Where(appointment => appointment.ProjectId == project.Id).ToList();
+                    dbAppointments = dbAppointments.Except(appointmentsInProject).ToList();
+
+                    project.Load(tasksInProject, appointmentsInProject);
                 }
                 _categories.Add(newCategory);
             }
