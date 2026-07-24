@@ -89,6 +89,18 @@ namespace Tasker.Classes.Data.Conversion.Tables
             return;
         }
 
+        public void DeleteTimings()
+        {
+            foreach (int key in new DataBase.TimingInTask().Get()
+                    .Where(timingInTask => timingInTask.TaskId == Id)
+                    .Select(timingInTask => timingInTask.Id))
+                new DataBase.TimingInTask().Delete(key);
+            foreach (InternalTiming worktime in _worktimes)
+            {
+                new DataBase.Timing().Delete(worktime.Id);
+            }
+        }
+
         private void UpdateDuration()
         {
             Duration = new(0);
@@ -107,13 +119,13 @@ namespace Tasker.Classes.Data.Conversion.Tables
             return worktime.Id;
         }
 
-        public DataBase.Timing.TimingData? CreateTiming(string pType, DateTime? pStart = null, DateTime? pEnd = null)
+        private DataBase.Timing.TimingData? CreateTiming(string pType, DateTime? pStart = null, DateTime? pEnd = null)
         {
             if (!DataStructure.Types.Select(x => x.Label).Contains(pType)) return null;
             System.Diagnostics.Debug.WriteLine($"Creating new Timing in task {Data.Label}");
             int typeId = DataStructure.Types.Where(x => x.Label == pType).Select(x => x.Id).First();
 
-            DataBase.Timing dbTiming = new ();
+            DataBase.Timing dbTiming = new();
 
             int newTimingId = dbTiming.GenerateId();
 

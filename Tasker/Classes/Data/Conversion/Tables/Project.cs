@@ -116,7 +116,8 @@ namespace Tasker.Classes.Data.Conversion.Tables
             if (pId == null || pId is not int taskId || taskId <= 0) return;
             try
             {
-                Task task = _tasks.Where(x => x.Id == taskId).ToArray()[0];
+                Task task = _tasks.Where(x => x.Id == taskId).First();
+                task.DeleteTimings();
                 new DataBase.Task().Delete(taskId);
                 if (new DataBase.Data().Get().Where(x => x.Id == task.Data.Id).Count() == 1) DeleteData(task.Data.Id);
                 _tasks.Remove(task);
