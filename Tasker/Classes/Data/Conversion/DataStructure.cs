@@ -105,12 +105,14 @@ namespace Tasker.Classes.Data.Conversion
         public static int CreateOrLoadData(string pLabel)
         {
             DataBase.Data dbData = new();
-            if (dbData.Get().Where(x => x.Label == pLabel).Any()) return dbData.Get().Where(x => x.Label == pLabel).ToArray()[0].Id;
+            if (dbData.Get().Where(x => x.Label == pLabel).Any()) return dbData.Get().Where(x => x.Label == pLabel).First().Id;
             int newDataId = dbData.GenerateId();
             dbData.Add(new DataBase.Data.DataOfData
             {
                 Id = newDataId,
-                Label = pLabel
+                Label = pLabel,
+                Created = DateTime.Now,
+                Updated = DateTime.Now
             });
             return newDataId;
         }

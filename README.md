@@ -93,14 +93,15 @@ But if I do, here is, what you can and cannot expect from it:
 - [x] Create Github Project
 - [x] Update design
     - [x] Redefine layout and design
-- [ ] Create basic functionality
+- [x] Create basic functionality
     - [x] Read and write to the database (through SQLite-commands)
     - [x] Create Logic for m to n connections in database (like delete, create, etc.)
     - [x] Create classes and commands for interactions with the database
     - [x] Create layout
     - [x] Connect layout with commands and classes
-    - [ ] Start and stop function for the tasks
-    - [ ] Detailed view for tasks and appointments 
+    - [x] Start and stop function for the tasks
+    - [x] Detailed view for tasks and appointments
+    - [x] Column for duration data
 - [ ] Refine code
 - [ ] Fixing bugs
 

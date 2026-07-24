@@ -133,7 +133,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private Classes.Data.Conversion.Tables.Project _selectedProject;
     private Classes.Data.Conversion.Tables.Task? _selectedTask;
 
-    private bool _isItemSelected;
+    private bool _isTaskSelected;
 
     private ObservableCollection<Classes.Data.Conversion.Tables.Project> _projectsInSelectedCategory;
     private ObservableCollection<Classes.Data.Conversion.Tables.Task> _tasksInSelectedProject;
@@ -182,9 +182,8 @@ public partial class MainWindowViewModel : ViewModelBase
         set
         {
             if (value == _selectedTask) return;
-            _selectedTask = value;
-            OnPropertyChanged();
-            IsItemSelected = value != null;
+            SetProperty(ref _selectedTask, value);
+            IsTaskSelected = value != null;
         }
     }
 
@@ -195,7 +194,6 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             if (value.Count == 0) return;
             SetProperty(ref _projectsInSelectedCategory, value);
-            //OnPropertyChanged();
             if (value == null) return;
             SelectedProject = value[0];
         }
@@ -206,14 +204,19 @@ public partial class MainWindowViewModel : ViewModelBase
         set
         {
             SetProperty(ref _tasksInSelectedProject, value);
-            //OnPropertyChanged()
+            SelectedTask = null;
         }
     }
 
-    public bool IsItemSelected
+    public void ButtonCommand_DetailedViewCloseButton()
     {
-        get => _isItemSelected;
-        set => SetProperty(ref _isItemSelected, value);
+        SelectedTask = null;
+    }
+
+    public bool IsTaskSelected
+    {
+        get => _isTaskSelected;
+        set => SetProperty(ref _isTaskSelected, value);
     }
 
     public void CreateCategory() {

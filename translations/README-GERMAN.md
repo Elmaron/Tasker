@@ -93,15 +93,15 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 - [x] Github Projekt erstellen
 - [x] Design überarbeiten
     - [x] Layout und Design neu entwerfen
-- [ ] Erstelle die Grundfunktionen
+- [x] Erstelle die Grundfunktionen
     - [x] Lese- und Schreibfunktionen für die Datenbank (durch SQLite-Befehle)
     - [x] Logik für die m zu n Beziehungen in der Datenbank erstellen (fürs erstellen, löschen, usw.)
     - [x] Erstelle Klassen und Befehle für die Interaktion mit der Datenbank
     - [x] Erstelle Layout
     - [x] Verknüpfe das Layout mit den Befehlen und Klassen
-    - [ ] Starten bzw. Stoppen der Arbeiten an einer Aufgabe
-    - [ ] Detailansicht für eine Aufgabe bzw. einen Termin
-    - [ ] Anzeige für die Bearbeitungszeit einer Aufgabe
+    - [x] Starten bzw. Stoppen der Arbeiten an einer Aufgabe
+    - [x] Detailansicht für eine Aufgabe bzw. einen Termin
+    - [x] Spalte für die Bearbeitungszeit einer Aufgabe
 - [ ] Überarbeite den Code
 - [ ] Behebe Fehler
 
@@ -118,6 +118,7 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [ ] Starten und Stoppen der Arbeit (pro Kategorie)
     - [ ] Arbeitszeitlimiterungen
     - [ ] ReStrukturierung der Datenbank Klasse
+    - [ ] Appointments können nun als solche hinzugefügt werden (mit Detailansicht)
     - [ ] Detailansicht für Projekte und Kategorien
     - [ ] Anzeige für die aktuelle Arbeitszeit in einer Kategorie
     - [ ] Algorithmus, um beim planen neuer Aufgaben und Termine zu helfen

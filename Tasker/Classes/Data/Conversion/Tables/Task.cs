@@ -27,7 +27,9 @@ namespace Tasker.Classes.Data.Conversion.Tables
         public static ObservableCollection<InternalPriority> AvailablePriorities { get => DataStructure.Priorities; set => DataStructure.Priorities = value; }
         public static ObservableCollection<InternalDifficulty> AvailableDifficulties { get => DataStructure.Difficulties; set => DataStructure.Difficulties = value; }
 
-        public DateTime? Expiry { get => _expiry; set => Update(ref _expiry, value);  }
+        public DateTime? Expiry { get => _expiry; set => Update(ref _expiry, value); }
+
+        public ObservableCollection<InternalTiming> Worktimes { get => _worktimes; }
 
         public string DurationString
         {
