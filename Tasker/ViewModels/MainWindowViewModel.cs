@@ -194,8 +194,8 @@ public partial class MainWindowViewModel : ViewModelBase
         set
         {
             if (value.Count == 0) return;
-            _projectsInSelectedCategory = value;
-            OnPropertyChanged();
+            SetProperty(ref _projectsInSelectedCategory, value);
+            //OnPropertyChanged();
             if (value == null) return;
             SelectedProject = value[0];
         }
@@ -205,8 +205,8 @@ public partial class MainWindowViewModel : ViewModelBase
         get => _tasksInSelectedProject;
         set
         {
-            _tasksInSelectedProject = value;
-            OnPropertyChanged();
+            SetProperty(ref _tasksInSelectedProject, value);
+            //OnPropertyChanged()
         }
     }
 

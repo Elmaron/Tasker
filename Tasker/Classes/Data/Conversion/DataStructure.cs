@@ -22,6 +22,7 @@ namespace Tasker.Classes.Data.Conversion
 
         private static ObservableCollection<InternalPriority> _priorities = [];
         private static ObservableCollection<InternalDifficulty> _difficulties = [];
+        private static ObservableCollection<Tables.InternalType> _types = [];
 
 
         public static ObservableCollection<Tables.Category> Categories
@@ -40,12 +41,18 @@ namespace Tasker.Classes.Data.Conversion
             set => _difficulties = value;
         }
 
+        public static ObservableCollection<Tables.InternalType> Types
+        {
+            get => _types;
+        }
+
 
         public static void Reload()
         {
             _categories = [];
             _priorities = [];
             _difficulties = [];
+            _types = [];
             foreach (DataBase.Priority.PriorityData priority in new DataBase.Priority().Get())
             {
                 _priorities.Add(GetPriority(priority));
@@ -53,6 +60,10 @@ namespace Tasker.Classes.Data.Conversion
             foreach (DataBase.Difficulty.DifficultyData difficulty in new DataBase.Difficulty().Get())
             {
                 _difficulties.Add(GetDifficulty(difficulty));
+            }
+            foreach (DataBase.Type.TypeData type in new DataBase.Type().Get())
+            {
+                _types.Add(DataBaseDataToTables.GetType(type));
             }
             List<DataBase.Project.ProjectData> dbProjects = new DataBase.Project().Get();
             List<DataBase.Task.TaskData> dbTasks = new DataBase.Task().Get();

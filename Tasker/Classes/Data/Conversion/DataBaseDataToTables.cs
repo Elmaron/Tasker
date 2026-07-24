@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using Tasker.Classes.Data.Conversion.Tables;
 using Tasker.Classes.Data.Retrieval;
+using static Tasker.Classes.Data.Retrieval.DataBase;
 
 namespace Tasker.Classes.Data.Conversion
 {
@@ -28,7 +30,21 @@ namespace Tasker.Classes.Data.Conversion
             InternalData taskData = GetData(new DataBase.Data().Get().Where(x => x.Id == pTaskData.DataId).ToArray()[0]);
             InternalPriority taskPriority = GetPriority(new DataBase.Priority().Get().Where(x => x.Id == pTaskData.PriorityId).ToArray()[0]);
             InternalDifficulty? taskDifficulty = pTaskData.DifficultyId != null ? GetDifficulty(new DataBase.Difficulty().Get().Where(x => x.Id == pTaskData.DifficultyId).ToArray()[0]) : null;
-            return new Tables.Task(pTaskData.Id, taskData, taskPriority, taskDifficulty, pTaskData.Expiry);
+            ObservableCollection<InternalTiming> pTimings = [];
+            foreach(DataBase.Timing.TimingData timing in new DataBase.Timing()
+                .Get()
+                .Where(timing =>
+                    new DataBase.TimingInTask()
+                        .Get()
+                        .Where(timingInTask => timingInTask.TaskId == pTaskData.Id)
+                        .Select(timingInTask => timingInTask.TimingId)
+                        .Contains(timing.Id)
+                        )
+                .ToList())
+            {
+                pTimings.Add(GetTiming(timing));
+            }
+            return new Tables.Task(pTaskData.Id, taskData, taskPriority, taskDifficulty, pTaskData.Expiry, pTimings);
         }
 
         public static Tables.Appointment GetAppointment(DataBase.Appointment.AppointmentData pAppointmentData)
@@ -42,6 +58,11 @@ namespace Tasker.Classes.Data.Conversion
             return new InternalData(pData.Id, pData.Label, pData.Description, pData.Created, pData.Updated, pData.Finished, pData.DeleteOn);
         }
 
+        public static InternalTiming GetTiming(DataBase.Timing.TimingData pTimingData)
+        {
+            return new InternalTiming(pTimingData.Id, pTimingData.TypeId, pTimingData.Start, pTimingData.End);
+        }
+
         public static InternalPriority GetPriority(DataBase.Priority.PriorityData pPriorityData)
         {
             return new InternalPriority(pPriorityData.Id, pPriorityData.Label, pPriorityData.Ordering, pPriorityData.Color);
@@ -50,6 +71,11 @@ namespace Tasker.Classes.Data.Conversion
         public static InternalDifficulty GetDifficulty(DataBase.Difficulty.DifficultyData pDifficultyData)
         {
             return new InternalDifficulty(pDifficultyData.Id, pDifficultyData.Label, pDifficultyData.Description, pDifficultyData.Recommendation, pDifficultyData.Color);
+        }
+
+        public static InternalType GetType(DataBase.Type.TypeData pTypeData)
+        {
+            return new InternalType(pTypeData.Id, pTypeData.Label);
         }
     }
 }

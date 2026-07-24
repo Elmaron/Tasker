@@ -15,15 +15,15 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 	
-    <DockPanel Name="dockpanel_main"
-			   Background="{Binding ColorBackground4}">
+    <DockPanel
+		Background="{Binding ColorBackground4}">
+		<!--Top Bar-->
         <StackPanel DockPanel.Dock="Top"
 			Background="{Binding ColorSecondary3}"
 			Orientation="Horizontal">
-            <!--<Button>Settings</Button>-->
 			<Button
 				Background="{Binding ColorSecondary2}"
-				>Start/Stop</Button>
+				Content="Start/Stop" />
 			<ComboBox
 				Background="{Binding ColorSecondary1}"
 				ItemsSource="{Binding Categories}"
@@ -51,17 +51,18 @@
 				MaxLength="30"/>
 			<Button
 				Background="{Binding ColorSecondary2}"
-				Command="{Binding CreateCategory}">+</Button>
+				Command="{Binding CreateCategory}"
+				Content="+"/>
         </StackPanel>
-        <DockPanel 
-			Name="dockpanel_projects"
+		<!--Projects on the left side-->
+        <DockPanel
             DockPanel.Dock="Left"
             Background="{Binding ColorPrimary4}"
 			MinWidth="200">
-            <TextBlock 
+            <TextBlock
 				Text="Projects"
                 Background="{Binding ColorPrimary3}"
-                DockPanel.Dock="Top" />
+                DockPanel.Dock="Top"/>
             <Grid 
 				ColumnDefinitions="Auto, *" RowDefinitions="Auto"
 				DockPanel.Dock="Bottom"
@@ -71,11 +72,12 @@
 					Background="{Binding ColorPrimary2}"
 					PlaceholderText="{Binding NewProjectPlaceholder}"
 					Text="{Binding NewProjectName}"
-					MaxLength="30" />
+					MaxLength="30"/>
                 <Button 
 					Grid.Column="0" Grid.Row="0"
 					Background="{Binding ColorPrimary2}"
-					Command="{Binding CreateProject}">+</Button>
+					Command="{Binding CreateProject}"
+					Content="+"/>
             </Grid>
 			<ListBox 
 				Background="{Binding ColorPrimary2}"
@@ -102,8 +104,8 @@
 				</ListBox.ItemTemplate>
             </ListBox>
         </DockPanel>
-        <DockPanel 
-			Name="dockpanel_details"
+		<!--Details on the right-->
+        <DockPanel
             DockPanel.Dock="Right"
             Background="{Binding ColorPrimary4}"
 			MinWidth="300"
@@ -120,7 +122,8 @@
 				Background="{Binding ColorPrimary3}">
             </StackPanel>
         </DockPanel>
-        <DockPanel Name="dockpanel_tasks"
+		<!--Main View for Tasks and Appointments-->
+        <DockPanel
             Background="{Binding ColorBackground4}">
             <Grid 
 				ColumnDefinitions="Auto, *" RowDefinitions="Auto"
@@ -155,7 +158,8 @@
 									<Button
 										Grid.Column="0"
 										IsVisible="{Binding Data.IsFinishedInversed}"
-										Content="Start/Stop"/>
+										Content="{Binding ButtonText_StartStopButton}"
+										Command="{Binding ButtonCommand_StartStopFunction}"/>
 									<TextBox
 										Grid.Column="1"
 										Text="{Binding Data.Label}"/>
@@ -211,6 +215,14 @@
 										</DataTemplate>
 									</ComboBox.ItemTemplate>
 								</ComboBox>
+							</DataTemplate>
+						</TableViewColumn.CellTemplate>
+					</TableViewColumn>
+					<TableViewColumn Header="Duration" Width="Auto">
+						<TableViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock
+									Text="{Binding DurationString}"/>
 							</DataTemplate>
 						</TableViewColumn.CellTemplate>
 					</TableViewColumn>

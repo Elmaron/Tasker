@@ -15,6 +15,11 @@ namespace Tasker.Classes.Data.Retrieval
         public const string DBE_EMPTY = $"{_databaseError}EMPTY";
         public const string DBE_NOT_FOUND = $"{_databaseError}NOT_FOUND";
 
+        public const string TYPE_WORKTIME = "WORKTIME";
+        public const string TYPE_PROCESSTIME = "PROCESSTIME";
+        public const string TYPE_REMINDER = "REMINDER";
+        public const string TYPE_REPEATER = "REPEATER";
+
         private static List<Dictionary<string, object>> _difficulty = new List<Dictionary<string, object>>
         {
             new Dictionary<string, object> {
@@ -70,19 +75,19 @@ namespace Tasker.Classes.Data.Retrieval
         {
             new Dictionary<string, object>
             {
-                {"Label", "WORKTIME"}
+                {"Label", TYPE_WORKTIME}
             },
             new Dictionary<string, object>
             {
-                {"Label", "PROCESSTIME"}
+                {"Label", TYPE_PROCESSTIME}
             },
             new Dictionary<string, object>
             {
-                {"Label", "REMINDER"}
+                {"Label", TYPE_REMINDER}
             },
             new Dictionary<string, object>
             {
-                {"Label", "REPEATER"}
+                {"Label", TYPE_REPEATER}
             },
             new Dictionary<string, object>
             {
