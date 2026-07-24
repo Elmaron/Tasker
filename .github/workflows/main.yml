@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: 
 
 jobs:
   deploy-to-github-releases:
@@ -14,7 +15,7 @@ jobs:
         - name: Get Version from Project File
           id: get-version
           shell: bash
-          run: echo "version=$(grep -oE '<Version>[^<]+' MyApplication/MyApplication.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
+          run: echo "version=$(grep -oE '<Version>[^<]+' Tasker.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
         - name: Install .NET
           uses: actions/setup-dotnet@v4
           with:
