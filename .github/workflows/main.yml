@@ -1,0 +1,21 @@
+name: Deploy to Github-Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-to-github-releases:
+      runs-on: windows-latest
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v4
+        - name: Get Version from Project File
+          id: get-version
+          shell: bash
+          run: echo "version=$(grep -oE '<Version>[^<]+' MyApplication/MyApplication.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
+        - name: Install .NET
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: 10.0.x
