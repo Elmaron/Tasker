@@ -32,8 +32,6 @@ jobs:
         - name: Publish Application _linux-arm64_
           run: dotnet publish Tasker.csproj -c Release -o publish/linux-arm64 -r linux-arm64 --self-contained true
         - name: Create Velopack Releases
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: |
               dotnet tool install -g vpk
               vpk download github --repoUrl https://github.com/${{ github.repository }}
@@ -41,7 +39,7 @@ jobs:
               vpk pack --packId vindona.tasker --runtime win-arm64 --packDir publish/win-arm64 --splashImage Assets/Tasker-Splash.png --splashProgressColor '#BA83E0' --outputDir Releases/win-arm64 --packVersion ${{ steps.get-version.outputs.version }} --mainExe Tasker.exe --channel Release --packAuthors Elmaron --packTitle Tasker --icon Assets/Setup.ico
               vpk [linux] pack --packId vindona.tasker --runtime linux-x64 --packDir publish/linux-x64 --outputDir Releases/linux-x64 --packVersion ${{ steps.get-version.outputs.version }} --mainExe Tasker --channel Release --packAuthors Elmaron --packTitle Tasker --icon Assets/Setup.ico
               vpk [linux] pack --packId vindona.tasker --runtime linux-arm64 --packDir publish/linux-arm64 --outputDir Releases/linux-arm64 --packVersion ${{ steps.get-version.outputs.version }} --mainExe Tasker --channel Release --packAuthors Elmaron --packTitle Tasker --icon Assets/Setup.ico
-              vpk upload github --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Linux (arm64)" --tag v${{ steps.get-version.outputs.version }} --outputDir Releases/linux-arm64 --channel Release
-              vpk upload github --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Linux (x64)" --tag v${{ steps.get-version.outputs.version }} --outputDir Releases/linux-x64 --channel Release
-              vpk upload github --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Windows (arm64)" --tag v${{ steps.get-version.outputs.version }} --outputDir Releases/win-arm64 --channel Release
-              vpk upload github --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Windows (x64)" --tag v${{ steps.get-version.outputs.version }} --outputDir Releases/win-x64 --channel Release
+              vpk upload github --token ${{ secrets.GITHUB_TOKEN }} --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Linux (arm64)" --tag v${{ steps.get-version.outputs.version }} --outputDir Releases/linux-arm64 --channel Release
+              vpk upload github --token ${{ secrets.GITHUB_TOKEN }} --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Linux (x64)" --tag v${{ steps.get-version.outputs.version }} --outputDir Releases/linux-x64 --channel Release
+              vpk upload github --token ${{ secrets.GITHUB_TOKEN }} --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Windows (arm64)" --tag v${{ steps.get-version.outputs.version }} --outputDir Releases/win-arm64 --channel Release
+              vpk upload github --token ${{ secrets.GITHUB_TOKEN }} --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Windows (x64)" --tag v${{ steps.get-version.outputs.version }} --outputDir Releases/win-x64 --channel Release
