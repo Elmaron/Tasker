@@ -8,12 +8,13 @@ A Task-Planner and Tracker to help you understand your own work behavior.
 
 ## Current
 
-**WARNING! This project is not ready to use in it's current state.**
+**WARNING! The project has reached the alpha-phase. Downloaded Versions could potentially crash or create errors.**
 
-After rethinking the base-design of the program, I'll be working on providing basic functionality with the database, so that I can publish the first alpha version.
-Follow me on github to stay updated on the project!
+It's ready! A first testable version of the program is now downloadable. After reaching the alpha-version I'm going to concentrate less energy in this project.
+But I'm still continuing to add new Functions, fix bugs and try to optimise the code.
+If you find any errors, I would be very happy, if you could sent me an [e-mail](mailto://info@vindona.de)!
 
-State: **[Pre-Alpha](#pre-alpha)** | [Alpha](#alpha-release) | [Beta](#beta-release) | [Release](#release-v10)
+State: *[Pre-Alpha](#pre-alpha)* | **[Alpha](#alpha-release)** | [Beta](#beta-release) | [Release](#release-v10)
 
 *finished*; **in Progress**; Upcoming Phase
 
@@ -38,6 +39,12 @@ State: **[Pre-Alpha](#pre-alpha)** | [Alpha](#alpha-release) | [Beta](#beta-rele
         * [Release](#release-v10)
 
         * [Ideas for features after release](#ideas-for-features-after-release)
+
+* [Installation](#installation)
+
+* [Updates](#updates)
+
+* [User Data](#user-data)
 
 * [Colors](#colors)
 
@@ -103,9 +110,9 @@ But if I do, here is, what you can and cannot expect from it:
     - [x] Detailed view for tasks and appointments
     - [x] Column for duration data
 - [x] Refine code
-- [ ] Fixing bugs
+- [x] Fixing bugs
 
-*Phase shall be finished until 24th of July 2026.*
+*Phase has been completed.*
 
 ### Alpha-Release
 *More objectives may be added while working on the program*
@@ -183,6 +190,42 @@ But if I do, here is, what you can and cannot expect from it:
     - [ ] You can create them yourself or let the program recommend you something
     - [ ] The Program has built-in Mini-Games, which act as a reward
 - [ ] Reminders for Worktimes during Work
+
+# Installation
+
+Download the correct version for your system [here](https://www.github.com/Elmaron/Tasker/Releases). Perfom a double click on the file, to start the installation.
+
+If you are on windows and don't know, if you use a x64 or an arm64 device, open the system settings and search in "System > Info" after "System type". If you see something like "64-bit operating system, ARM-based processor", you have to download the setup for win-arm64.
+
+The following Versions are available:
+
+* Windows (64-bit operating system)
+    * ARM-based processor: vindona.tasker-win-arm64-Setup.exe
+    * x64-based processor: vindona.tasker-win-x64-Setup.exe
+
+* Linux
+    * 64-bit operating system, ARM-based processor: vindona.tasker-linux-arm64-Setup.exe
+    * 64-bit operating system, x64-based processor: vindona.tasker-linux-x64-Setup.exe
+
+# Updates
+
+The app has a built-in Update-Function. Simply press on the "Update"-Button, to check, if an Update is available.
+
+If an Update is available, the app downloads it in the background and closes the app automatically to update, after the download is complete.
+
+The app is never going to install updates without your permission. If you press the update-button, you're giving the program the permission to update.
+
+# User Data
+
+The app saves your data in a local database in the app storage of your operating system.
+
+You can find the files in the following folder:
+
+* Windows: %LocalAppData%\Tasker (Just Copy and past it into the top bar in the file explorer)
+
+If you want to backup your data, you can simply copy "appData.db" into another folder. You can also rename it. If you want to recover your data, just copy your backup into the app-folder. Don't forget to change the name to "appData.db", if you changed it.
+If you want to create a new, empty database, simply delete "appData.db" from the app-folder. The program is automatically creating a new database for you.
+
 
 # Colors
 
