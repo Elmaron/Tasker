@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch: 
 
+permissions:
+  contents: write
+
 jobs:
   deploy-to-github-releases:
       runs-on: windows-latest
@@ -29,6 +32,8 @@ jobs:
         - name: Publish Application _linux-arm64_
           run: dotnet publish Tasker.csproj -c Release -o publish/linux-arm64 -r linux-arm64 --self-contained true
         - name: Create Velopack Releases
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: |
               dotnet tool install -g vpk
               vpk download github --repoUrl https://github.com/${{ github.repository }}
