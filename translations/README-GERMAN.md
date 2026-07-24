@@ -8,12 +8,13 @@ Ein Aufgaben-Planner und Tracker, der dir hilft, dein Arbeitsverhalten zu verste
 
 ## Aktuell
 
-**ACHTUNG! Dieses Projekt ist in seinem aktuellem Zustand noch nicht zur Verwendung bereit.**
+**ACHTUNG! Das Projekt befindet sich in der Alpha-Phase. Heruntergeladene Versionen könnten Abstürzen oder Fehler verursachen.**
 
-Nachdem ich das grundlegende Design des Programms überarbeitet habe, werde ich mich mit den Grund-Funktionen und der Datenbank beschäftigen, damit ich eine erste Alpha-Version veröffentlichen kann.
-Folgt mir gerne auf Github, um Updates zum Projekt zu bekommen!
+Es ist soweit! Eine erste testbare Version des Programms ist fertig. Angekommen in der Alpha-Version werde ich nun etwas weniger Zeit ins Projekt stecken.
+Trotzdem werde ich weiterhin regelmäßig neue Funktionen hinzufügen, Fehler beheben und den Code optimieren.
+Bei gefundenen Fehlern, würde ich mich sehr über eine [Mail](mailto://info@vindona.de) freuen!
 
-Status: **[Prealpha](#pre-alpha)**| [Alpha](#alpha-release) | [Beta](#beta-release) | [Release](#veröffentlichung-v10)
+Status: *[Prealpha](#pre-alpha)*| **[Alpha](#alpha-release)** | [Beta](#beta-release) | [Release](#veröffentlichung-v10)
 
 *abgeschlossen*; **in Bearbeitung**; Nächste Phase
 
@@ -38,6 +39,12 @@ Status: **[Prealpha](#pre-alpha)**| [Alpha](#alpha-release) | [Beta](#beta-relea
         * [Release](#veröffentlichung-v10)
 
         * [Nach der Veröffentlichung](#planung-für-nach-der-veröffentlichung)
+
+* [Installation](#installation)
+
+* [Updates](#updates)
+
+* [Benutzerdaten](#benutzerdaten)
 
 * [Farben](#farben)
 
@@ -93,16 +100,19 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 - [x] Github Projekt erstellen
 - [x] Design überarbeiten
     - [x] Layout und Design neu entwerfen
-- [ ] Erstelle die Grundfunktionen
+- [x] Erstelle die Grundfunktionen
     - [x] Lese- und Schreibfunktionen für die Datenbank (durch SQLite-Befehle)
     - [x] Logik für die m zu n Beziehungen in der Datenbank erstellen (fürs erstellen, löschen, usw.)
     - [x] Erstelle Klassen und Befehle für die Interaktion mit der Datenbank
-    - [ ] Erstelle Layout
-    - [ ] Verknüpfe das Layout mit den Befehlen und Klassen
-- [ ] Überarbeite den Code
-- [ ] Behebe Fehler
+    - [x] Erstelle Layout
+    - [x] Verknüpfe das Layout mit den Befehlen und Klassen
+    - [x] Starten bzw. Stoppen der Arbeiten an einer Aufgabe
+    - [x] Detailansicht für eine Aufgabe bzw. einen Termin
+    - [x] Spalte für die Bearbeitungszeit einer Aufgabe
+- [x] Überarbeite den Code
+- [x] Behebe Fehler
 
-*Phase soll bis zum **24.07.2026** abgeschlossen werden.*
+*Phase ist abgeschlossen.*
 
 ### Alpha-Release
 
@@ -112,9 +122,16 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [ ] Erstelle wechselbare Designs
 - [ ] Neue Funktionen
     - [ ] Daten exportieren
+    - [ ] Starten und Stoppen der Arbeit (pro Kategorie)
+    - [ ] Arbeitszeitlimiterungen
+    - [ ] ReStrukturierung der Datenbank Klasse
+    - [ ] Appointments können nun als solche hinzugefügt werden (mit Detailansicht)
+    - [ ] Detailansicht für Projekte und Kategorien
+    - [ ] Anzeige für die aktuelle Arbeitszeit in einer Kategorie
     - [ ] Algorithmus, um beim planen neuer Aufgaben und Termine zu helfen
     - [ ] Zeige automatisch versteckte Aufgaben-IDs an, falls es zwei unterschiedliche Aufgaben mit dem gleichen Titel in derselben Kategorie und demselben Projekt gibt
     - [ ] Archiviere Projekte, sodass du sie nicht sehen kannst, aber noch Zugriff auf die Daten bekommen kannst
+    - [ ] Übersichtseite
     - [ ] Veränderbare Einstellungen
         - [ ] Tastaturbefehle
         - [ ] Automatisches Löschen der lokalen Daten
@@ -150,7 +167,7 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 - [ ] Erstelle Benutzerhilfen
     - [ ] Online Benutzerhilfe (detailiert)
     - [ ] Eingebaute Hilfe für Anfänger
-- [ ] ERstelle Dokumentationen
+- [ ] Erstelle Dokumentationen
     - [ ] Für Entwickler
         - [ ] Programm-/Appentwicklung
         - [ ] Pluginentwicklung
@@ -175,6 +192,41 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
     - [ ] Du kannst selbst welche erstellen oder das Programm dir welche empfehlen lassen
     - [ ] Das Programm hat eingebaute kleine Mini-Spiele, die belohnend sein sollen
 - [ ] Erinnerungen für die Arbeitszeiten während der Arbeit
+
+# Installation
+
+Lade dir [hier](https://www.github.com/Elmaron/Tasker/Releases) passende Version für den Betriebssystem herunter. Führe diese dann mit einem Doppelklick aus.
+
+Solltest du Windows verwenden und dir unsicher sein, ob du ein x64 oder arm64 Gerät verwendest, kannst du die Windows Systemeinstellungen öffnen und unter "System > Info" in der Geräteinfo nach dem Begriff "Systemtyp" suchen. Wenn dort so etwas steht wie "64-Bit-Betriebssystem, ARM-basierter Prozesser", lädst du dir das Setup für win-arm64 herunter.
+
+Folgende Versionen stehen zur Auswahl:
+
+* Windows (64-Bit-Betriebssysteme)
+    * ARM-basierter Prozessor: vindona.tasker-win-arm64-Setup.exe
+    * x64-basierter Prozessor: vindona.tasker-win-x64-Setup.exe
+
+* Linux
+    * 64-Bit-Betriebssystem, ARM-basierter Prozessor: vindona.tasker-linux-arm64-Setup.exe
+    * 64-Bit-Betriebssystem, x64-basierter Prozessor: vindona.tasker-linux-x64-Setup.exe
+
+# Updates
+
+Die App hat eine interne Update-Funktion. Drücke in der Anwendung oben rechts auf den "Update"-Button, um zu prüfen, ob ein Update verfügbar ist.
+
+Ist ein Update verfügbar, lädt die App dieses im Hintergrund herunter und schließt die App dann automatisch, um das Update zu installieren.
+
+Die App wird niemals Updates ohne Einverständnis installieren. Solltest du den Update-Button betätigen, gibst du damit auch deine Erlaubnis für die Installatione eines Updates frei.
+
+# Benutzerdaten
+
+Die App speichert die Datenbank im lokalen App-Speicher deines Betriebsystems.
+
+In folgendem Ordner befinden sich die Daten:
+
+* Unter Windows: %LocalAppData%\Tasker (Einfach im Explorer in die Leiste oben kopieren)
+
+Um die Daten zu sichern, kannst du "appData.db" einfach an einen anderen Speicherplatz kopieren. Um die Daten wiederherzustellen, brauchst du nur die Datei nur wieder an ihren ursprünglichen Platz zu schieben. Solltest du die Datei umbenennen, denke daran, sie in "appData.db" zurückzubenennen.
+Um eine leere Datenbank zu erzeugen, lösche "appData.db" aus dem Ordner. Das Programm erzeugt automatisch eine neue Datenbank.
 
 # Farben
 

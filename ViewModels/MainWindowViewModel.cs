@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Tasker.Classes.Data.Conversion;
 using Tasker.Classes.Data.Retrieval;
 using static Tasker.Classes.Data.Retrieval.DataBase;
@@ -51,6 +52,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private const string color_background_lightness2 = "25";
     private const string color_background_lightness3 = "20";
     private const string color_background_lightness4 = "12";
+    private const string color_background_lightness5 = "4";
 
     public static string ColorPrimary0 => $"hsl({color_primary_hue},{color_generic_saturation0}%,{color_generic_lightness0}%)";
     public static string ColorPrimary1 => $"hsl({color_primary_hue},{color_generic_saturation1}%,{color_generic_lightness1}%)";
@@ -69,6 +71,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public static string ColorBackground2 => $"hsl({color_background_hue},{color_background_saturation}%,{color_background_lightness2}%)";
     public static string ColorBackground3 => $"hsl({color_background_hue},{color_background_saturation}%,{color_background_lightness3}%)";
     public static string ColorBackground4 => $"hsl({color_background_hue},{color_background_saturation}%,{color_background_lightness4}%)";
+    public static string ColorBackground5 => $"hsl({color_background_hue},{color_background_saturation}%,{color_background_lightness5}%)";
 
     public static string ColorDifficulty0 => $"hsl({color_difficulty_hue0},{color_generic_saturation0}%,{color_generic_lightness0}%)";
     public static string ColorDifficulty1 => $"hsl({color_difficulty_hue1},{color_generic_saturation1}%,{color_generic_lightness1}%)";
@@ -96,33 +99,35 @@ public partial class MainWindowViewModel : ViewModelBase
     private const string _newTaskPlaceholder = "New Task...";
     public static string NewTaskPlaceholder { get => _newTaskPlaceholder; }
 
+    private static Regex _nameControl;
+
     //Editable Textfields
     private string _newCategoryName = "";
     public string NewCategoryName
     {
         get => _newCategoryName;
-        set => SetProperty(ref _newCategoryName, value);
+        set => SetProperty(ref _newCategoryName, _nameControl.Replace(value, ""));
     }
 
     private string _newProjectName = "";
     public string NewProjectName
     {
         get => _newProjectName;
-        set => SetProperty(ref _newProjectName, value);
+        set => SetProperty(ref _newProjectName, _nameControl.Replace(value, ""));
     }
 
     private string _newTaskName = "";
     public string NewTaskName
     {
         get => _newTaskName;
-        set => SetProperty(ref _newTaskName, value);
+        set => SetProperty(ref _newTaskName, _nameControl.Replace(value, ""));
     }
 
     private string _newAppointmentName = "";
     public string NewAppointmentName
     {
         get => _newAppointmentName;
-        set => SetProperty(ref _newAppointmentName, value);
+        set => SetProperty(ref _newAppointmentName, _nameControl.Replace(value, ""));
     }
 
 
@@ -133,7 +138,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private Classes.Data.Conversion.Tables.Project _selectedProject;
     private Classes.Data.Conversion.Tables.Task? _selectedTask;
 
-    private bool _isItemSelected;
+    private bool _isTaskSelected;
 
     private ObservableCollection<Classes.Data.Conversion.Tables.Project> _projectsInSelectedCategory;
     private ObservableCollection<Classes.Data.Conversion.Tables.Task> _tasksInSelectedProject;
@@ -169,8 +174,8 @@ public partial class MainWindowViewModel : ViewModelBase
         set
         {
             if (value == _selectedProject) return;
-            _selectedProject = value;
-            OnPropertyChanged();
+            //if (value != null) Projects[Projects.ToList().FindIndex(x => x.Id == _selectedProject?.Id)] = _selectedProject;
+            SetProperty(ref _selectedProject, value);
             if (value == null) return;
             Tasks = value.Tasks;
             SelectedTask = null;
@@ -182,9 +187,9 @@ public partial class MainWindowViewModel : ViewModelBase
         set
         {
             if (value == _selectedTask) return;
-            _selectedTask = value;
-            OnPropertyChanged();
-            IsItemSelected = value != null;
+            IsTaskSelected = value != null;
+            //if (value == null && _selectedTask != null) Tasks[Tasks.ToList().FindIndex(x => x.Id == _selectedTask?.Id)] = _selectedTask;
+            SetProperty(ref _selectedTask, value);
         }
     }
 
@@ -193,8 +198,8 @@ public partial class MainWindowViewModel : ViewModelBase
         get => _projectsInSelectedCategory;
         set
         {
-            _projectsInSelectedCategory = value;
-            OnPropertyChanged();
+            if (value.Count == 0) return;
+            SetProperty(ref _projectsInSelectedCategory, value);
             if (value == null) return;
             SelectedProject = value[0];
         }
@@ -204,15 +209,20 @@ public partial class MainWindowViewModel : ViewModelBase
         get => _tasksInSelectedProject;
         set
         {
-            _tasksInSelectedProject = value;
-            OnPropertyChanged();
+            SetProperty(ref _tasksInSelectedProject, value);
+            SelectedTask = null;
         }
     }
 
-    public bool IsItemSelected
+    public void ButtonCommand_DetailedViewCloseButton()
     {
-        get => _isItemSelected;
-        set => SetProperty(ref _isItemSelected, value);
+        SelectedTask = null;
+    }
+
+    public bool IsTaskSelected
+    {
+        get => _isTaskSelected;
+        set => SetProperty(ref _isTaskSelected, value);
     }
 
     public void CreateCategory() {
@@ -241,8 +251,12 @@ public partial class MainWindowViewModel : ViewModelBase
         NewTaskName = "";
     }
 
+    public async System.Threading.Tasks.Task UpdateAvaloniaApp() { Program.UpdateApp(); }
+
     public MainWindowViewModel()
     {
+        _nameControl = new("[^a-zA-Z0-9 -]");
+
         Categories = DataStructure.Categories;
     }
 }

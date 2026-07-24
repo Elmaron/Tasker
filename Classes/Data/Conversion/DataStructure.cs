@@ -18,9 +18,11 @@ namespace Tasker.Classes.Data.Conversion
     public static class DataStructure
     {
         private static ObservableCollection<Tables.Category> _categories = [];
+        private static Tables.Category? _hiddenReserved;
 
         private static ObservableCollection<InternalPriority> _priorities = [];
         private static ObservableCollection<InternalDifficulty> _difficulties = [];
+        private static ObservableCollection<Tables.InternalType> _types = [];
 
 
         public static ObservableCollection<Tables.Category> Categories
@@ -39,12 +41,18 @@ namespace Tasker.Classes.Data.Conversion
             set => _difficulties = value;
         }
 
+        public static ObservableCollection<Tables.InternalType> Types
+        {
+            get => _types;
+        }
+
 
         public static void Reload()
         {
             _categories = [];
             _priorities = [];
             _difficulties = [];
+            _types = [];
             foreach (DataBase.Priority.PriorityData priority in new DataBase.Priority().Get())
             {
                 _priorities.Add(GetPriority(priority));
@@ -53,6 +61,10 @@ namespace Tasker.Classes.Data.Conversion
             {
                 _difficulties.Add(GetDifficulty(difficulty));
             }
+            foreach (DataBase.Type.TypeData type in new DataBase.Type().Get())
+            {
+                _types.Add(DataBaseDataToTables.GetType(type));
+            }
             List<DataBase.Project.ProjectData> dbProjects = new DataBase.Project().Get();
             List<DataBase.Task.TaskData> dbTasks = new DataBase.Task().Get();
             List<DataBase.Appointment.AppointmentData> dbAppointments = new DataBase.Appointment().Get();
@@ -60,38 +72,47 @@ namespace Tasker.Classes.Data.Conversion
             {
                 Tables.Category newCategory = GetCategory(category);
 
-                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Init Category {newCategory.Id}");
-                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of dbProjects: {dbProjects.Count}");
+                //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Init Category {newCategory.Id}");
+                //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of dbProjects: {dbProjects.Count}");
 
                 List<DataBase.Project.ProjectData> projectsInCategory = dbProjects.Where(project => project.CategoryId == newCategory.Id).ToList();
                 dbProjects = dbProjects.Except(projectsInCategory).ToList();
 
-                System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of Projects in Category: {projectsInCategory.Count}");
+                //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of Projects in Category: {projectsInCategory.Count}");
 
                 newCategory.Load(projectsInCategory);
                 foreach (Tables.Project project in newCategory.Projects)
                 {
+                    //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Init Project {project.Id}");
+                    //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of dbTasks: {dbTasks.Count}");
+
                     List<DataBase.Task.TaskData> tasksInProject = dbTasks.Where(task => task.ProjectId == project.Id).ToList();
                     dbTasks = dbTasks.Except(tasksInProject).ToList();
 
-                    List<DataBase.Appointment.AppointmentData> appointmentsInTask = dbAppointments.Where(appointment => appointment.ProjectId == project.Id).ToList();
-                    dbAppointments = dbAppointments.Except(appointmentsInTask).ToList();
+                    //System.Diagnostics.Debug.WriteLine($"Class -DataStructure; Size of Tasks in Project: {tasksInProject.Count}");
 
-                    project.Load(dbTasks, dbAppointments);
+                    List<DataBase.Appointment.AppointmentData> appointmentsInProject = dbAppointments.Where(appointment => appointment.ProjectId == project.Id).ToList();
+                    dbAppointments = dbAppointments.Except(appointmentsInProject).ToList();
+
+                    project.Load(tasksInProject, appointmentsInProject);
                 }
-                _categories.Add(newCategory);
+                if (_hiddenReserved != null || !newCategory.Data.IsReserved || newCategory.ContainsObjects) { _categories.Add(newCategory); continue; }
+                if (new DataBase.Category().Get().Count == 1 ) { _categories.Add(newCategory); continue; }
+                _hiddenReserved = newCategory;
             }
         }
 
         public static int CreateOrLoadData(string pLabel)
         {
             DataBase.Data dbData = new();
-            if (dbData.Get().Where(x => x.Label == pLabel).Any()) return dbData.Get().Where(x => x.Label == pLabel).ToArray()[0].Id;
+            if (dbData.Get().Where(x => x.Label == pLabel).Any()) return dbData.Get().Where(x => x.Label == pLabel).First().Id;
             int newDataId = dbData.GenerateId();
             dbData.Add(new DataBase.Data.DataOfData
             {
                 Id = newDataId,
-                Label = pLabel
+                Label = pLabel,
+                Created = DateTime.Now,
+                Updated = DateTime.Now
             });
             return newDataId;
         }
@@ -128,6 +149,10 @@ namespace Tasker.Classes.Data.Conversion
             newCategory.CreateProject(DataBaseStandards.R_NOPROJECT);
             _categories.Add(newCategory);
             System.Diagnostics.Debug.WriteLine($"Class -DataStructure-; Category Successfully created.");
+            if (_hiddenReserved != null) return newCategoryId;
+
+            _hiddenReserved = _categories.FirstOrDefault(x => x.Data.IsReserved && !x.ContainsObjects);
+            if (_hiddenReserved != null) _categories.Remove(_hiddenReserved);
             return newCategoryId;
         }
 
@@ -137,9 +162,13 @@ namespace Tasker.Classes.Data.Conversion
             try
             {
                 Tables.Category category = _categories.Where(x => x.Id == categoryId).ToArray()[0];
-                if (_categories.Where(x => x.Data.Id == category.Data.Id).Count() == 1) DeleteData(category.Data.Id);
+                foreach (Tables.Project project in category.Projects) category.DeleteProject(project.Id);
                 new DataBase.Category().Delete(categoryId);
+                if (new DataBase.Data().Get().Where(x => x.Id == category.Data.Id).Count() == 1) DeleteData(category.Data.Id);
                 _categories.Remove(category);
+                if (_categories.Count != 0 || _hiddenReserved == null) return;
+                _categories.Add(_hiddenReserved);
+                _hiddenReserved = null;
             }
             catch (Exception e)
             {

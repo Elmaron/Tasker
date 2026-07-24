@@ -187,12 +187,16 @@ namespace Tasker.Classes.Data.Retrieval {
                 using var connection = new SqliteConnection(ConnectionString);
                 connection.Open();
 
+                System.Diagnostics.Debug.WriteLine($"Collecting Parameters {string.Join(", ", parameters)} and Data {string.Join(", ", data)}");
+
                 foreach (object? dataObject in data)
                 {
                     if (dataObject != null) continue;
                     parameters = parameters.Where((x, i) => i != Array.IndexOf(data, dataObject)).ToArray();
                     data = data.Where((x, i) => i != Array.IndexOf(data, dataObject)).ToArray();
                 }
+
+                System.Diagnostics.Debug.WriteLine($"Collected Parameters {string.Join(", ", parameters)} and Data {string.Join(", ", data)}");
 
                 var command = connection.CreateCommand();
                 command.CommandText =
@@ -226,7 +230,7 @@ namespace Tasker.Classes.Data.Retrieval {
                 string updated_values = string.Join(", ", parameters
                                     .Zip(data, (a, b) => new { Name = a, Value = b })
                                     .Where(x => !x.Name.Equals("Id"))
-                                    .Where(x => !x.Value.Equals("") && !x.Value.Equals(0) && x.Value != null)
+                                    .Where(x => x.Value != null && !x.Value.Equals("") && !x.Value.Equals(0))
                                     .Select(x => $"{x.Name} = \'{(x.Value is string str ? str : x.Value is DateTime dat ? dat.ToString("O") : x.Value?.ToString())}\'")
                                     );
                 if (updated_values == "" || updated_values == null) return;
@@ -363,14 +367,14 @@ namespace Tasker.Classes.Data.Retrieval {
             }
         }
 
-        //Table with 1 to m connections
+        //Tables with 1 to m connections
         public class Timing : Table<Timing.TimingData>
         {
             public override string Name { get { return "Timing"; } }
             public class TimingData : IData
             {
                 public int Id { get; set; }
-                public int TypeID { get; set; }
+                public int TypeId { get; set; }
                 public DateTime Start { get; set; }
                 public DateTime End { get; set; }
             }
@@ -380,7 +384,7 @@ namespace Tasker.Classes.Data.Retrieval {
                 return new TimingData
                 {
                     Id = reader.GetInt32(0),
-                    TypeID = reader.GetInt32(1),
+                    TypeId = reader.GetInt32(1),
                     Start = reader.GetDateTime(2),
                     End = reader.GetDateTime(3)
                 };

@@ -1,31 +1,30 @@
-﻿using System;
+﻿using Avalonia;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using Tasker.Classes.Data.Retrieval;
+using Tasker.Classes.Templates;
 
 namespace Tasker.Classes.Data.Conversion.Tables
 {
-    public struct InternalData(
-        int pId, 
-        string pLabel, 
-        string? pDescription, 
-        DateTime? pCreated, 
-        DateTime? pUpdated, 
-        DateTime? pFinished, 
-        DateTime? pDeleteOn)
+    public class InternalData(int pId,
+    string pLabel,
+    string? pDescription,
+    DateTime? pCreated,
+    DateTime? pUpdated,
+    DateTime? pFinished,
+    DateTime? pDeleteOn) : ObservableTableTemplate(pId)
     {
-        private readonly int _id = pId;
         private string _label = pLabel;
         private string? _description = pDescription;
         private readonly DateTime _created = pCreated ?? DateTime.Now;
         private DateTime _updated = pUpdated ?? DateTime.Now;
         private DateTime? _finished = pFinished;
         private DateTime? _deleteOn = pDeleteOn;
-
-        public readonly int Id { get => _id; }
         public string Label {
             get
             {
@@ -35,17 +34,23 @@ namespace Tasker.Classes.Data.Conversion.Tables
             }
             set => Update(ref _label, value);
         }
+        public bool IsReserved
+        {
+            get => _label == DataBaseStandards.R_NOCATEGORY || _label == DataBaseStandards.R_NOPROJECT;
+        }
         public string? Description { 
             get => _description; 
             set => Update(ref _description, value); 
         }
-        public readonly DateTime Created { get => _created; }
-        public readonly DateTime Updated { get => _updated; }
+        public DateTime Created { get => _created; }
+        public DateTime Updated { get => _updated; }
         public DateTime? Finished { 
             get => _finished;
             set {
+                System.Diagnostics.Debug.WriteLine($"Trying to set Finished Value to {value}");
                 if (value != null && value > DateTime.Now) return;
                 Update(ref _finished, value);
+                System.Diagnostics.Debug.WriteLine($"Updated to {value}");
             }
         }
         public DateTime? DeleteOn { 
@@ -61,7 +66,7 @@ namespace Tasker.Classes.Data.Conversion.Tables
         }
         public bool IsFinished
         {
-            get => Finished.HasValue;
+            get => Finished != null;
             set => Finish(!IsFinished);
         }
         
@@ -78,8 +83,9 @@ namespace Tasker.Classes.Data.Conversion.Tables
 
             field = value;
             _updated = DateTime.Now;
+            System.Diagnostics.Debug.WriteLine($"Changed {fieldName} to value {value}");
 
-            new DataBase.Data().Update(_id, _updated, fieldName, value);
+            new DataBase.Data().Update(Id, _updated, fieldName, value);
         }
     }
 }
