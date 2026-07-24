@@ -196,19 +196,25 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 
 # Installation
 
-Lade dir [hier](https://www.github.com/Elmaron/Tasker/Releases) passende Version für den Betriebssystem herunter. Führe diese dann mit einem Doppelklick aus.
+Lade dir [hier](https://www.github.com/Elmaron/Tasker/Releases) passende Version für den Betriebssystem herunter. Führe diese dann mit einem Doppelklick aus (setup.exe unter Windows).
 
 Solltest du Windows verwenden und dir unsicher sein, ob du ein x64 oder arm64 Gerät verwendest, kannst du die Windows Systemeinstellungen öffnen und unter "System > Info" in der Geräteinfo nach dem Begriff "Systemtyp" suchen. Wenn dort so etwas steht wie "64-Bit-Betriebssystem, ARM-basierter Prozesser", lädst du dir das Setup für win-arm64 herunter.
 
 Folgende Versionen stehen zur Auswahl:
 
 * Windows (64-Bit-Betriebssysteme)
-    * ARM-basierter Prozessor: vindona.tasker-win-arm64-Setup.exe
-    * x64-basierter Prozessor: vindona.tasker-win-x64-Setup.exe
+    * Tasker für ARM-basierte Prozessoren
+        * Als Setup (release-setup.exe)
+        * Als Portable Version (release-portable.zip)
+    * Tasker für x64-basierter Prozessor
+        * Als Setup (release-setup.exe)
+        * Als Portable Version (release-portable.zip)
 
 * Linux
-    * 64-Bit-Betriebssystem, ARM-basierter Prozessor: vindona.tasker-linux-arm64-Setup.exe
-    * 64-Bit-Betriebssystem, x64-basierter Prozessor: vindona.tasker-linux-x64-Setup.exe
+    * Für 64-Bit-Betriebssysteme, ARM-basierter Prozessor
+        * AppImage (für alle Linux Distributionen)
+    * Für 64-Bit-Betriebssysteme, x64-basierter Prozessor
+        * AppImage (für alle Linux Distributionen)
 
 # Updates
 
