@@ -102,7 +102,7 @@ But if I do, here is, what you can and cannot expect from it:
     - [x] Start and stop function for the tasks
     - [x] Detailed view for tasks and appointments
     - [x] Column for duration data
-- [ ] Refine code
+- [x] Refine code
 - [ ] Fixing bugs
 
 *Phase shall be finished until 24th of July 2026.*

@@ -18,13 +18,25 @@
     <DockPanel
 		Background="{Binding ColorBackground4}">
 		<!--Top Bar-->
-        <StackPanel DockPanel.Dock="Top"
+        <Grid 
+			DockPanel.Dock="Top"
 			Background="{Binding ColorSecondary3}"
-			Orientation="Horizontal">
+			RowDefinitions="Auto">
+			<!--
 			<Button
 				Background="{Binding ColorSecondary2}"
-				Content="Start/Stop" />
+				Content="Start/Stop" />-->
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition MinWidth="200" Width="200" MaxWidth="400"/>
+				<ColumnDefinition Width="200"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
 			<ComboBox
+				Grid.Row="0"
+				Grid.Column="0"
+				HorizontalAlignment="Stretch"
 				Background="{Binding ColorSecondary1}"
 				ItemsSource="{Binding Categories}"
 				SelectedItem="{Binding SelectedCategory}">
@@ -45,28 +57,39 @@
 				</ComboBox.ItemTemplate>
 			</ComboBox>
 			<TextBox 
+				Grid.Row="0"
+				Grid.Column="1"
 				Background="{Binding ColorSecondary2}"
 				PlaceholderText="{Binding NewCategoryPlaceholder}"
 				Text="{Binding NewCategoryName}"
 				MaxLength="30"/>
 			<Button
+				Grid.Row="0"
+				Grid.Column="2"
 				Background="{Binding ColorSecondary2}"
 				Command="{Binding CreateCategory}"
 				Content="+"/>
-        </StackPanel>
+			<Button
+				Grid.Row="0"
+				Grid.Column="4"
+				Content="Update App"
+				Background="{Binding ColorSecondary1}"
+				Command="{Binding UpdateAvaloniaApp}" />
+        </Grid>
 		<!--Projects on the left side-->
         <DockPanel
             DockPanel.Dock="Left"
-            Background="{Binding ColorPrimary4}"
-			MinWidth="200">
+            Background="{Binding ColorPrimary3}"
+			MinWidth="200"
+			MaxWidth="400">
             <TextBlock
 				Text="Projects"
-                Background="{Binding ColorPrimary3}"
+                Background="{Binding ColorPrimary2}"
                 DockPanel.Dock="Top"/>
             <Grid 
 				ColumnDefinitions="Auto, *" RowDefinitions="Auto"
 				DockPanel.Dock="Bottom"
-                Background="{Binding ColorPrimary3}">
+                Background="{Binding ColorPrimary2}">
                 <TextBox 
 					Grid.Column="1" Grid.Row="0"
 					Background="{Binding ColorPrimary2}"
@@ -80,7 +103,7 @@
 					Content="+"/>
             </Grid>
 			<ListBox 
-				Background="{Binding ColorPrimary2}"
+				Background="{Binding ColorPrimary3}"
 				ItemsSource="{Binding Projects}"
 				SelectedItem="{Binding SelectedProject}">
 				<ListBox.Styles>
@@ -108,12 +131,19 @@
 									<!--For Task Details-->
         <DockPanel 
             DockPanel.Dock="Right"
-            Background="{Binding ColorPrimary4}"
+            Background="{Binding ColorPrimary2}"
 			MinWidth="300"
 			MaxWidth="400"
 			IsVisible="{Binding IsTaskSelected}">
 			<Grid
-				DockPanel.Dock="Top">
+				DockPanel.Dock="Top"
+				Background="{Binding ColorPrimary2}"
+				Margin="8,0">
+				<Grid.Styles>
+					<Style Selector="TextBlock">
+						<Setter Property="Padding" Value="8"/>
+					</Style>
+				</Grid.Styles>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto"></ColumnDefinition>
 					<ColumnDefinition Width="*"></ColumnDefinition>
@@ -122,34 +152,59 @@
 				</Grid.ColumnDefinitions>
 				<CheckBox
 					Grid.Column="0"
-					IsChecked="{Binding SelectedTask.Data.IsFinished}"/>
+					IsChecked="{Binding SelectedTask.Data.IsFinished}"
+					Background="{Binding ColorPrimary2}"/>
 				<TextBox
 					Text="{Binding SelectedTask.Data.Label}"
 					Grid.Column="1"
-					Background="{Binding ColorPrimary3}"/>
+					Background="{Binding ColorPrimary2}"/>
 				<TextBlock
 					Grid.Column="2"
-					Text="{Binding SelectedTask.Id}"/>
+					Text="{Binding SelectedTask.Id}"
+					Background="{Binding ColorPrimary2}"/>
 				<Button 
 					Content="Close"
 					Grid.Column="3"
-					Command="{Binding ButtonCommand_DetailedViewCloseButton}"/>
+					Command="{Binding ButtonCommand_DetailedViewCloseButton}"
+					Background="{Binding ColorPrimary2}"/>
 			</Grid>
             <Button
 				DockPanel.Dock="Bottom"
-                Background="{Binding ColorPrimary3}">edit Timings (not implemented)</Button>
+                Background="{Binding ColorPrimary2}">edit Timings (not implemented)</Button>
 			<ScrollViewer
 				VerticalScrollBarVisibility="Hidden"
 				HorizontalScrollBarVisibility="Disabled">
 				<Grid
-					Background="{Binding ColorPrimary3}"
+					Background="{Binding ColorPrimary4}"
 					RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto">
+					<Grid.Styles>
+						<Style Selector="TextBox">
+							<Setter Property="Padding" Value="8"/>
+						</Style>
+						<Style Selector="TextBlock">
+							<Setter Property="Padding" Value="8"/>
+						</Style>
+						<Style Selector="ComboBox">
+							<Setter Property="Padding" Value="8"/>
+						</Style>
+						<Style Selector="TableView.Columns">
+							<Style Selector="^:TextBox">
+								<Setter Property="Padding" Value="0"/>
+							</Style>
+							<Style Selector="^:TextBlock">
+								<Setter Property="Padding" Value="0"/>
+							</Style>
+						</Style>
+					</Grid.Styles>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
 					<TextBox
 						Text="{Binding SelectedTask.Data.Description}"
+						PlaceholderText="Put your description here..."
+						AcceptsReturn="True"
+						MinLines="3"
 						Grid.Row="0"
 						Grid.Column="0"
 						Grid.ColumnSpan="2"
@@ -158,12 +213,14 @@
 						Text="Priority"
 						Grid.Row="1"
 						Grid.Column="0"
-						Background="{Binding ColorPrimary2}"/>
+						Background="{Binding ColorPrimary3}"/>
 					<ComboBox
 						Grid.Column="1"
 						Grid.Row="1"
+						HorizontalAlignment="Stretch"
 						ItemsSource="{Binding SelectedTask.AvailablePriorities}"
-						SelectedItem="{Binding SelectedTask.SelectedPriority}">
+						SelectedItem="{Binding SelectedTask.SelectedPriority}"
+						Background="{Binding ColorPrimary4}">
 						<ComboBox.ItemTemplate>
 							<DataTemplate>
 								<Border
@@ -187,8 +244,10 @@
 					<ComboBox
 						Grid.Column="1"
 						Grid.Row="2"
+						HorizontalAlignment="Stretch"
 						ItemsSource="{Binding SelectedTask.AvailableDifficulties}"
-						SelectedItem="{Binding SelectedTask.SelectedDifficulty}">
+						SelectedItem="{Binding SelectedTask.SelectedDifficulty}"
+						Background="{Binding ColorPrimary3}">
 						<ComboBox.ItemTemplate>
 							<DataTemplate>
 								<Border
@@ -208,12 +267,12 @@
 						Text="Created"
 						Grid.Row="3"
 						Grid.Column="0"
-						Background="{Binding ColorPrimary2}"/>
+						Background="{Binding ColorPrimary3}"/>
 					<TextBlock
 						Text="{Binding SelectedTask.Data.Created}"
 						Grid.Row="3"
 						Grid.Column="1"
-						Background="{Binding ColorPrimary2}"/>
+						Background="{Binding ColorPrimary4}"/>
 					<TextBlock
 						Text="Last Update"
 						Grid.Row="4"
@@ -223,18 +282,18 @@
 						Text="{Binding SelectedTask.Data.Updated}"
 						Grid.Row="4"
 						Grid.Column="1"
-						Background="{Binding ColorPrimary2}"/>
+						Background="{Binding ColorPrimary3}"/>
 					<TextBlock
 						Text="expires on"
 						Grid.Row="5"
 						Grid.Column="0"
-						Background="{Binding ColorPrimary2}"/> <!--Difference between delete on and expiry -> delete on is the date, when the task is deleted from the database.
+						Background="{Binding ColorPrimary3}"/> <!--Difference between delete on and expiry -> delete on is the date, when the task is deleted from the database.
 						Expiry is the day/time, until the task needs to be finished.-->
 					<TextBlock
 						Text="{Binding SelectedTask.Expiry}"
 						Grid.Row="5"
 						Grid.Column="1"
-						Background="{Binding ColorPrimary2}"/>
+						Background="{Binding ColorPrimary4}"/>
 					<TextBlock
 						Text="Finished"
 						Grid.Row="6"
@@ -244,29 +303,31 @@
 						Text="{Binding SelectedTask.Data.Finished}"
 						Grid.Row="6"
 						Grid.Column="1"
-						Background="{Binding ColorPrimary2}"/>
+						Background="{Binding ColorPrimary3}"/>
 					<TextBlock
 						Text="Delete Task on"
 						Grid.Row="7"
 						Grid.Column="0"
-						Background="{Binding ColorPrimary2}"/>
+						Background="{Binding ColorPrimary3}"/>
 					<TextBlock
 						Text="{Binding SelectedTask.Data.DeleteOn}"
 						Grid.Row="7"
 						Grid.Column="1"
-						Background="{Binding ColorPrimary2}"/>
+						Background="{Binding ColorPrimary4}"/>
 					<TextBlock
 						Text="Worked on Task"
 						Grid.Row="8"
 						Grid.Column="0"
 						Grid.ColumnSpan="2"
-						Background="{Binding ColorPrimary2}"/>
+						Background="{Binding ColorPrimary2}"
+						TextAlignment="Center"/>
 					<TableView
 						Grid.Row="9"
 						Grid.Column="0"
 						Grid.ColumnSpan="2"
 						ItemsSource="{Binding SelectedTask.Worktimes}"
-						Background="hsla(0,0%,0%,0)">
+						Background="hsla(0,0%,0%,0)"
+						MaxWidth="330">
 						<TableView.Columns>
 							<TableViewColumn Header="Start" Width="*">
 								<TableViewColumn.CellTemplate>
@@ -288,132 +349,128 @@
 			</ScrollViewer>
         </DockPanel>
 		<!--Main View for Tasks and Appointments-->
-        <DockPanel
+		<DockPanel
             Background="{Binding ColorBackground4}">
-            <Grid 
+			<Grid
 				ColumnDefinitions="Auto, *" RowDefinitions="Auto"
 				DockPanel.Dock="Bottom"
-                Background="{Binding ColorBackground3}">
-                <TextBox 
-					Grid.Column="1" Grid.Row="0" 
+                Background="{Binding ColorBackground2}">
+				<TextBox
+					Grid.Column="1" Grid.Row="0"
 					PlaceholderText="{Binding NewTaskPlaceholder}"
 					Text="{Binding NewTaskName}"
 					Background="{Binding ColorBackground2}"
 					MaxLength="30"></TextBox>
-                <Button 
+				<Button
 					Grid.Column="0" Grid.Row="0"
 					Background="{Binding ColorBackground2}"
 					Command="{Binding SelectedProject.CreateTask}"
 					CommandParameter="{Binding NewTaskName}">+</Button>
-            </Grid>
-			<TableView 
-				ItemsSource="{Binding Tasks}"
-				SelectedItem="{Binding SelectedTask}"
-				Background ="hsla(0,0,0%, 0)">
-				<TableView.Columns>
-					<TableViewColumn Header="✅" Width="40">
-						<TableViewColumn.CellTemplate>
+			</Grid>
+			<ScrollViewer>
+				<StackPanel
+					Grid.IsSharedSizeScope="True">
+					<StackPanel.Styles>
+						<Style Selector="ListBoxItem">
+							<Setter Property="Padding" Value="0" />
+							<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+						</Style>
+					</StackPanel.Styles>
+					<Grid
+						RowDefinitions="Auto"
+						ColumnSpacing="24"
+						Margin="16, 8"
+						Background="{Binding ColorBackground4}">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition SharedSizeGroup="Finished"/>
+							<ColumnDefinition SharedSizeGroup="StartStopButton"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition SharedSizeGroup="Priority"/>
+							<ColumnDefinition SharedSizeGroup="Difficulty"/>
+							<ColumnDefinition SharedSizeGroup="Duration"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" Text="✅"/>
+						<TextBlock Grid.Column="2" Text="Task"/>
+						<TextBlock Grid.Column="3" Text="Priority"/>
+						<TextBlock Grid.Column="4" Text="Difficulty"/>
+						<TextBlock Grid.Column="5" Text="Duration"/>
+					</Grid>
+					<ListBox
+						ItemsSource="{Binding Tasks}"
+						SelectedItem="{Binding SelectedTask}"
+						SelectionMode="Toggle">
+						<ListBox.ItemTemplate>
 							<DataTemplate>
-								<CheckBox 
-									IsChecked="{Binding Data.IsFinished}"/>
-							</DataTemplate>
-						</TableViewColumn.CellTemplate>
-					</TableViewColumn>
-					<TableViewColumn Header="Label" Width="*">
-						<TableViewColumn.CellTemplate>
-							<DataTemplate>
-								<Grid ColumnDefinitions="Auto,*">
-									<Button
-										Grid.Column="0"
-										IsVisible="{Binding Data.IsFinishedInversed}"
-										Content="{Binding ButtonText_StartStopButton}"
-										Command="{Binding ButtonCommand_StartStopFunction}"/>
-									<TextBox
-										Grid.Column="1"
-										Text="{Binding Data.Label}"/>
+
+								<Grid
+									HorizontalAlignment="Stretch"
+									ColumnSpacing="24"
+									RowDefinitions="Auto"
+									Margin="16, 8">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition SharedSizeGroup="Finished"/>
+										<ColumnDefinition SharedSizeGroup="StartStopButton"/>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition SharedSizeGroup="Priority"/>
+										<ColumnDefinition SharedSizeGroup="Difficulty"/>
+										<ColumnDefinition SharedSizeGroup="Duration"/>
+									</Grid.ColumnDefinitions>
+									<CheckBox Grid.Column="0" IsChecked="{Binding Data.IsFinished}"/>
+									<Button Grid.Column="1"
+											HorizontalAlignment="Stretch"
+											IsVisible="{Binding Data.IsFinishedInversed}"
+											Content="{Binding ButtonText_StartStopButton}"
+											Command="{Binding ButtonCommand_StartStopFunction}"/>
+									<TextBox Grid.Column="2" Text="{Binding Data.Label}"/>
+									<ComboBox
+									Grid.Column="3"
+									HorizontalAlignment="Stretch"
+									ItemsSource="{Binding AvailablePriorities}"
+									SelectedItem="{Binding SelectedPriority}">
+										<ComboBox.ItemTemplate>
+											<DataTemplate>
+												<Border
+													Background="{Binding Color}"
+													HorizontalAlignment="Stretch"
+													VerticalAlignment="Stretch"
+													Margin="-12,-4"
+													Padding="12,4">
+													<TextBlock
+														VerticalAlignment="Center"
+														Text="{Binding Label}"/>
+												</Border>
+											</DataTemplate>
+										</ComboBox.ItemTemplate>
+									</ComboBox>
+									<ComboBox
+									Grid.Column="4"
+									HorizontalAlignment="Stretch"
+									ItemsSource="{Binding AvailableDifficulties}"
+									SelectedItem="{Binding SelectedDifficulty}">
+										<ComboBox.ItemTemplate>
+											<DataTemplate>
+												<Border
+													Background="{Binding Color}"
+													HorizontalAlignment="Stretch"
+													VerticalAlignment="Stretch"
+													Margin="-12,-4"
+													Padding="12,4">
+													<TextBlock
+														VerticalAlignment="Center"
+														Text="{Binding Label}"
+														ToolTip.Tip="{Binding Hint}"/>
+												</Border>
+											</DataTemplate>
+										</ComboBox.ItemTemplate>
+									</ComboBox>
+									<TextBlock Grid.Column="5" Text="{Binding DurationString}"/>
 								</Grid>
 							</DataTemplate>
-						</TableViewColumn.CellTemplate>
-					</TableViewColumn>
-					<TableViewColumn Header="Difficulty" Width="Auto">
-						<TableViewColumn.CellTemplate>
-							<DataTemplate>
-								<ComboBox
-								Grid.Column="3"
-								ItemsSource="{Binding AvailableDifficulties}"
-								SelectedItem="{Binding SelectedDifficulty}">
-									<ComboBox.ItemTemplate>
-										<DataTemplate>
-											<Border
-												Background="{Binding Color}"
-												HorizontalAlignment="Stretch"
-												VerticalAlignment="Stretch"
-												Margin="-12,-4"
-												Padding="12,4">
-												<TextBlock
-													VerticalAlignment="Center"
-													Text="{Binding Label}"
-													ToolTip.Tip="{Binding Hint}"/>
-											</Border>
-										</DataTemplate>
-									</ComboBox.ItemTemplate>
-								</ComboBox>
-							</DataTemplate>
-						</TableViewColumn.CellTemplate>
-					</TableViewColumn>
-					<TableViewColumn Header="Priority" Width="Auto">
-						<TableViewColumn.CellTemplate>
-							<DataTemplate>
-								<ComboBox
-								Grid.Column="4"
-								ItemsSource="{Binding AvailablePriorities}"
-								SelectedItem="{Binding SelectedPriority}">
-									<ComboBox.ItemTemplate>
-										<DataTemplate>
-											<Border
-												Background="{Binding Color}"
-												HorizontalAlignment="Stretch"
-												VerticalAlignment="Stretch"
-												Margin="-12,-4"
-												Padding="12,4">
-												<TextBlock
-													VerticalAlignment="Center"
-													Text="{Binding Label}"/>
-											</Border>
-										</DataTemplate>
-									</ComboBox.ItemTemplate>
-								</ComboBox>
-							</DataTemplate>
-						</TableViewColumn.CellTemplate>
-					</TableViewColumn>
-					<TableViewColumn Header="Duration" Width="Auto">
-						<TableViewColumn.CellTemplate>
-							<DataTemplate>
-								<TextBlock
-									Text="{Binding DurationString}"/>
-							</DataTemplate>
-						</TableViewColumn.CellTemplate>
-					</TableViewColumn>
-
-					<!--
-							<Button Content="Delete"
-									Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteTask}"
-									CommandParameter="{Binding Id}"
-									/>
-									-->
-					<!--
-							<Grid.ContextMenu>
-								<ContextMenu>
-									<MenuItem 
-										Header="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteButtonText}"
-										Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteTask}"
-										CommandParameter="{Binding Id}"/>
-								</ContextMenu>
-							</Grid.ContextMenu>
-							-->
-				</TableView.Columns>
-			</TableView>
-        </DockPanel>
+						</ListBox.ItemTemplate>
+					</ListBox>
+				</StackPanel>
+			</ScrollViewer>
+		</DockPanel>
     </DockPanel>
 
 
