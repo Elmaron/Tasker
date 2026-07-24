@@ -118,6 +118,7 @@ But if I do, here is, what you can and cannot expect from it:
 *More objectives may be added while working on the program*
 
 - [ ] Update design
+    - [ ] Move color definitions to external class
     - [ ] Create switchable designs
 - [ ] New Features
     - [ ] Export Data

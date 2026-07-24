@@ -119,6 +119,7 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
 *Mehr Punkte könnten hinzugefügt werden, während ich an dem Programm arbeite.*
 
 - [ ] Design-Funktionen überarbeiten
+    - [ ] Bewege Farben in eine externe Klasse
     - [ ] Erstelle wechselbare Designs
 - [ ] Neue Funktionen
     - [ ] Daten exportieren
