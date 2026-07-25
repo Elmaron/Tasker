@@ -138,9 +138,12 @@ But if I do, here is, what you can and cannot expect from it:
             - [ ] After a certain amount of disk space is used
             - [ ] Deactivate Autodelete
         - [ ] Always show hidden task ids
-- [ ] Optimisations for different user types
+- [ ] Optimisations for different user types (profiles)
     - [ ] Standard
     - [ ] People with ADHD
+    - [ ] People with Autism
+    - [ ] People with Audhd
+    - [ ] ... (more will follow soon)
 - [ ] Refine code
 - [ ] Fixing more bugs
 
