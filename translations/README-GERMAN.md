@@ -140,9 +140,12 @@ Falls ich es doch machen sollte, dann sind hier die Dinge, die du von dem Assist
             - [ ] Nachdem die Daten eine bestimmte Größe auf der Festplatte erreicht haben
             - [ ] Deaktiveren des automatischen Löschens von Daten
         - [ ] Zeige immer die versteckten Aufgaben-IDs an
-- [ ] Optimierungen für verschiedene Benutzerarten
+- [ ] Optimierungen für verschiedene Benutzerarten (Profile)
     - [ ] Standard
     - [ ] Menschen mit ADHS
+    - [ ] Menschen mit Autismus
+    - [ ] Menschen mit Audhd
+    - [ ] ... (weitere Folgen)
 - [ ] Überarbeite den Code
 - [ ] Behebe mehr Fehler
 
@@ -231,6 +234,8 @@ Die App speichert die Datenbank im lokalen App-Speicher deines Betriebsystems.
 In folgendem Ordner befinden sich die Daten:
 
 * Unter Windows: %LocalAppData%\Tasker (Einfach im Explorer in die Leiste oben kopieren)
+
+* Linux: ~/.local/share/Tasker (Du kannst mit dem Befehl "ls" im Terminal nachschauen, ob "appData.db" dort existiert)
 
 Um die Daten zu sichern, kannst du "appData.db" einfach an einen anderen Speicherplatz kopieren. Um die Daten wiederherzustellen, brauchst du nur die Datei nur wieder an ihren ursprünglichen Platz zu schieben. Solltest du die Datei umbenennen, denke daran, sie in "appData.db" zurückzubenennen.
 Um eine leere Datenbank zu erzeugen, lösche "appData.db" aus dem Ordner. Das Programm erzeugt automatisch eine neue Datenbank.
