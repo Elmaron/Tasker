@@ -1,0 +1,44 @@
+name: Deploy to Github-Release (stable)
+
+on:
+  push:
+    branches:
+      - stable
+
+permissions:
+  contents: write
+
+jobs:
+  deploy-to-github-releases:
+      runs-on: windows-latest
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v4
+        - name: Get Version from Project File
+          id: get-version
+          shell: bash
+          run: echo "version=$(grep -oE '<Version>[^<]+' Tasker.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
+        - name: Install .NET
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: 10.0.x
+        - name: Publish Application _win-x64_
+          run: dotnet publish Tasker.csproj -c Release -o publish/stable/win-x64 -r win-x64 --self-contained true
+        - name: Publish Application _win-arm64_
+          run: dotnet publish Tasker.csproj -c Release -o publish/stable/win-arm64 -r win-arm64 --self-contained true
+        - name: Publish Application _linux-x64_
+          run: dotnet publish Tasker.csproj -c Release -o publish/stable/linux-x64 -r linux-x64 --self-contained true
+        - name: Publish Application _linux-arm64_
+          run: dotnet publish Tasker.csproj -c Release -o publish/stable/linux-arm64 -r linux-arm64 --self-contained true
+        - name: Create Velopack Releases
+          run: |
+              dotnet tool install -g vpk
+              vpk download github --repoUrl https://github.com/${{ github.repository }}
+              vpk pack --packId vindona.tasker --runtime win-x64 --packDir publish/stable/win-x64 --splashImage Assets/Tasker-Splash.png --splashProgressColor '#BA83E0' --outputDir Releases/stable/win-x64 --packVersion ${{ steps.get-version.outputs.version }} --mainExe Tasker.exe --channel win-x64-stable --packAuthors Elmaron --packTitle Tasker --icon Assets/Setup.ico
+              vpk pack --packId vindona.tasker --runtime win-arm64 --packDir publish/stable/win-arm64 --splashImage Assets/Tasker-Splash.png --splashProgressColor '#BA83E0' --outputDir Releases/stable/win-arm64 --packVersion ${{ steps.get-version.outputs.version }} --mainExe Tasker.exe --channel win-arm64-stable --packAuthors Elmaron --packTitle Tasker --icon Assets/Setup.ico
+              vpk [linux] pack --packId vindona.tasker --runtime linux-x64 --packDir publish/stable/linux-x64 --outputDir Releases/stable/linux-x64 --packVersion ${{ steps.get-version.outputs.version }} --mainExe Tasker --channel linux-x64-stable --packAuthors Elmaron --packTitle Tasker --icon Assets/Setup.ico
+              vpk [linux] pack --packId vindona.tasker --runtime linux-arm64 --packDir publish/stable/linux-arm64 --outputDir Releases/stable/linux-arm64 --packVersion ${{ steps.get-version.outputs.version }} --mainExe Tasker --channel linux-arm64-stable --packAuthors Elmaron --packTitle Tasker --icon Assets/Setup.ico
+              vpk upload github --token ${{ secrets.GITHUB_TOKEN }} --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Linux (arm64)" --tag v${{ steps.get-version.outputs.version }}-linux-arm64 --outputDir Releases/stable/linux-arm64 --channel linux-arm64-stable
+              vpk upload github --token ${{ secrets.GITHUB_TOKEN }} --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Linux (x64)" --tag v${{ steps.get-version.outputs.version }}-linux-x64 --outputDir Releases/stable/linux-x64 --channel linux-x64-stable
+              vpk upload github --token ${{ secrets.GITHUB_TOKEN }} --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Windows (arm64)" --tag v${{ steps.get-version.outputs.version }}-win-arm64 --outputDir Releases/stable/win-arm64 --channel win-arm64-stable
+              vpk upload github --token ${{ secrets.GITHUB_TOKEN }} --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "Tasker ${{ steps.get-version.outputs.version }} for Windows (x64)" --tag v${{ steps.get-version.outputs.version }}-win-x64 --outputDir Releases/stable/win-x64 --channel win-x64-stable
