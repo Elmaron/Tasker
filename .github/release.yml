@@ -1,0 +1,24 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+      - ignore-for-prerelease
+  categories:
+    - title: Breaking Changes
+      labels:
+        - removed-feature
+        - breaking-change
+    - title: New Features
+      labels:
+        - new-feature
+        - new-function
+    - title: Updates
+      labels:
+        - change
+        - updated
+    - title: Bug Fixes
+      labels:
+        - fixed
+    - title: Other Changes
+      labels:
+        - "*"
