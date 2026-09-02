@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - stable
-<<<<<<<< Updated upstream:.github/workflows/stable.yml
-========
-  workflow_dispatch: 
->>>>>>>> Stashed changes:.github/workflows/auto-release-stable.yml
 
 permissions:
   contents: write
@@ -27,7 +23,6 @@ jobs:
           with:
             dotnet-version: 10.0.x
         - name: Publish Application _win-x64_
-<<<<<<<< Updated upstream:.github/workflows/stable.yml
           run: dotnet publish Tasker.csproj -c Release -o publish/stable/win-x64 -r win-x64 --self-contained true
         - name: Publish Application _win-arm64_
           run: dotnet publish Tasker.csproj -c Release -o publish/stable/win-arm64 -r win-arm64 --self-contained true
@@ -35,15 +30,6 @@ jobs:
           run: dotnet publish Tasker.csproj -c Release -o publish/stable/linux-x64 -r linux-x64 --self-contained true
         - name: Publish Application _linux-arm64_
           run: dotnet publish Tasker.csproj -c Release -o publish/stable/linux-arm64 -r linux-arm64 --self-contained true
-========
-          run: dotnet publish src\Tasker.csproj -c Release -o publish/win-x64 -r win-x64 --self-contained true
-        - name: Publish Application _win-arm64_
-          run: dotnet publish src\Tasker.csproj -c Release -o publish/win-arm64 -r win-arm64 --self-contained true
-        - name: Publish Application _linux-x64_
-          run: dotnet publish src\Tasker.csproj -c Release -o publish/linux-x64 -r linux-x64 --self-contained true
-        - name: Publish Application _linux-arm64_
-          run: dotnet publish src\Tasker.csproj -c Release -o publish/linux-arm64 -r linux-arm64 --self-contained true
->>>>>>>> Stashed changes:.github/workflows/auto-release-stable.yml
         - name: Create Velopack Releases
           run: |
               dotnet tool install -g vpk
