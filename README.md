@@ -2,7 +2,7 @@
 
 A Task-Planner and Tracker to help you understand your own work behavior.
 
-*Eine deutsche Übersetzung befindet sich [hier](./translations/README-GERMAN.md).*
+| **[Features](./FEATURES.md)** | **[Changes](./CHANGELOG.md)** | **[Documentation](./github-content/documentation/quick%20start.md)** | **[License](./LICENSE)** |
 
 # Development Status
 
@@ -10,92 +10,35 @@ A Task-Planner and Tracker to help you understand your own work behavior.
 
 **WARNING! The project has reached the alpha-phase. Downloaded Versions could potentially crash or create errors.**
 
-It's ready! A first testable version of the program is now downloadable. After reaching the alpha-version I'm going to concentrate less energy in this project.
-But I'm still continuing to add new Functions, fix bugs and try to optimise the code.
-If you find any errors, I would be very happy, if you could sent me an [e-mail](mailto://info@vindona.de)!
+It's ready! A first testable version of the program is now downloadable. After reaching the alpha-version I'm going to concentrate on other projects.
+I'm still going to add new functions, fix bugs and try to optimise the code.
+Though most of it might have to wait until October, because I'm out of time in September already.
+I've added added a roadmap now, which shows the planned versions, I'm going to release until version 1.0 is completed. If a version is not stable enough to be released in time, I'm going to postpone the release. I also might change the roadmap a little depending on my development speed.
+If you find any errors or need help with something, you can sent an [e-mail](mailto://info@vindona.de) or create an issue here on Github.
 
-State: *[Pre-Alpha](#pre-alpha)* | **[Alpha](#alpha-release)** | [Beta](#beta-release) | [Release](#release-v10)
+## Roadmap
 
-*finished*; **in Progress**; Upcoming Phase
+![Roadmap to version 1.0](./github-content/images/ROADMAP.png)
 
 # Table of Contents
+   
+* [Planned Releases](#planned-releases)
 
-* [Features](#features)
+    * [Pre-Alpha](#pre-alpha)
 
-    * [Statement to AI](#statement-to-ai)
+    * [Alpha](#alpha-release)
 
-        * [Development](#development)
+    * [Beta](#beta-release)
 
-        * [AI-Assistant](#ai-assistant)
-    
-    * [Planned Features](#planned-features)
+    * [Full Release](#release-v10)
 
-        * [Pre-Alpha](#pre-alpha)
+* [Ideas for features after full release](#ideas-for-features-after-release)
 
-        * [Alpha](#alpha-release)
+*Searching for installation, updates, user data and other information? You can find them now in the [documentation](./github-content/documentation/quick%20start.md)*
 
-        * [Beta](#beta-release)
+# Planned Releases
 
-        * [Release](#release-v10)
-
-        * [Ideas for features after release](#ideas-for-features-after-release)
-
-* [Installation](#installation)
-
-* [Updates](#updates)
-
-* [User Data](#user-data)
-
-* [Colors](#colors)
-
-# Features
-
-![A concepted example of the program](./concept-images/v0-1-0_example.png)
-
-This task planning program uses a local database to track your tasks on your device. The program then uses the collected data, to help you plan new tasks or appointments, if you already did them in the past.
-
-For people who find it difficult to "just do" a task, it gives advice on how to start with something and get productive, if that's a problem. Still, they are only recommendations and shall give you more perspectives to become better at doing the things, that "need to be done".
-
-In the end, the program should help the user to decide between tasks, that need to be done and help them to do them.
-
-## Statement to AI
-
-Generally I'm *not* against new technology and this also relates to the topic of AI. **However** I find most use cases for AI today unneccessary and inappropriate. So here I want to explain, *how* and *if* I use AI during development and what to expect in the future about the usage of AI in this program.
-
-### Development
-
-During development AI can definitely boost productivity, by writing parts of the code itself. That is a fact, I **cannot** deny. Still, I dislike the idea of letting *something* else write my code. Instead, I use AI for the following things during development:
-* To learn new commands
-* To find commands, I'm unaware of
-* To understand the basic usage of something new (command, packages, etc.)
-* To help find the cause of an error, if I'm unable to find it
-
-If I need to learn something new, for example how to use the avalonia package, I concider the documentation first. If I'm unable to understand the concepts, I use AI to help me understand them. It often leads to other commands and/or packages, that I do not know. So I repeat the process, until I understand enough of it to use it.
-
-If I'm unable to find the problem after getting an error, I may ask AI, to help me identify the problem. But before I post my code to AI, I always try to rewrite the code a little, so AI doesn't as easily know, what I'm doing exactly (for example renaming variables, posting only what I need, aso.). Unfortunately, AI always presents a solution to the problem, without me asking for it. So instead, I mostly ignore them. I never copy and paste the code from an AI. If I use code snippets, I always review them first, understand them and then retype them in my own program. I do not use AI to refine the code.
-
-I could use AI more, so I would be faster at everything. But I want to understand everything I'm doing. And I also don't want to get dumber. So that's why I'm using AI the way I do. I'll always try to understand the error, before considering to ask an AI for help. I'm also planning to use stackoverflow or similar in the future instead a lot more.
-
-If you want to know more about this topic, you can write a [mail](mailto:info@vindona.de) (fastest answer).
-
-### AI Assistant
-
-I do **not** find the idea of an "AI Assistant" in the program off-putting. **But not** as a "I can ask you anything and you do anything"-kinda program. I also dislike the idea of using another AI program and asking a server or anything else for help. **Currently, I do not plan to add an AI Assistant to the program.**
-But if I do, here is, what you can and cannot expect from it:
-
-* The AI Assistant is going to be integrated within the program or available as a plugin.
-* The Assistant can be turned off completely.
-* The AI is only available locally and can not connect to other AIs.
-    * If you run a selfhosted version for the broswer, the AI Assistant only runs on your own server and can not connect to other AIs.
-* You'll always get transparent information on what the AI assistant does and what it doesn't.
-    * The Assistant is an alternative to the algorithm to analyse your times for tasks better.
-    * The Assistant can recommend you tasks (for different days), but does never automatically plan them for you.
-    * The Assistant can **not** analyze the content of your tasks, to recommend you new tasks, that may still be needed.
-    * You can not interact in a chatlike environment with the AI.
-
-## Planned Features
-
-### Pre-Alpha
+## Pre-Alpha
 
 - [x] Create Github Project
 - [x] Update design
@@ -114,7 +57,7 @@ But if I do, here is, what you can and cannot expect from it:
 
 *Phase has been completed.*
 
-### Alpha-Release
+## Alpha-Release
 *More objectives may be added while working on the program*
 
 - [ ] Update design
@@ -149,7 +92,7 @@ But if I do, here is, what you can and cannot expect from it:
 
 *A finishing date has not been set for now.*
 
-### Beta-Release
+## Beta-Release
 
 *More objectives may be added while working on the program*
 
@@ -179,11 +122,11 @@ But if I do, here is, what you can and cannot expect from it:
 
 *A finishing date has not been set for now.*
 
-### Release (V1.0)
+## Release (V1.0)
 
 *A finishing date has not been set for now.*
 
-## Ideas for Features after release
+# Ideas for Features after release
 
 *These are only ideas for now, nothing promised.*
 
@@ -195,60 +138,6 @@ But if I do, here is, what you can and cannot expect from it:
     - [ ] The Program has built-in Mini-Games, which act as a reward
 - [ ] Reminders for Worktimes during Work
 
-# Installation
-
-Download the correct version for your system [here](https://www.github.com/Elmaron/Tasker/releases). Perfom a double click on the file, to start the installation (setup.exe on windows) or run the program (release.AppImage on linux).
-
-If you are on windows and don't know, if you use a x64 or an arm64 device, open the system settings and search in "System > Info" after "System type". If you see something like "64-bit operating system, ARM-based processor", you have to download the setup for win-arm64.
-
-The following Versions are available:
-
-* Windows (64-bit operating system)
-    * Tasker for ARM-based processors
-        * Setup (release-setup.exe)
-        * Portable (release-portable.zip)
-    * Tasker for x64-based processors
-        * Setup (release-setup.exe)
-        * Portable (release-portable.zip)
-
-* Linux
-    * for 64-bit operating systems, ARM-based processors
-        * AppImage (works on all linux distributions)
-    * for 64-bit operating systems, x64-based processors
-        * AppImage (works on all linux distributions)
-
-# Updates
-
-The app has a built-in Update-Function. Simply press on the "Update"-Button, to check, if an Update is available.
-
-If an Update is available, the app downloads it in the background and closes the app automatically to update, after the download is complete.
-
-The app is never going to install updates without your permission. If you press the update-button, you're giving the program the permission to update.
-
-# User Data
-
-The app saves your data in a local database in the app storage of your operating system.
-
-You can find the files in the following folder:
-
-* Windows: %LocalAppData%\Tasker (Just Copy and past it into the top bar in the file explorer)
-
-* Linux: ~/.local/share/Tasker (You can use ls in a terminal to see, if appData.db is present)
-
-If you want to backup your data, you can simply copy "appData.db" into another folder. You can also rename it. If you want to recover your data, just copy your backup into the app-folder. Don't forget to change the name to "appData.db", if you changed it.
-If you want to create a new, empty database, simply delete "appData.db" from the app-folder. The program is automatically creating a new database for you.
-
-
-# Colors
-
-This Program is supposed to be accessible to everyone. Considering this, I recreated the colorpalette in the last update, but didn't check for accessibility. If you have a color vision deficiency yourself, feel free to give me feedback via [Mail](mailto://info@vindona.de)!
-
-![Farbpalette](./concept-images/Colorpalette%20v1-0.png)
-
-Description:
-
-ALl Colors get darker from left to right. The Saturation is higher at the edge, than it is in the center. The background has a saturation of 0%. The primary, secondary and background each have the same hue. The colors for difficulty and priority have a different hue moving from left to right.
-
-*This text has been created without the usage of ai.*
+*This and all text in the documentation, changelog and features files have been created without the usage of ai.*
 
 **this project is developed by Elmaron from Vindona**
